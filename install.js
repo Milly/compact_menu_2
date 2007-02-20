@@ -1,4 +1,4 @@
-const kDisplayName = "Compact Menu";
+const kDisplayName = "Compact Menu 2";
 const kName = "compact";
 const kPackage = "/cdn.mozdev.org/compact";
 const kVersion = "1.7.2-1";

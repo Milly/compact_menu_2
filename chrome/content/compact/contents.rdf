@@ -12,7 +12,7 @@
         chrome:author="Milly"
         chrome:authorURL="http://d.hatena.ne.jp/MillyC/"
         chrome:description="Duplicates the menubar on the toolbar as a menu of menus."
-        chrome:displayName="Compact Menu 1.7.2-1"
+        chrome:displayName="Compact Menu 2 1.7.2-1"
         chrome:extension="true"
         chrome:name="compact"
         chrome:settingsURL="chrome://compact/content/compactPrefDialog.xul">
