@@ -1,0 +1,8 @@
+<!ENTITY menu.label   "Compact Menu">
+<!ENTITY menu.tooltip "Fichier &#202;diter ...">
+<!ENTITY menuPref.caption "Choisissez les menus que vous d&#234;sirez voir dans Compact Menu">
+<!ENTITY compactPopup.off "d&#234;sactiv&#234;">
+<!ENTITY compactPopup.image "image">
+<!ENTITY compactPopup.text "texte">
+<!ENTITY compactMenu.label "Menu">
+<!ENTITY compactMenu.key   "M">

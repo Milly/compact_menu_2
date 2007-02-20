@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+	<Description about="urn:mozilla:install-manifest">
+
+		<em:id>{F9C645DA-6B91-494d-958C-4CA7B12129A5}</em:id>
+		<em:name>Compact Menu - Blue</em:name>
+		<em:version>1.7.2.2</em:version>
+		<em:description>Duplicates the menubar on the toolbar as a menu of menus.</em:description>
+		<em:creator>Chris Neale</em:creator>
+		<em:homepageURL>http://cdn.mozdev.org/compact/</em:homepageURL>
+                <em:optionsURL>chrome://compact/content/compactPrefDialog.xul</em:optionsURL>
+                <em:iconURL>chrome://compact/skin/compact.png</em:iconURL>                
+
+		<em:file>
+			<Description about="urn:mozilla:extension:file:compact.jar">
+				<em:package>content/compact/</em:package>
+                                <em:skin>skin/classic/compact/</em:skin>
+                                <em:locale>locale/en-US/compact/</em:locale>
+                                <em:locale>locale/de-DE/compact/</em:locale>
+                                <em:locale>locale/fr-FR/compact/</em:locale>
+                                <em:locale>locale/it-IT/compact/</em:locale>
+                                <em:locale>locale/nl-NL/compact/</em:locale>
+                                <em:locale>locale/sv-SE/compact/</em:locale>
+			</Description>
+		</em:file>
+		<em:targetApplication>
+			<Description>
+				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
+				<em:minVersion>1.0</em:minVersion>
+				<em:maxVersion>2.0.0.*</em:maxVersion>
+			</Description>
+		</em:targetApplication>
+
+	</Description>
+
+</RDF>
