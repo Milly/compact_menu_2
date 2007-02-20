@@ -54,17 +54,14 @@
 #menu-button tooltip,
 #menu-button > tooltip,
 tooltip {
-/*  -moz-appearance: tooltip; *//* ? */
   margin-top: 21px;
   border: 1px solid InfoText;
   padding: 0;
   max-width: 42em;
- /* background-color: #ff6 !important;*/
   font: message-box;
 }
 
 .tooltip-label {
- /* background-color: #ff6;*/
   padding: 2px 3px;
 }
 
