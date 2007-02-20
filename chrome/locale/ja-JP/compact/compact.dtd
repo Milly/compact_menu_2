@@ -1,0 +1,8 @@
+<!ENTITY menu.label   "Compact Menu">
+<!ENTITY menu.tooltip "ファイル 編集 ...">
+<!ENTITY menuPref.caption "Compact Menu に表示するメニューを選択">
+<!ENTITY compactPopup.off "off">
+<!ENTITY compactPopup.image "image">
+<!ENTITY compactPopup.text "text">
+<!ENTITY compactMenu.label "メニュー">
+<!ENTITY compactMenu.key   "M">

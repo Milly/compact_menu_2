@@ -15,13 +15,14 @@
 		<em:file>
 			<Description about="urn:mozilla:extension:file:compact.jar">
 				<em:package>content/compact/</em:package>
-                                <em:skin>skin/classic/compact/</em:skin>
-                                <em:locale>locale/en-US/compact/</em:locale>
-                                <em:locale>locale/de-DE/compact/</em:locale>
-                                <em:locale>locale/fr-FR/compact/</em:locale>
-                                <em:locale>locale/it-IT/compact/</em:locale>
-                                <em:locale>locale/nl-NL/compact/</em:locale>
-                                <em:locale>locale/sv-SE/compact/</em:locale>
+				<em:skin>skin/classic/compact/</em:skin>
+				<em:locale>locale/en-US/compact/</em:locale>
+				<em:locale>locale/de-DE/compact/</em:locale>
+				<em:locale>locale/fr-FR/compact/</em:locale>
+				<em:locale>locale/it-IT/compact/</em:locale>
+				<em:locale>locale/ja-JP/compact/</em:locale>
+				<em:locale>locale/nl-NL/compact/</em:locale>
+				<em:locale>locale/sv-SE/compact/</em:locale>
 			</Description>
 		</em:file>
 		<em:targetApplication>
