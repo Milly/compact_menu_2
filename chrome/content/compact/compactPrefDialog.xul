@@ -49,14 +49,6 @@
 
   </vbox>
 
-  <vbox align="center" flex="1">
-   <hbox class="indent">
-     <html:a href="http://cdn.mozdev.org/compact/" target="_content"><image id="somethingLogo"/></html:a>
-   </hbox>
-  </vbox>
-
-<separator class="groove"/>
-  
 </dialog>
 
 <!-- ***** BEGIN LICENSE BLOCK *****
