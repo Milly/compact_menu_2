@@ -5,4 +5,4 @@ pref("compact.menu.showmenu.go", true);
 pref("compact.menu.showmenu.help", true);
 pref("compact.menu.showmenu.tasks", true);
 pref("compact.menu.showmenu.view", true);
-pref("extensions.{F9C645DA-6B91-494d-958C-4CA7B12129A5}.description", "chrome://compact/locale/global.properties");
+pref("extensions.{57068FBE-1506-42ee-AB02-BD183E7999E4}.description", "chrome://compact/locale/global.properties");

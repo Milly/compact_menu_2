@@ -1,11 +1,19 @@
 const kDisplayName = "Compact Menu";
 const kName = "compact";
 const kPackage = "/cdn.mozdev.org/compact";
-const kVersion = "1.7.2 2004-11-27";
+const kVersion = "1.7.2-1";
 
 const kJarFile = "compact.jar";
 const kContentFolder = "content/compact/";
-const kLocaleFolders = ['locale/en-US/compact/', 'locale/de-DE/compact/', 'locale/fr-FR/compact/', 'locale/it-IT/compact/', 'locale/ja-JP/compact/', 'locale/nl-NL/compact/', 'locale/sv-SE/compact/'];
+const kLocales = [
+	'en-US',
+	'de-DE',
+	'fr-FR',
+	'it-IT',
+	'ja-JP',
+	'nl-NL',
+	'sv-SE'
+	];
 const kSkinFolder  = "skin/classic/compact/";
 
 var kMsg = "Do you wish to install "+kDisplayName+" to your profile?\n\nClick OK to install to your profile.\n\nClick Cancel if you want to install globally.";
@@ -31,7 +39,7 @@ if(err == SUCCESS) {
 
   registerChrome(CONTENT | flag, jar, kContentFolder);
   for(var i = 0; i < kLocaleFolders.length; i++)
-    registerChrome(LOCALE | flag, jar, kLocaleFolders[i]);
+    registerChrome(LOCALE | flag, jar, 'locale/' + kLocales[i] + '/compact/');
   if(kSkinFolder) registerChrome(SKIN | flag, jar, kSkinFolder);
 
   err = performInstall();

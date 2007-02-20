@@ -8,9 +8,8 @@
 
   <RDF:Description about="urn:mozilla:locale:ja-JP"
         chrome:displayName="Japanese(JP)"
-        chrome:author="Milly (JP)"
-        chrome:name="ja-JP"
-        chrome:previewURL="">
+        chrome:author="Chris Neale, Milly (JP)"
+		chrome:name="ja-JP">
     <chrome:packages>
       <RDF:Seq about="urn:mozilla:locale:ja-JP:packages">
         <RDF:li resource="urn:mozilla:locale:ja-JP:compact"/>

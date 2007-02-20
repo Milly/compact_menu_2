@@ -92,6 +92,7 @@
           document.getElementById('main-menubar').setAttribute("hidden", 'false');
         }
         else {
+          this.menuIt('main-menubar');
           document.getElementById('main-menubar').setAttribute("hidden", "true");
         }
       },
@@ -109,59 +110,21 @@
 
         if ( ! cmPop.hasChildNodes() )
         {
-          var c2fileMenu = document.getElementById('menu_FilePopup').parentNode.cloneNode(true);
-          var c2editMenu = document.getElementById('menu_EditPopup').parentNode.cloneNode(true);
-          var c2viewMenu = document.getElementById('menu_viewPopup').parentNode.cloneNode(true);
-
-          var _go = document.getElementById('goPopup').parentNode;
-
-          var c2goMenu = document.createElement('menu');
-              c2goMenu.setAttribute('label', _go.getAttribute('label'));
-              c2goMenu.setAttribute('accesskey', _go.getAttribute('accesskey'));
-              c2goMenu.setAttribute('oncommand', "var url = event.target.getAttribute('statustext'); if (url) openTopWin(url);");
-
-          var c2goPopup = document.createElement('menupopup');
-              c2goPopup.setAttribute('id', 'cloneGoPopup');
-              c2goPopup.setAttribute('onpopupshowing', "updateGoMenu(this);");
-              c2goPopup.setAttribute('onpopuphiding', "onGoMenuHidden();");
-
-          var items = document.getElementById('goPopup').childNodes;
-
-          for (var i = 0; i < items.length; i++) {
-            c2goPopup.appendChild(items[i]);
+          var menuBars = [
+            'main-menubar',
+            'menu-popup',
+            'menu_Popup'
+          ];
+          for (var i = 0; i < menuBars.length; ++i) {
+            var menuBar = document.getElementById(menuBars[i]);
+            if (menuBar && cmPop != menuBar) {
+              for (var j = menuBar.childNodes.length; 0 < j--;) {
+                var item = menuBar.firstChild;
+                menuBar.removeChild(item);
+                cmPop.appendChild(item);
+              }
+            }
           }
-
-          c2goMenu.appendChild(c2goPopup);
-
-          var c2bookMenu = document.getElementById('bookmarks-menu').cloneNode(true); /* odd one out */
-          var c2toolMenu = document.getElementById('menu_ToolsPopup').parentNode.cloneNode(true);
-          var c2helpMenu = document.getElementById('menu_HelpPopup').parentNode.cloneNode(true);
-
-          var TBE_tabMenu = document.getElementById('tabMenu');
-
-          if (TBE_tabMenu) {
-            var c2tbeTabMenu = TBE_tabMenu.cloneNode(true); /* odd one out [2] */
-            cmPop.appendChild(c2tbeTabMenu);
-             this.c_dump('appended TBE tab menu\n');
-          }
-
-          cmPop.appendChild(c2fileMenu);
-           this.c_dump('appended file menu\n');
-          cmPop.appendChild(c2editMenu);
-           this.c_dump('appended edit menu\n');
-          cmPop.appendChild(c2viewMenu);
-           this.c_dump('appended view menu\n');
-          if (this._prefs.getBoolPref("showmenu.go")) {
-            cmPop.appendChild(c2goMenu);
-             this.c_dump('appended go menu\n');
-          }
-          cmPop.appendChild(c2bookMenu);
-           this.c_dump('appended bookmarks menu\n');
-          cmPop.appendChild(c2toolMenu);
-           this.c_dump('appended tools menu\n');
-          cmPop.appendChild(c2helpMenu);
-           this.c_dump('appended help menu\n\n');
-
         }
       },
       

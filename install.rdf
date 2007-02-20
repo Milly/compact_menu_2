@@ -3,11 +3,11 @@
 
 	<Description about="urn:mozilla:install-manifest">
 
-		<em:id>{F9C645DA-6B91-494d-958C-4CA7B12129A5}</em:id>
-		<em:name>Compact Menu - Blue</em:name>
-		<em:version>1.7.2.2</em:version>
+		<em:id>{57068FBE-1506-42ee-AB02-BD183E7999E4}</em:id>
+		<em:name>Compact Menu 2</em:name>
+		<em:version>1.7.2-1</em:version>
 		<em:description>Duplicates the menubar on the toolbar as a menu of menus.</em:description>
-		<em:creator>Chris Neale</em:creator>
+		<em:creator>Milly</em:creator>
 		<em:homepageURL>http://cdn.mozdev.org/compact/</em:homepageURL>
                 <em:optionsURL>chrome://compact/content/compactPrefDialog.xul</em:optionsURL>
                 <em:iconURL>chrome://compact/skin/compact.png</em:iconURL>                
