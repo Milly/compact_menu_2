@@ -12,7 +12,7 @@
 	<property name="build.chrome.path" value="${build.path}/chrome" />
 	<property name="chrome.path" value="chrome" />
 	<property name="xpi.file" value="${target}.xpi" />
-	<property name="jar.file" value="${target}.jar" />
+	<property name="jar.file" value="compact.jar" />
 
 	<!-- deploy -->	
 	<target name="deploy" depends="xpi">
@@ -36,7 +36,7 @@
 	<!-- create chrome jar -->
 	<target name="jar">
 		<mkdir dir="${build.chrome.path}" />
-		<jar destfile="${build.chrome.path}/${jar.file}"
+		<zip destfile="${build.chrome.path}/${jar.file}"
 			basedir="${chrome.path}"
 			compress="false"
 			excludes="*.jar"
