@@ -8,10 +8,12 @@
 		<em:version>1.7.2-1</em:version>
 		<em:description>Duplicates the menubar on the toolbar as a menu of menus.</em:description>
 		<em:creator>Milly</em:creator>
-		<em:homepageURL>http://cdn.mozdev.org/compact/</em:homepageURL>
-                <em:optionsURL>chrome://compact/content/compactPrefDialog.xul</em:optionsURL>
-                <em:iconURL>chrome://compact/skin/compact.png</em:iconURL>                
+		<em:homepageURL>https://addons.mozilla.org/firefox/4550/</em:homepageURL>
+		<em:optionsURL>chrome://compact/content/compactPrefDialog.xul</em:optionsURL>
+		<em:iconURL>chrome://compact/skin/compact.png</em:iconURL>                
+		<em:type>2</em:type>
 
+		<!-- require Firefox 1.0 -->
 		<em:file>
 			<Description about="urn:mozilla:extension:file:compact.jar">
 				<em:package>content/compact/</em:package>
@@ -25,6 +27,8 @@
 				<em:locale>locale/sv-SE/compact/</em:locale>
 			</Description>
 		</em:file>
+
+		<!-- Firefox -->
 		<em:targetApplication>
 			<Description>
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
