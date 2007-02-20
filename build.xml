@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<project name="compact_menu" default="deploy" basedir=".">
+
+	<description>
+		Compact Menu extension for Firefox
+	</description>
+
+	<!-- properties -->
+	<property name="target" value="compact_menu" />
+
+	<property name="build.path" value="build" />
+	<property name="build.chrome.path" value="${build.path}/chrome" />
+	<property name="chrome.path" value="chrome" />
+	<property name="xpi.file" value="${target}.xpi" />
+	<property name="jar.file" value="${target}.jar" />
+
+	<!-- deploy -->	
+	<target name="deploy" depends="xpi">
+	</target>
+
+	<!-- create xpi -->
+	<target name="xpi" depends="jar">
+		<copy todir="${build.path}">
+			<fileset dir=".">
+				<exclude name="build.xml" />
+				<exclude name="${xpi.file}" />
+				<exclude name="${chrome.path}/**" />
+				<exclude name="${build.path}/**" />
+			</fileset>
+		</copy>
+		<zip destfile="${xpi.file}"
+			basedir="${build.path}"
+			/>
+	</target>
+	
+	<!-- create chrome jar -->
+	<target name="jar">
+		<mkdir dir="${build.chrome.path}" />
+		<jar destfile="${build.chrome.path}/${jar.file}"
+			basedir="${chrome.path}"
+			compress="false"
+			excludes="*.jar"
+			/>
+	</target>
+
+	<!-- clean -->
+	<target name="clean">
+		<delete file="${xpi.file}" quiet="true" />
+		<delete dir="${build.path}" quiet="true" />
+	</target>
+	
+</project>
