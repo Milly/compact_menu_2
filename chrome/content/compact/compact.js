@@ -19,25 +19,56 @@
         this.aConsoleService.logStringMessage(msg);
         dump(msg);
       },
+
+      menu_prefs: {
+        'showmenu.file'      : {
+          menuId: 'menu_FilePopup',
+          custId: 'compact-fileMenu'
+        },
+        'showmenu.edit'      : {
+          menuId: 'menu_EditPopup',
+          custId: 'compact-editMenu'
+        },
+        'showmenu.view'      : {
+          menuId: 'menu_viewPopup',
+          custId: 'compact-viewMenu'
+        },
+        'showmenu.go'        : {
+          menuId: 'goPopup',
+          custId: 'compact-goMenu'
+        },
+        'showmenu.bookmarks' : {
+          menuId: 'bookmarks-menu',
+          custId: 'compact-bookmarksMenu',
+          noParent: true
+        },
+        'showmenu.tasks'     : {
+          menuId: 'menu_ToolsPopup',
+          custId: 'compact-tasksMenu'
+        },
+        'showmenu.help'      : {
+          menuId: 'menu_HelpPopup',
+          custId: 'compact-helpMenu'
+        }
+      },
+
+      map_menu_prefs: function(it) {
+        for (var pref in CompactMenu.menu_prefs) {
+          var item = CompactMenu.menu_prefs[pref];
+          it.call(this, pref, item);
+        }
+      },
       
       custInit: function() {
-       try {
-        document.getElementById('compact-fileMenu').checked = this._prefs.getBoolPref("showmenu.file");
-        document.getElementById('compact-editMenu').checked = this._prefs.getBoolPref("showmenu.edit");
-        document.getElementById('compact-viewMenu').checked = this._prefs.getBoolPref("showmenu.view");
-        document.getElementById('compact-goMenu').checked = this._prefs.getBoolPref("showmenu.go");
-        document.getElementById('compact-bookmarksMenu').checked = this._prefs.getBoolPref("showmenu.bookmarks");
-        document.getElementById('compact-tasksMenu').checked = this._prefs.getBoolPref("showmenu.tasks");
-        document.getElementById('compact-helpMenu').checked = this._prefs.getBoolPref("showmenu.help");
-       } catch(ex) {
-        document.getElementById('compact-fileMenu').checked = true;
-        document.getElementById('compact-editMenu').checked = true;
-        document.getElementById('compact-viewMenu').checked = true;
-        document.getElementById('compact-goMenu').checked = true;
-        document.getElementById('compact-bookmarksMenu').checked = true;
-        document.getElementById('compact-tasksMenu').checked = true;
-        document.getElementById('compact-helpMenu').checked = true;
-       }
+        try {
+          this.map_menu_prefs(function(pref, item) {
+            document.getElementById(item.custId).checked = this._prefs.getBoolPref(pref);
+          });
+        } catch (e) {
+          this.map_menu_prefs(function(pref, item) {
+            document.getElementById(item.custId).checked = true;
+          });
+        }
       },
       
       custCustInit: function() {
@@ -47,40 +78,19 @@
       },
 
       hideItems: function() {
-
-        // don't loop ?
-        if(window.xxcompactDone) return;
-       // window.xxcompactDone = true;
-  
-        var _fm = document.getElementById('menu_FilePopup').parentNode;
-        var _em = document.getElementById('menu_EditPopup').parentNode;
-        var _vm = document.getElementById('menu_viewPopup').parentNode;
-        var _go = document.getElementById('goPopup').parentNode;
-        var _bk = document.getElementById('bookmarks-menu');
-        var _tm = document.getElementById('menu_ToolsPopup').parentNode;
-        var _hm = document.getElementById('menu_HelpPopup').parentNode;
-
-      // _fm.setAttribute('label', _fm.getAttribute('label').substr(0, 1));
         try {
-          _fm.hidden = ! this._prefs.getBoolPref("showmenu.file");
-          _em.hidden = ! this._prefs.getBoolPref("showmenu.edit");
-          _vm.hidden = ! this._prefs.getBoolPref("showmenu.view");
-          _go.hidden = ! this._prefs.getBoolPref("showmenu.go");
-          _bk.hidden = ! this._prefs.getBoolPref("showmenu.bookmarks");
-          _tm.hidden = ! this._prefs.getBoolPref("showmenu.tasks");
-          _hm.hidden = ! this._prefs.getBoolPref("showmenu.help");
-        }
-        catch(ex) {
+          this.map_menu_prefs(function(pref, item) {
+            var menu = document.getElementById(item.menuId);
+            if (!item.noParent)
+              menu = menu.parentNode;
+            menu.hidden = ! this._prefs.getBoolPref(pref);
+          });
+        } catch (e) {
           this.c_dump('initial prefs\n');
-          this._prefs.setBoolPref("showmenu.file", true);
-          this._prefs.setBoolPref("showmenu.edit", true);
-          this._prefs.setBoolPref("showmenu.view", true);
-          this._prefs.setBoolPref("showmenu.go", true);
-          this._prefs.setBoolPref("showmenu.bookmarks", true);
-          this._prefs.setBoolPref("showmenu.tasks", true);
-          this._prefs.setBoolPref("showmenu.help", true);
+          this.map_menu_prefs(function(pref) {
+            this._prefs.setBoolPref(pref, true);
+          });
         }
-
       },
 
       hideMenu: function() {
@@ -88,7 +98,6 @@
         var cMenu = document.getElementById('menu_Popup');
 
         if(!sharc && !cMenu) {
-         // document.getElementById('main-menubar').removeAttribute("hidden");
           document.getElementById('main-menubar').setAttribute("hidden", 'false');
         }
         else {
