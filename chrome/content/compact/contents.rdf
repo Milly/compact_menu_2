@@ -10,9 +10,9 @@
   <!-- package information $Id: contents.rdf,v 1.28 2004/11/27 11:16:48 cdn Exp $ -->
   <RDF:Description about="urn:mozilla:package:compact"
         chrome:author="Milly"
-        chrome:authorURL="http://d.hatena.ne.jp/MillyC/"
+        chrome:authorURL="https://addons.mozilla.org/firefox/108029/author/"
         chrome:description="Duplicates the menubar on the toolbar as a menu of menus."
-        chrome:displayName="Compact Menu 2 1.7.2-1"
+        chrome:displayName="Compact Menu 2 1.7.2-2"
         chrome:extension="true"
         chrome:name="compact"
         chrome:settingsURL="chrome://compact/content/compactPrefDialog.xul">
