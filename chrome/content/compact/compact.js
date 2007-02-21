@@ -97,10 +97,9 @@
         var sharc = document.getElementById('menu-button');
         var cMenu = document.getElementById('menu_Popup');
 
-        if(!sharc && !cMenu) {
+        if (!sharc && !cMenu) {
           document.getElementById('main-menubar').setAttribute("hidden", 'false');
-        }
-        else {
+        } else {
           this.menuIt('main-menubar');
           document.getElementById('main-menubar').setAttribute("hidden", "true");
         }
@@ -112,13 +111,10 @@
       },
 
       menuIt: function(cmpopup) {
-
         this.c_dump('menuIt();\n');
-
         var cmPop = document.getElementById(cmpopup);
 
-        if ( ! cmPop.hasChildNodes() )
-        {
+        if (!cmPop.hasChildNodes()) {
           var menuBars = [
             'main-menubar',
             'menu-popup',
@@ -150,11 +146,10 @@
       },
 
       update: function(menu) {
-        if ( document.getElementById('compact-' + menu + 'Menu').checked == true ) {
+        if (document.getElementById('compact-' + menu + 'Menu').checked) {
           this.c_dump('show ' + menu + 'Menu\n');
           this._prefs.setBoolPref("showmenu." + menu, true);
-        }
-        else {
+        } else {
           this.c_dump('hide ' + menu + 'Menu\n');
           this._prefs.setBoolPref("showmenu." + menu, false);
         }
