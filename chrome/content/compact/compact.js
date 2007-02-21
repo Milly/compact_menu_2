@@ -7,10 +7,6 @@
       aConsoleService: Components.classes["@mozilla.org/consoleservice;1"].
       getService(Components.interfaces.nsIConsoleService),
       
-      _elementIDs: ["compact-fileMenu", "compact-editMenu", "compact-viewMenu",
-                       "compact-goMenu", "compact-bookmarksMenu",
-                       "compact-tasksMenu", "compact-helpMenu"],
-
       _prefs: Components.classes["@mozilla.org/preferences-service;1"].
       getService(Components.interfaces.nsIPrefService).getBranch("compact.menu."),
 
@@ -20,7 +16,7 @@
         dump(msg);
       },
 
-      menu_prefs: {
+      _elementIDs: {
         'showmenu.file'      : {
           menuId: 'menu_FilePopup',
           custId: 'compact-fileMenu'
@@ -53,8 +49,8 @@
       },
 
       map_menu_prefs: function(it) {
-        for (var pref in CompactMenu.menu_prefs) {
-          var item = CompactMenu.menu_prefs[pref];
+        for (var pref in CompactMenu._elementIDs) {
+          var item = CompactMenu._elementIDs[pref];
           it.call(this, pref, item);
         }
       },
@@ -134,11 +130,11 @@
       },
       
       saveSettings: function() {
-       for (var i = 0; i < this._elementIDs.length; ++i) {
-         var checkbox = document.getElementById(this._elementIDs[i]);
-         this._prefs.setBoolPref(checkbox.getAttribute("prefstring"), checkbox.checked);
-       }
-       return true;
+        this.map_menu_prefs(function(pref, item) {
+          var checked = document.getElementById(item.custId).checked;
+          this._prefs.setBoolPref(pref, checked);
+        });
+        return true;
       },
       
       tweakSize: function() {
