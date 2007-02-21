@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="Shift_JIS"?>
-<project name="compact_menu" default="deploy" basedir=".">
+<project name="compact_menu_2" default="deploy" basedir=".">
 
 	<description>
 		Compact Menu extension for Firefox
 	</description>
 
 	<!-- properties -->
-	<property name="target" value="compact_menu" />
-
+	<xmlproperty file="install.rdf" />
 	<property name="build.path" value="build" />
 	<property name="build.chrome.path" value="${build.path}/chrome" />
 	<property name="chrome.path" value="chrome" />
-	<property name="xpi.file" value="${target}.xpi" />
+	<property name="xpi.file" value="${ant.project.name}-${RDF.Description.em:version}.xpi" />
 	<property name="jar.file" value="compact.jar" />
 
 	<!-- deploy -->	
 	<target name="deploy" depends="xpi">
+		<exec executable="cmd.exe" os="Windows XP">
+			<arg line="/c start ${xpi.file}" />
+		</exec>
 	</target>
 
 	<!-- create xpi -->
