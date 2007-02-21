@@ -34,12 +34,12 @@
         popup="menu-popup"/>
 
     <toolbaritem align="center" id="compact-menu" label="&menu.label;">
-     <menubar id="compact-menubar" style="border:0px;padding:0px;margin:0px;-moz-appearance:none">
-      <menu label="&compactMenu.label;"
-            accesskey="&compactMenu.key;">
-        <menupopup id="menu_Popup" onpopupshowing="CompactMenu.menuIt('menu_Popup');"/>
-      </menu>
-     </menubar>
+      <menubar id="compact-menubar" style="border:0px;padding:0px;margin:0px;-moz-appearance:none">
+        <menu label="&compactMenu.label;"
+              accesskey="&compactMenu.key;">
+          <menupopup id="menu_Popup" onpopupshowing="CompactMenu.menuIt('menu_Popup');"/>
+        </menu>
+      </menubar>
     </toolbaritem>
   </toolbarpalette>
 

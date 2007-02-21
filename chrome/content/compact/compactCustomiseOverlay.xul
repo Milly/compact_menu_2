@@ -3,7 +3,7 @@
 <!-- $Id: compactCustomiseOverlay.xul,v 1.17 2004/08/11 17:06:09 cdn Exp $ -->
 
 <?xml-stylesheet href="chrome://compact/skin/compact.css" type="text/css"?>
-  
+
 <!DOCTYPE overlay [
 <!ENTITY % identityDTD SYSTEM "chrome://compact/locale/compact.dtd" >
 %identityDTD;
@@ -25,31 +25,31 @@
   ]]>
   </script>
 
- <vbox id="main-box">
-  <vbox id="compact-box" insertafter="palette-box">
-  
-   <separator class="groove"/>
-  
-   <hbox align="center" pack="start">
-    <image id="somethingLogo"/>
-    <label value="&menu.label;"/>
-   </hbox>
-    
-   <hbox align="center" pack="start">
-    <checkbox id="compact-fileMenu" label="&fileMenu.label;" oncommand="CompactMenu.update('file');"/>
-    <checkbox id="compact-editMenu" label="&editMenu.label;" oncommand="CompactMenu.update('edit');"/>
-    <checkbox id="compact-viewMenu" label="&viewMenu.label;" oncommand="CompactMenu.update('view');"/>
-    <checkbox id="compact-goMenu" label="&goMenu.label;" oncommand="CompactMenu.update('go');"/>
-    <checkbox id="compact-bookmarksMenu" label="&bookmarksMenu.label;" oncommand="CompactMenu.update('bookmarks');"/>
-    <checkbox id="compact-tasksMenu" label="&toolsMenu.label;" oncommand="CompactMenu.update('tasks');"/>
-    <checkbox id="compact-helpMenu" label="&helpMenu.label;" oncommand="CompactMenu.update('help');"/>
-   </hbox>
-  
-   <separator class="groove"/>
-  
+  <vbox id="main-box">
+    <vbox id="compact-box" insertafter="palette-box">
+
+      <separator class="groove"/>
+
+      <hbox align="center" pack="start">
+        <image id="somethingLogo"/>
+        <label value="&menu.label;"/>
+      </hbox>
+
+      <hbox align="center" pack="start">
+        <checkbox id="compact-fileMenu" label="&fileMenu.label;" oncommand="CompactMenu.update('file');"/>
+        <checkbox id="compact-editMenu" label="&editMenu.label;" oncommand="CompactMenu.update('edit');"/>
+        <checkbox id="compact-viewMenu" label="&viewMenu.label;" oncommand="CompactMenu.update('view');"/>
+        <checkbox id="compact-goMenu" label="&goMenu.label;" oncommand="CompactMenu.update('go');"/>
+        <checkbox id="compact-bookmarksMenu" label="&bookmarksMenu.label;" oncommand="CompactMenu.update('bookmarks');"/>
+        <checkbox id="compact-tasksMenu" label="&toolsMenu.label;" oncommand="CompactMenu.update('tasks');"/>
+        <checkbox id="compact-helpMenu" label="&helpMenu.label;" oncommand="CompactMenu.update('help');"/>
+      </hbox>
+
+      <separator class="groove"/>
+
+    </vbox>
   </vbox>
- </vbox>
- 
+
 </overlay>
 
 <!-- ***** BEGIN LICENSE BLOCK *****

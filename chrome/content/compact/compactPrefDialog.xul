@@ -20,32 +20,32 @@
 ]>
 
 <dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-         xmlns:html="http://www.w3.org/1999/xhtml"
-          title="&menu.label;"
-           ondialogaccept="CompactMenu.saveSettings();"
-            onload="CompactMenu.custInit();"
-             id="pref-compact">
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        title="&menu.label;"
+        ondialogaccept="CompactMenu.saveSettings();"
+        onload="CompactMenu.custInit();"
+        id="pref-compact">
 
   <stringbundle id="compact-bundle_prefutilities" src="chrome://browser/locale/pref/prefutilities.properties"/>
 
   <script type="application/x-javascript" src="chrome://compact/content/compact.js"/>
-  
+
   <vbox>
 
-   <groupbox flex="1" id="compact-prefShowButtons" orient="horizontal">
-    <caption label="&menuPref.caption;"/>
-   <vbox>
-   <checkbox id="compact-fileMenu" label="&fileMenu.label;" prefstring="showmenu.file"/>
-    <checkbox id="compact-editMenu" label="&editMenu.label;" prefstring="showmenu.edit"/>
-    <checkbox id="compact-viewMenu" label="&viewMenu.label;" prefstring="showmenu.view"/>
-    <checkbox id="compact-goMenu" label="&goMenu.label;" prefstring="showmenu.go"/>
-   </vbox>
-   <vbox>
-    <checkbox id="compact-bookmarksMenu" label="&bookmarksMenu.label;" prefstring="showmenu.bookmarks"/>
-    <checkbox id="compact-tasksMenu" label="&toolsMenu.label;" prefstring="showmenu.tasks"/>
-    <checkbox id="compact-helpMenu" label="&helpMenu.label;" prefstring="showmenu.help"/>
-   </vbox>
-   </groupbox>
+    <groupbox flex="1" id="compact-prefShowButtons" orient="horizontal">
+      <caption label="&menuPref.caption;"/>
+      <vbox>
+        <checkbox id="compact-fileMenu" label="&fileMenu.label;" prefstring="showmenu.file"/>
+        <checkbox id="compact-editMenu" label="&editMenu.label;" prefstring="showmenu.edit"/>
+        <checkbox id="compact-viewMenu" label="&viewMenu.label;" prefstring="showmenu.view"/>
+        <checkbox id="compact-goMenu" label="&goMenu.label;" prefstring="showmenu.go"/>
+      </vbox>
+      <vbox>
+        <checkbox id="compact-bookmarksMenu" label="&bookmarksMenu.label;" prefstring="showmenu.bookmarks"/>
+        <checkbox id="compact-tasksMenu" label="&toolsMenu.label;" prefstring="showmenu.tasks"/>
+        <checkbox id="compact-helpMenu" label="&helpMenu.label;" prefstring="showmenu.help"/>
+      </vbox>
+    </groupbox>
 
   </vbox>
 
