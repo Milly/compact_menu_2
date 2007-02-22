@@ -90,14 +90,15 @@
       },
 
       hideMenu: function() {
-        var sharc = document.getElementById('menu-button');
-        var cMenu = document.getElementById('menu_Popup');
+        var button = document.getElementById('menu-button');
+        var menu = document.getElementById('menu_Popup');
+        var menubar = document.getElementById('main-menubar');
 
-        if (!sharc && !cMenu) {
-          document.getElementById('main-menubar').setAttribute("hidden", 'false');
+        if (!button && !menu) {
+          menubar.setAttribute('hidden', 'false');
         } else {
           this.menuIt('main-menubar');
-          document.getElementById('main-menubar').setAttribute("hidden", "true");
+          menubar.setAttribute('hidden', 'true');
         }
       },
 
