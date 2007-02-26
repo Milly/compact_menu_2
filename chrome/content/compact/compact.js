@@ -111,9 +111,9 @@ menuIt: function(cmpopup) {
 
   if (!cmPop.hasChildNodes()) {
     var menuBars = [
-    'main-menubar',
-    'menu-popup',
-    'menu_Popup'
+      'main-menubar',
+      'menu-popup',
+      'menu_Popup'
     ];
     for (var i = 0; i < menuBars.length; ++i) {
       var menuBar = document.getElementById(menuBars[i]);
