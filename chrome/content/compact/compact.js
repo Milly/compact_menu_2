@@ -1,158 +1,156 @@
-// $Id$
-// $cvsId: compactPrefOverlay.js,v 1.17 2003/12/04 21:10:15 cdn Exp svc$
-// $cvsId: compactPrefOverlay.js,v 1.2 2003/01/20 22:19:36 orbit Exp svc$
+var CompactMenu = {
 
-    var CompactMenu = {
+aConsoleService:
+  Components.classes["@mozilla.org/consoleservice;1"]
+    .getService(Components.interfaces.nsIConsoleService),
 
-      aConsoleService: Components.classes["@mozilla.org/consoleservice;1"].
-      getService(Components.interfaces.nsIConsoleService),
-      
-      _prefs: Components.classes["@mozilla.org/preferences-service;1"].
-      getService(Components.interfaces.nsIPrefService).getBranch("compact.menu."),
+_prefs:
+  Components.classes["@mozilla.org/preferences-service;1"]
+    .getService(Components.interfaces.nsIPrefService).getBranch("compact.menu."),
 
-      c_dump: function(msg) {
-        msg = 'Compact Menu :: ' + msg;
-        this.aConsoleService.logStringMessage(msg);
-        dump(msg);
-      },
+_elementIDs: {
+  'showmenu.file'      : {
+    menuId: 'menu_FilePopup',
+    custId: 'compact-fileMenu'
+  },
+  'showmenu.edit'      : {
+    menuId: 'menu_EditPopup',
+    custId: 'compact-editMenu'
+  },
+  'showmenu.view'      : {
+    menuId: 'menu_viewPopup',
+    custId: 'compact-viewMenu'
+  },
+  'showmenu.go'        : {
+    menuId: 'goPopup',
+    custId: 'compact-goMenu'
+  },
+  'showmenu.bookmarks' : {
+    menuId: 'bookmarks-menu',
+    custId: 'compact-bookmarksMenu',
+    noParent: true
+  },
+  'showmenu.tasks'     : {
+    menuId: 'menu_ToolsPopup',
+    custId: 'compact-tasksMenu'
+  },
+  'showmenu.help'      : {
+    menuId: 'menu_HelpPopup',
+    custId: 'compact-helpMenu'
+  }
+},
 
-      _elementIDs: {
-        'showmenu.file'      : {
-          menuId: 'menu_FilePopup',
-          custId: 'compact-fileMenu'
-        },
-        'showmenu.edit'      : {
-          menuId: 'menu_EditPopup',
-          custId: 'compact-editMenu'
-        },
-        'showmenu.view'      : {
-          menuId: 'menu_viewPopup',
-          custId: 'compact-viewMenu'
-        },
-        'showmenu.go'        : {
-          menuId: 'goPopup',
-          custId: 'compact-goMenu'
-        },
-        'showmenu.bookmarks' : {
-          menuId: 'bookmarks-menu',
-          custId: 'compact-bookmarksMenu',
-          noParent: true
-        },
-        'showmenu.tasks'     : {
-          menuId: 'menu_ToolsPopup',
-          custId: 'compact-tasksMenu'
-        },
-        'showmenu.help'      : {
-          menuId: 'menu_HelpPopup',
-          custId: 'compact-helpMenu'
-        }
-      },
+c_dump: function(msg) {
+  msg = 'Compact Menu :: ' + msg;
+  this.aConsoleService.logStringMessage(msg);
+  dump(msg);
+},
 
-      map_menu_prefs: function(it) {
-        for (var pref in CompactMenu._elementIDs) {
-          var item = CompactMenu._elementIDs[pref];
-          it.call(this, pref, item);
-        }
-      },
-      
-      custInit: function() {
-        try {
-          this.map_menu_prefs(function(pref, item) {
-            document.getElementById(item.custId).checked = this._prefs.getBoolPref(pref);
-          });
-        } catch (e) {
-          this.map_menu_prefs(function(pref, item) {
-            document.getElementById(item.custId).checked = true;
-          });
-        }
-      },
-      
-      custCustInit: function() {
-        this.tweakSize();
-        this.custInit();
-        this.c_dump('CustomizeToolbarWindow loaded\n');
-      },
+map_menu_prefs: function(it) {
+  for (var pref in CompactMenu._elementIDs) {
+    var item = CompactMenu._elementIDs[pref];
+    it.call(this, pref, item);
+  }
+},
 
-      hideItems: function() {
-        try {
-          this.map_menu_prefs(function(pref, item) {
-            var menu = document.getElementById(item.menuId);
-            if (!item.noParent)
-              menu = menu.parentNode;
-            menu.hidden = ! this._prefs.getBoolPref(pref);
-          });
-        } catch (e) {
-          this.c_dump('initial prefs\n');
-          this.map_menu_prefs(function(pref) {
-            this._prefs.setBoolPref(pref, true);
-          });
-        }
-      },
+custInit: function() {
+  try {
+    this.map_menu_prefs(function(pref, item) {
+      document.getElementById(item.custId).checked = this._prefs.getBoolPref(pref);
+    });
+  } catch (e) {
+    this.map_menu_prefs(function(pref, item) {
+      document.getElementById(item.custId).checked = true;
+    });
+  }
+},
 
-      hideMenu: function() {
-        var button = document.getElementById('menu-button');
-        var menu = document.getElementById('menu_Popup');
-        var menubar = document.getElementById('main-menubar');
+custCustInit: function() {
+  this.tweakSize();
+  this.custInit();
+  this.c_dump('CustomizeToolbarWindow loaded\n');
+},
 
-        if (!button && !menu) {
-          menubar.setAttribute('hidden', 'false');
-        } else {
-          this.menuIt('main-menubar');
-          menubar.setAttribute('hidden', 'true');
-        }
-      },
+hideItems: function() {
+  try {
+    this.map_menu_prefs(function(pref, item) {
+    var menu = document.getElementById(item.menuId);
+      if (!item.noParent)
+        menu = menu.parentNode;
+      menu.hidden = ! this._prefs.getBoolPref(pref);
+    });
+  } catch (e) {
+    this.c_dump('initial prefs\n');
+    this.map_menu_prefs(function(pref) {
+      this._prefs.setBoolPref(pref, true);
+    });
+  }
+},
 
-      init: function() {
-        this.hideItems();
-        this.hideMenu();
-      },
+hideMenu: function() {
+  var button  = document.getElementById('menu-button');
+  var menu    = document.getElementById('menu_Popup');
+  var menubar = document.getElementById('main-menubar');
 
-      menuIt: function(cmpopup) {
-        this.c_dump('menuIt();\n');
-        var cmPop = document.getElementById(cmpopup);
+  if (!button && !menu) {
+    menubar.setAttribute('hidden', 'false');
+  } else {
+    this.menuIt('main-menubar');
+    menubar.setAttribute('hidden', 'true');
+  }
+},
 
-        if (!cmPop.hasChildNodes()) {
-          var menuBars = [
-            'main-menubar',
-            'menu-popup',
-            'menu_Popup'
-          ];
-          for (var i = 0; i < menuBars.length; ++i) {
-            var menuBar = document.getElementById(menuBars[i]);
-            if (menuBar && cmPop != menuBar) {
-              for (var j = menuBar.childNodes.length; 0 < j--;) {
-                var item = menuBar.firstChild;
-                menuBar.removeChild(item);
-                cmPop.appendChild(item);
-              }
-            }
-          }
-        }
-      },
-      
-      saveSettings: function() {
-        this.map_menu_prefs(function(pref, item) {
-          var checked = document.getElementById(item.custId).checked;
-          this._prefs.setBoolPref(pref, checked);
-        });
-        return true;
-      },
-      
-      tweakSize: function() {
-        window.outerHeight = window.outerHeight + 50;
-      },
+init: function() {
+  this.hideItems();
+  this.hideMenu();
+},
 
-      update: function(menu) {
-        if (document.getElementById('compact-' + menu + 'Menu').checked) {
-          this.c_dump('show ' + menu + 'Menu\n');
-          this._prefs.setBoolPref("showmenu." + menu, true);
-        } else {
-          this.c_dump('hide ' + menu + 'Menu\n');
-          this._prefs.setBoolPref("showmenu." + menu, false);
+menuIt: function(cmpopup) {
+  this.c_dump('menuIt();\n');
+  var cmPop = document.getElementById(cmpopup);
+
+  if (!cmPop.hasChildNodes()) {
+    var menuBars = [
+    'main-menubar',
+    'menu-popup',
+    'menu_Popup'
+    ];
+    for (var i = 0; i < menuBars.length; ++i) {
+      var menuBar = document.getElementById(menuBars[i]);
+      if (menuBar && cmPop != menuBar) {
+        for (var j = menuBar.childNodes.length; 0 < j--;) {
+          var item = menuBar.firstChild;
+          menuBar.removeChild(item);
+          cmPop.appendChild(item);
         }
       }
-      
     }
+  }
+},
+
+saveSettings: function() {
+  this.map_menu_prefs(function(pref, item) {
+    var checked = document.getElementById(item.custId).checked;
+    this._prefs.setBoolPref(pref, checked);
+  });
+  return true;
+},
+
+tweakSize: function() {
+  window.outerHeight = window.outerHeight + 50;
+},
+
+update: function(menu) {
+  if (document.getElementById('compact-' + menu + 'Menu').checked) {
+    this.c_dump('show ' + menu + 'Menu\n');
+    this._prefs.setBoolPref("showmenu." + menu, true);
+  } else {
+    this.c_dump('hide ' + menu + 'Menu\n');
+    this._prefs.setBoolPref("showmenu." + menu, false);
+  }
+}
+
+} // CompactMenu
 
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1
