@@ -1,11 +1,13 @@
-content compact jar:chrome/compact.jar!/content/compact/
-skin compact classic/1.0 jar:chrome/compact.jar!/skin/classic/compact/
-locale compact en jar:chrome/compact.jar!/locale/en-US/compact/
-locale compact de jar:chrome/compact.jar!/locale/de-DE/compact/
-locale compact fr jar:chrome/compact.jar!/locale/fr-FR/compact/
-locale compact it jar:chrome/compact.jar!/locale/it-IT/compact/
-locale compact ja jar:chrome/compact.jar!/locale/ja-JP/compact/
-locale compact nl jar:chrome/compact.jar!/locale/nl-NL/compact/
-locale compact sv jar:chrome/compact.jar!/locale/sv-SE/compact/
-overlay chrome://browser/content/browser.xul chrome://compact/content/compactBrowserOverlay.xul
-overlay chrome://global/content/customizeToolbar.xul chrome://compact/content/compactCustomiseOverlay.xul
+content	compact	jar:chrome/compact.jar!/content/compact/
+skin	compact	classic/1.0	jar:chrome/compact.jar!/skin/classic/compact/
+locale	compact	en	jar:chrome/compact.jar!/locale/en-US/compact/
+locale	compact	de	jar:chrome/compact.jar!/locale/de-DE/compact/
+locale	compact	fr	jar:chrome/compact.jar!/locale/fr-FR/compact/
+locale	compact	it	jar:chrome/compact.jar!/locale/it-IT/compact/
+locale	compact	ja	jar:chrome/compact.jar!/locale/ja-JP/compact/
+locale	compact	nl	jar:chrome/compact.jar!/locale/nl-NL/compact/
+locale	compact	sv	jar:chrome/compact.jar!/locale/sv-SE/compact/
+overlay	chrome://browser/content/browser.xul	chrome://compact/content/compactBrowserOverlay.xul
+overlay	chrome://global/content/customizeToolbar.xul	chrome://compact/content/compactCustomiseOverlay.xul
+style	chrome://global/content/customizeToolbar.xul	chrome://compact/skin/compact.css
+style	chrome://browser/content/browser.xul	chrome://compact/skin/compact.css
