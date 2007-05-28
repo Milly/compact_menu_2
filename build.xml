@@ -2,7 +2,7 @@
 <project name="compact_menu_2" default="deploy" basedir=".">
 
 	<description>
-		Compact Menu extension for Firefox
+		Compact Menu 2 extension for Firefox
 	</description>
 
 	<!-- properties -->
@@ -22,6 +22,7 @@
 
 	<!-- create xpi -->
 	<target name="xpi" depends="jar">
+		<mkdir dir="${build.path}" />
 		<copy todir="${build.path}">
 			<fileset dir=".">
 				<exclude name="build.xml" />
