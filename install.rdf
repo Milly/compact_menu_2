@@ -13,6 +13,15 @@
 		<em:iconURL>chrome://compact/skin/compact.png</em:iconURL>                
 		<em:type>2</em:type>
 
+		<em:translator>Chris Neale</em:translator>
+		<em:translator>T Veidt aka 'two legged freak'</em:translator>
+		<em:translator>Seb Delahaye</em:translator>
+		<em:translator>Francesco Castellana aka 'XF'</em:translator>
+		<em:translator>Rob de Vries</em:translator>
+		<em:translator>David Tenser</em:translator>
+
+		<em:contributor>Chris Neale</em:contributor>
+
 		<!-- Firefox -->
 		<em:targetApplication>
 			<Description>
