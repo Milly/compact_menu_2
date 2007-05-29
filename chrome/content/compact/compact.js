@@ -105,6 +105,10 @@ hideAll: function() {
   this.hideMenu();
 },
 
+init: function() {
+  this.initBookmarks();
+},
+
 initBookmarks: function() {
   var bookmarks = document.getElementById('bookmarks-menu');
   var compactBookmarks = (document.getElementById('compact-bkmenubar') || {}).firstChild;
