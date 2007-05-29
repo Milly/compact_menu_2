@@ -1,7 +1,5 @@
 <?xml version="1.0"?>
 
-<!-- $Id: compactBrowserOverlay.xul,v 1.26 2004/08/11 17:06:09 cdn Exp $ -->
-
 <?xml-stylesheet href="chrome://compact/skin/compact.css" type="text/css"?>
 
 <!DOCTYPE overlay [
@@ -19,7 +17,8 @@
   <script type="application/x-javascript" src="chrome://compact/content/compact.js"/>
   <script type="application/x-javascript">
   <![CDATA[
-    window.addEventListener("focus", function() { CompactMenu.init(); }, false);
+    window.addEventListener("load", function() { CompactMenu.initBookmarks(); }, false);
+    window.addEventListener("focus", function() { CompactMenu.hideAll(); }, false);
   ]]>
   </script>
 
@@ -38,6 +37,34 @@
         <menu label="&compactMenu.label;"
               accesskey="&compactMenu.key;">
           <menupopup id="menu_Popup" onpopupshowing="CompactMenu.menuIt('menu_Popup');"/>
+        </menu>
+      </menubar>
+    </toolbaritem>
+
+    <toolbaritem align="center" id="compact-bk-menu" label="&bookmarksMenu.label;">
+      <menubar id="compact-bkmenubar" style="border:0px;padding:0px;margin:0px;-moz-appearance:none">
+        <menu id="bookmarks-menu"
+              label="&bookmarksMenu.label;"
+              accesskey="&bookmarksMenu.accesskey;"
+              datasources="rdf:bookmarks rdf:files"
+              ref="NC:BookmarksRoot"
+              flags="dont-test-empty"
+              template="bookmarks-template"
+              infer="forward-proxy"
+              onpopupshowing="UpdateBookmarkAllTabsMenuitem(); BookmarksMenu.onShowMenu(event.target)"
+              onpopuphidden="BookmarksMenu.onHideMenu(event.target)"
+              oncommand="BookmarksMenu.loadBookmark(event, event.target, this.database)"
+              onclick="BookmarksMenu.loadBookmarkMiddleClick(event, this.database)"
+              ondraggesture="nsDragAndDrop.startDrag(event, BookmarksMenuDNDObserver)"
+              ondragdrop="nsDragAndDrop.drop(event, BookmarksMenuDNDObserver); event.stopPropagation()"
+              ondragenter="nsDragAndDrop.dragEnter(event, BookmarksMenuDNDObserver); event.stopPropagation()"
+              ondragexit="nsDragAndDrop.dragExit(event, BookmarksMenuDNDObserver); event.stopPropagation()"
+              ondragover="nsDragAndDrop.dragOver(event, BookmarksMenuDNDObserver); event.stopPropagation()"
+              >
+          <menupopup id="menu_BookmarksPopup"
+                     contextmenu="bookmarks-context-menu">
+            <menuseparator id="bookmarksMenuSeparator"/>
+          </menupopup>
         </menu>
       </menubar>
     </toolbaritem>
