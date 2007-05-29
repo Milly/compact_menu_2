@@ -22,7 +22,11 @@
   ]]>
   </script>
 
-  <toolbar id="toolbar-menubar" context="toolbar-context-menu"/>
+  <toolbar id="toolbar-menubar"
+      type=""
+      context="toolbar-context-menu"
+      toolbarname="&menubarCmd.label;"
+      accesskey="&menubarCmd.accesskey;" />
 
   <toolbarpalette id="BrowserToolbarPalette">
     <toolbarbutton

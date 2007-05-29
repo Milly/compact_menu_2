@@ -4,5 +4,7 @@
 <!ENTITY compactPopup.off "Aus">
 <!ENTITY compactPopup.image "Grafik">
 <!ENTITY compactPopup.text "Text">
-<!ENTITY compactMenu.label "Menu">
+<!ENTITY compactMenu.label "Men&#252;">
 <!ENTITY compactMenu.key "M">
+<!ENTITY menubarCmd.label "Men&#252;leiste">
+<!ENTITY menubarCmd.accesskey "M">

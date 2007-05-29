@@ -6,3 +6,5 @@
 <!ENTITY compactPopup.text "testo">
 <!ENTITY compactMenu.label "Menu">
 <!ENTITY compactMenu.key "M">
+<!ENTITY menubarCmd.label "Barra dei Menu">
+<!ENTITY menubarCmd.accesskey "M">

@@ -93,7 +93,7 @@ hideMenu: function() {
   var menubar = document.getElementById('main-menubar');
 
   if (!button && !menu) {
-    menubar.setAttribute('hidden', 'false');
+    menubar.removeAttribute('hidden');
   } else {
     this.menuIt('main-menubar');
     menubar.setAttribute('hidden', 'true');
@@ -106,7 +106,51 @@ hideAll: function() {
 },
 
 init: function() {
+  this.initToolbar();
   this.initBookmarks();
+},
+
+initToolbar: function() {
+  var original_updateToolbarStates = updateToolbarStates;
+  updateToolbarStates = function(toolbarMenuElt)
+  {
+    if (!gHaveUpdatedToolbarState) {
+      var mainWindow = document.getElementById('main-window');
+      if (mainWindow.hasAttribute('chromehidden')) {
+        original_updateToolbarStates(toolbarMenuElt);
+        var menubar = document.getElementsByTagName('toolbar')[0];
+        if (menubar.getAttribute('class').indexOf('chromeclass') != -1) {
+          menubar.setAttribute('collapsed', 'true');
+        }
+      }
+    }
+  }
+
+  var original_onViewToolbarsPopupShowing = onViewToolbarsPopupShowing;
+  onViewToolbarsPopupShowing = function(aEvent)
+  {
+    var menubar = document.getElementById('toolbar-menubar');
+    original_onViewToolbarsPopupShowing(aEvent);
+    return;
+  }
+
+  var original_onViewToolbarCommand = onViewToolbarCommand;
+  onViewToolbarCommand = function(aEvent) {
+    if (aEvent.originalTarget.getAttribute('checked') != 'true') {
+      var count = 0;
+      var toolbox = document.getElementById('navigator-toolbox');
+      for (var i = 0; i < toolbox.childNodes.length; ++i) {
+        var toolbar = toolbox.childNodes[i];
+        var name = toolbar.getAttribute('toolbarname');
+        var collapsed = toolbar.getAttribute('collapsed') != 'true';
+        count += (name && collapsed)? 1: 0;
+      }
+      if (count <= 1) {
+        return;
+      }
+    }
+    original_onViewToolbarCommand(aEvent)
+  }
 },
 
 initBookmarks: function() {
