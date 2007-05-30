@@ -26,9 +26,10 @@
 		<copy todir="${build.path}">
 			<fileset dir=".">
 				<exclude name="build.xml" />
-				<exclude name="${xpi.file}" />
+				<exclude name="*.xpi" />
 				<exclude name="${chrome.path}/**" />
 				<exclude name="${build.path}/**" />
+				<exclude name="**/.*.sw?" />
 			</fileset>
 		</copy>
 		<zip destfile="${xpi.file}"
@@ -40,15 +41,19 @@
 	<target name="jar">
 		<mkdir dir="${build.chrome.path}" />
 		<zip destfile="${build.chrome.path}/${jar.file}"
-			basedir="${chrome.path}"
-			compress="false"
-			excludes="*.jar"
-			/>
+				compress="false">
+			<fileset dir="${chrome.path}">
+				<exclude name="*.jar" />
+				<exclude name="**/.*.sw?" />
+			</fileset>
+		</zip>
 	</target>
 
 	<!-- clean -->
 	<target name="clean">
-		<delete file="${xpi.file}" quiet="true" />
+		<delete>
+			<fileset dir="." includes="*.xpi" />
+		</delete>
 		<delete dir="${build.path}" quiet="true" />
 	</target>
 	
