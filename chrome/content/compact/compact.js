@@ -1,5 +1,7 @@
 var CompactMenu = {
 
+DEBUG: false,
+
 aConsoleService:
   Components.classes["@mozilla.org/consoleservice;1"]
     .getService(Components.interfaces.nsIConsoleService),
@@ -41,9 +43,11 @@ _elementIDs: {
 },
 
 c_dump: function(msg) {
-  msg = 'Compact Menu :: ' + msg;
-  this.aConsoleService.logStringMessage(msg);
-  dump(msg);
+  if (this.DEBUG) {
+    msg = 'Compact Menu :: ' + msg;
+    this.aConsoleService.logStringMessage(msg);
+    dump(msg);
+  }
 },
 
 map_menu_prefs: function(it) {
@@ -126,30 +130,41 @@ initToolbar: function() {
     }
   }
 
-  var original_onViewToolbarsPopupShowing = onViewToolbarsPopupShowing;
-  onViewToolbarsPopupShowing = function(aEvent)
-  {
-    var menubar = document.getElementById('toolbar-menubar');
-    original_onViewToolbarsPopupShowing(aEvent);
-    return;
-  }
-
   var original_onViewToolbarCommand = onViewToolbarCommand;
   onViewToolbarCommand = function(aEvent) {
-    if (aEvent.originalTarget.getAttribute('checked') != 'true') {
-      var count = 0;
-      var toolbox = document.getElementById('navigator-toolbox');
-      for (var i = 0; i < toolbox.childNodes.length; ++i) {
-        var toolbar = toolbox.childNodes[i];
-        var name = toolbar.getAttribute('toolbarname');
-        var collapsed = toolbar.getAttribute('collapsed') != 'true';
-        count += (name && collapsed)? 1: 0;
-      }
-      if (count <= 1) {
-        return;
+    var element = aEvent.originalTarget;
+    if (element) {
+      // check All-in-One-Sidebar
+      var isAios = element.hasAttribute('toolbarid');
+
+      if (!isAios) {
+        if (element.getAttribute('checked') != 'true') {
+          if (getVisibleToolbarCount() <= 1) {
+            return;
+          }
+        }
       }
     }
     original_onViewToolbarCommand(aEvent)
+  }
+
+  function getVisibleToolbarCount()
+  {
+    var count = 0;
+    var toolbox = document.getElementById('navigator-toolbox');
+    for (var i = 0; i < toolbox.childNodes.length; ++i) {
+      var toolbar = toolbox.childNodes[i];
+      var name = toolbar.getAttribute('toolbarname');
+      var collapsed = toolbar.getAttribute('collapsed') != 'true';
+      count += (name && collapsed)? 1: 0;
+    }
+    return count;
+  }
+
+  if (0 == getVisibleToolbarCount()) {
+    var menubar = document.getElementById('toolbar-menubar');
+    menubar.collapsed = false;
+    document.persist(menubar.id, "collapsed");
   }
 },
 
