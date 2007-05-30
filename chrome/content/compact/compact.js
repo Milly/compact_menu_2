@@ -115,6 +115,9 @@ init: function() {
 },
 
 initToolbar: function() {
+  // check All-in-One-Sidebar
+  var isAios = null != document.getElementById('aios-viewToolbar');
+
   var original_updateToolbarStates = updateToolbarStates;
   updateToolbarStates = function(toolbarMenuElt)
   {
@@ -134,38 +137,33 @@ initToolbar: function() {
   onViewToolbarCommand = function(aEvent) {
     var element = aEvent.originalTarget;
     if (element) {
-      // check All-in-One-Sidebar
-      var isAios = element.hasAttribute('toolbarid');
-
-      if (!isAios) {
-        if (element.getAttribute('checked') != 'true') {
-          if (getVisibleToolbarCount() <= 1) {
-            return;
-          }
-        }
+      if (!isAios
+          && element.getAttribute('checked') != 'true'
+          && CompactMenu.getVisibleToolbarCount() <= 1) {
+        return;
       }
     }
     original_onViewToolbarCommand(aEvent)
   }
 
-  function getVisibleToolbarCount()
-  {
-    var count = 0;
-    var toolbox = document.getElementById('navigator-toolbox');
-    for (var i = 0; i < toolbox.childNodes.length; ++i) {
-      var toolbar = toolbox.childNodes[i];
-      var name = toolbar.getAttribute('toolbarname');
-      var collapsed = toolbar.getAttribute('collapsed') != 'true';
-      count += (name && collapsed)? 1: 0;
-    }
-    return count;
-  }
-
-  if (0 == getVisibleToolbarCount()) {
+  if (!isAios && 0 == this.getVisibleToolbarCount()) {
     var menubar = document.getElementById('toolbar-menubar');
     menubar.collapsed = false;
     document.persist(menubar.id, "collapsed");
   }
+},
+
+getVisibleToolbarCount: function()
+{
+  var count = 0;
+  var toolbox = document.getElementById('navigator-toolbox');
+  for (var i = 0; i < toolbox.childNodes.length; ++i) {
+    var toolbar = toolbox.childNodes[i];
+    var name = toolbar.getAttribute('toolbarname');
+    var collapsed = toolbar.getAttribute('collapsed') != 'true';
+    count += (name && collapsed)? 1: 0;
+  }
+  return count;
 },
 
 initBookmarks: function() {
