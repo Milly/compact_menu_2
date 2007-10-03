@@ -110,11 +110,6 @@ hideAll: function() {
 },
 
 init: function() {
-  this.initToolbar();
-  this.initBookmarks();
-},
-
-initToolbar: function() {
   // check All-in-One-Sidebar
   var isAios = null != document.getElementById('aios-viewToolbar');
 
