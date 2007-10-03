@@ -52,15 +52,14 @@ cloneNode: function(node) {
  * for the specific language governing rights and limitations under the
  * License.
  *
- * The Original Code is Compact Menu.
+ * The Original Code is Compact Menu 2.
  *
- * The Initial Developer of the Original Code is Chris Neale.
- * Portions created by the Initial Developer are Copyright (C) 2003
+ * The Initial Developer of the Original Code is Milly.
+ * Portions created by the Initial Developer are Copyright (C) 2007
  * the Initial Developer. All Rights Reserved.
  *
  * Contributor(s):
  *
- *   Chris Neale <org.mozdev@cdn>
  *   Milly
  *
  * Alternatively, the contents of this file may be used under the terms of

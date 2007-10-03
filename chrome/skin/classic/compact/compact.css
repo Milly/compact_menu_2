@@ -18,7 +18,10 @@
  * Portions created by the Initial Developer are Copyright (C) 2003
  * the Initial Developer. All Rights Reserved.
  *
- * Contributor(s): Chris Neale <cdn@mozdev.org>
+ * Contributor(s):
+ *
+ *   Chris Neale <cdn@mozdev.org>
+ *   Milly
  *
  * Alternatively, the contents of this file may be used under the terms of
  * either the GNU General Public License Version 2 or later (the "GPL"), or
@@ -33,9 +36,6 @@
  * the terms of any one of the MPL, the GPL or the LGPL.
  *
  * ***** END LICENSE BLOCK ***** */
-
-/* $Id$ */
-/* $cvsId: compact.css,v 1.4 2003/01/21 10:59:38 orbit Exp svc$ */
 
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
