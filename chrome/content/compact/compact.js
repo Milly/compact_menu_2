@@ -117,7 +117,7 @@ init: function() {
   updateToolbarStates = function(toolbarMenuElt)
   {
     if (!gHaveUpdatedToolbarState) {
-      var mainWindow = document.getElementById('main-window');
+      var mainWindow = document.getElementsByTagName('window')[0];
       if (mainWindow.hasAttribute('chromehidden')) {
         original_updateToolbarStates(toolbarMenuElt);
         var menubar = document.getElementsByTagName('toolbar')[0];
