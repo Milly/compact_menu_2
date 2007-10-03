@@ -166,43 +166,6 @@ getVisibleToolbarCount: function()
   return count;
 },
 
-initBookmarks: function() {
-  var bookmarks = document.getElementById('bookmarks-menu');
-  var compactBookmarks = (document.getElementById('compact-bkmenubar') || {}).firstChild;
-  if (!bookmarks || !compactBookmarks)
-    return;
-
-  var compactBookmarksPopup = compactBookmarks.firstChild;
-  if ('bookmarksMenuSeparator' == compactBookmarksPopup.firstChild.id) {
-    var separator = compactBookmarksPopup.firstChild;
-    var nodes = bookmarks.firstChild.childNodes;
-    for (var i = 0; i < nodes.length && 'menuseparator' != nodes[i].tagName; ++i) {
-      var node = nodes[i];
-      var item = this.cloneNode(node);
-      compactBookmarksPopup.insertBefore(item, separator);
-    }
-  }
-
-  var DNDObserver = {
-    get mObservers() {
-      return [compactBookmarksPopup].concat(this.__proto__.mObservers);
-    }
-  }
-  DNDObserver.__proto__ = BookmarksMenuDNDObserver;
-  BookmarksMenuDNDObserver = DNDObserver;
-
-  this.c_dump('initBookmakrs ok');
-},
-
-cloneNode: function(node) {
-  var item = document.createElement(node.tagName);
-  for (var i = 0; i < node.attributes.length; ++i) {
-    var attr = node.attributes[i];
-    item.setAttribute(attr.name, attr.value);
-  }
-  return item;
-},
-
 menuIt: function(cmpopup) {
   this.c_dump('menuIt(' + cmpopup + ');\n');
   var cmPop = document.getElementById(cmpopup);
