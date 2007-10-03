@@ -1,51 +1,27 @@
 <?xml version="1.0"?>
 
 <?xml-stylesheet href="chrome://compact/skin/compact.css" type="text/css"?>
+<?xul-overlay href="chrome://compact/content/compactMenuOverlay.xul"?>
 
 <!DOCTYPE overlay [
-<!ENTITY % brandDTD SYSTEM "chrome://global/locale/brand.dtd" >
-%brandDTD;
-<!ENTITY % browserDTD SYSTEM "chrome://browser/locale/browser.dtd" >
-%browserDTD;
-<!ENTITY % identityDTD SYSTEM "chrome://compact/locale/compact.dtd" >
-%identityDTD;
+  <!ENTITY % browserDTD SYSTEM "chrome://browser/locale/browser.dtd" >
+  %browserDTD;
+  <!ENTITY % identityDTD SYSTEM "chrome://compact/locale/compact.dtd" >
+  %identityDTD;
 ]>
 
 <overlay id="compactBrowserOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <script type="application/x-javascript" src="chrome://compact/content/compact.js"/>
-  <script type="application/x-javascript">
-  <![CDATA[
-    window.addEventListener("load", function() { CompactMenu.init(); }, false);
-    window.addEventListener("focus", function() { CompactMenu.hideAll(); }, false);
-  ]]>
-  </script>
-
   <toolbar id="toolbar-menubar"
       type=""
-      context="toolbar-context-menu"
       toolbarname="&menubarCmd.label;"
       accesskey="&menubarCmd.accesskey;" />
 
   <toolbarpalette id="BrowserToolbarPalette">
-    <toolbarbutton
-        id="menu-button"
-        class="toolbarbutton-1"
-        label="&menu.label;"
-        tooltiptext="&menu.tooltip;"
-        popup="menu-popup"/>
-
-    <toolbaritem align="center" id="compact-menu" label="&menu.label;">
-      <menubar id="compact-menubar" style="border:0px;padding:0px;margin:0px;-moz-appearance:none">
-        <menu label="&compactMenu.label;"
-              accesskey="&compactMenu.key;">
-          <menupopup id="menu_Popup" onpopupshowing="CompactMenu.menuIt('menu_Popup');"/>
-        </menu>
-      </menubar>
-    </toolbaritem>
-
-    <toolbaritem align="center" id="compact-bk-menu" label="&bookmarksMenu.label;">
+    <toolbarbutton id="menu-button" />
+    <toolbaritem id="compact-menu" />
+    <toolbaritem id="compact-bk-menu" align="center" label="&bookmarksMenu.label;">
       <menubar id="compact-bkmenubar" style="border:0px;padding:0px;margin:0px;-moz-appearance:none">
         <menu id="bookmarks-menu"
               label="&bookmarksMenu.label;"
@@ -65,8 +41,7 @@
               ondragexit="nsDragAndDrop.dragExit(event, BookmarksMenuDNDObserver); event.stopPropagation()"
               ondragover="nsDragAndDrop.dragOver(event, BookmarksMenuDNDObserver); event.stopPropagation()"
               >
-          <menupopup id="menu_BookmarksPopup"
-                     contextmenu="bookmarks-context-menu">
+          <menupopup id="menu_BookmarksPopup" contextmenu="bookmarks-context-menu">
             <menuseparator id="bookmarksMenuSeparator"/>
           </menupopup>
         </menu>
@@ -75,9 +50,7 @@
   </toolbarpalette>
 
   <window id="main-window">
-    <popupset id="MenusPopupset">
-      <popup id="menu-popup" onpopupshowing="CompactMenu.menuIt('menu-popup');" position="after_start"/>
-    </popupset>
+    <popupset id="MenusPopupset" />
   </window>
 
 </overlay>
