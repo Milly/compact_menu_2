@@ -20,15 +20,6 @@ c_dump: function(msg) {
   }
 },
 
-el: function() {
-  for each (var id in arguments) {
-    var element = document.getElementById(id);
-    if (element)
-      return element;
-  }
-  return null;
-},
-
 mapMenus: function(it) {
   var names = [
     'main-menubar',
@@ -90,15 +81,6 @@ hideItems: function() {
     var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
     menu.hidden = !visible;
   });
-  try {
-  } catch (e) {
-    this.c_dump('initial prefs');
-    this.mapMenus(function(menu, index) {
-      var id = menu.id || index;
-      menu.hidden = false;
-      this._prefs.setBoolPref(CompactMenu.SHOWMENU + id, true);
-    });
-  }
 },
 
 hideMenu: function() {
