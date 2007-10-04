@@ -32,6 +32,7 @@ el: function() {
 mapMenus: function(it) {
   var names = [
     'main-menubar',
+    'mail-menubar',
     'menu-popup',
     'menu_Popup',
   ];
@@ -103,7 +104,8 @@ hideItems: function() {
 hideMenu: function() {
   var button  = document.getElementById('menu-button');
   var menu    = document.getElementById('menu_Popup');
-  var menubar = document.getElementById('main-menubar');
+  var menubar = document.getElementById('main-menubar')
+    || document.getElementById('mail-menubar');
 
   if (!button && !menu) {
     menubar.removeAttribute('hidden');
@@ -172,7 +174,8 @@ initToolbar: function() {
 getVisibleToolbarCount: function()
 {
   var count = 0;
-  var toolbox = document.getElementById('navigator-toolbox');
+  var toolbox = document.getElementById('navigator-toolbox')
+    || document.getElementById('mail-toolbox');
   for (var i = 0; i < toolbox.childNodes.length; ++i) {
     var toolbar = toolbox.childNodes[i];
     var name = toolbar.getAttribute('toolbarname');
@@ -189,6 +192,7 @@ menuIt: function(cmpopup) {
   if (!cmPop.hasChildNodes()) {
     var menuBars = [
       'main-menubar',
+      'mail-menubar',
       'menu-popup',
       'menu_Popup'
     ];
@@ -210,6 +214,7 @@ getMainWindow: function()
   const mediatorClass = '@mozilla.org/appshell/window-mediator;1';
   const types = [
     'navigator:browser',
+    'mail:3pane',
   ];
   var mediator = Components.classes[mediatorClass].getService(Components.interfaces.nsIWindowMediator);
   for each (var type in types) {

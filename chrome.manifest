@@ -1,3 +1,4 @@
+# common
 content	compact	jar:chrome/compact.jar!/content/compact/
 skin	compact	classic/1.0	jar:chrome/compact.jar!/skin/classic/compact/
 locale	compact	en	jar:chrome/compact.jar!/locale/en-US/compact/
@@ -7,7 +8,9 @@ locale	compact	it	jar:chrome/compact.jar!/locale/it-IT/compact/
 locale	compact	ja	jar:chrome/compact.jar!/locale/ja-JP/compact/
 locale	compact	nl	jar:chrome/compact.jar!/locale/nl-NL/compact/
 locale	compact	sv	jar:chrome/compact.jar!/locale/sv-SE/compact/
-overlay	chrome://browser/content/browser.xul	chrome://compact/content/compactBrowserOverlay.xul
+
 overlay	chrome://global/content/customizeToolbar.xul	chrome://compact/content/compactCustomiseOverlay.xul
-style	chrome://global/content/customizeToolbar.xul	chrome://compact/skin/compact.css
-style	chrome://browser/content/browser.xul	chrome://compact/skin/compact.css
+# Firefox
+overlay	chrome://browser/content/browser.xul	chrome://compact/content/compactBrowserOverlay.xul	application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
+# Thunderbird
+overlay	chrome://messenger/content/messenger.xul	chrome://compact/content/compactMessengerOverlay.xul	application={3550f703-e582-4d05-9a08-453d09bdfdc6}
