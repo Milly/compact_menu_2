@@ -8,7 +8,6 @@
 	<!-- properties -->
 	<xmlproperty file="install.rdf" />
 	<property name="build.path" value="build" />
-	<property name="build.chrome.path" value="${build.path}/chrome" />
 	<property name="chrome.path" value="chrome" />
 	<property name="xpi.file" value="${ant.project.name}-${RDF.Description.em:version}.xpi" />
 	<property name="jar.file" value="compact.jar" />
@@ -25,36 +24,34 @@
 		<mkdir dir="${build.path}" />
 		<copy todir="${build.path}">
 			<fileset dir=".">
-				<exclude name="build.xml" />
-				<exclude name="*.xpi" />
-				<exclude name="${chrome.path}/**" />
-				<exclude name="${build.path}/**" />
-				<exclude name="**/.*.sw?" />
+				<include name="install.rdf" />
+				<include name="chrome.manifest" />
+				<include name="${chrome.path}/*.jar" />
+				<include name="defaults/**" />
 			</fileset>
 		</copy>
-		<zip destfile="${xpi.file}"
-			basedir="${build.path}"
-			/>
+		<zip destfile="${xpi.file}" basedir="${build.path}" />
 	</target>
 	
 	<!-- create chrome jar -->
 	<target name="jar">
-		<mkdir dir="${build.chrome.path}" />
-		<zip destfile="${build.chrome.path}/${jar.file}"
-				compress="false">
+		<zip destfile="${chrome.path}/${jar.file}" compress="false">
 			<fileset dir="${chrome.path}">
 				<exclude name="*.jar" />
-				<exclude name="**/.*.sw?" />
+				<exclude name="**/.*" />
 			</fileset>
 		</zip>
 	</target>
 
 	<!-- clean -->
 	<target name="clean">
-		<delete>
-			<fileset dir="." includes="*.xpi" />
+		<delete includeEmptyDirs="true">
+			<fileset dir=".">
+				<include name="*.xpi" />
+				<include name="${build.path}/**" />
+				<include name="${chrome.path}/${jar.file}" />
+			</fileset>
 		</delete>
-		<delete dir="${build.path}" quiet="true" />
 	</target>
 	
 </project>
