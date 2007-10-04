@@ -10,37 +10,7 @@ _prefs:
   Components.classes["@mozilla.org/preferences-service;1"]
     .getService(Components.interfaces.nsIPrefService).getBranch("compact.menu."),
 
-_elementIDs: {
-  'showmenu.file'      : {
-    menuId: 'menu_FilePopup',
-    custId: 'compact-fileMenu'
-  },
-  'showmenu.edit'      : {
-    menuId: 'menu_EditPopup',
-    custId: 'compact-editMenu'
-  },
-  'showmenu.view'      : {
-    menuId: 'menu_viewPopup',
-    custId: 'compact-viewMenu'
-  },
-  'showmenu.go'        : {
-    menuId: 'goPopup',
-    custId: 'compact-goMenu'
-  },
-  'showmenu.bookmarks' : {
-    menuId: 'bookmarks-menu',
-    custId: 'compact-bookmarksMenu',
-    noParent: true
-  },
-  'showmenu.tasks'     : {
-    menuId: 'menu_ToolsPopup',
-    custId: 'compact-tasksMenu'
-  },
-  'showmenu.help'      : {
-    menuId: 'menu_HelpPopup',
-    custId: 'compact-helpMenu'
-  }
-},
+SHOWMENU: 'showmenu.',
 
 c_dump: function(msg) {
   if (this.DEBUG) {
@@ -50,43 +20,82 @@ c_dump: function(msg) {
   }
 },
 
-map_menu_prefs: function(it) {
-  for (var pref in CompactMenu._elementIDs) {
-    var item = CompactMenu._elementIDs[pref];
-    it.call(this, pref, item);
+el: function() {
+  for each (var id in arguments) {
+    var element = document.getElementById(id);
+    if (element)
+      return element;
+  }
+  return null;
+},
+
+mapMenus: function(it) {
+  var names = [
+    'main-menubar',
+    'menu-popup',
+    'menu_Popup',
+  ];
+  var document = this.getMainWindow().document;
+  for each (var name in names) {
+    var menuContainer = document.getElementById(name);
+    if (menuContainer && menuContainer.childNodes.length) {
+      for (var i = 0; i < menuContainer.childNodes.length; ++i) {
+        var menu = menuContainer.childNodes[i];
+        if ('menu' == menu.tagName)
+        {
+          it.call(this, menu, i);
+        }
+      }
+      return;
+    }
   }
 },
 
-custInit: function() {
-  try {
-    this.map_menu_prefs(function(pref, item) {
-      document.getElementById(item.custId).checked = this._prefs.getBoolPref(pref);
-    });
-  } catch (e) {
-    this.map_menu_prefs(function(pref, item) {
-      document.getElementById(item.custId).checked = true;
-    });
-  }
+prefInit: function() {
+  this.mapMenus(function(menu, index) {
+    var id = menu.id || index;
+    var pref = CompactMenu.SHOWMENU + id;
+    var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
+    this.addVisibleMenuCheckbox(menu, id, visible);
+  });
 },
 
-custCustInit: function() {
-  this.tweakSize();
-  this.custInit();
-  this.c_dump('CustomizeToolbarWindow loaded\n');
+prefAccept: function() {
+  this.c_dump('save prefs');
+  this.mapMenus(function(menu, index) {
+    var id = menu.id || index;
+    var item = document.getElementById(id);
+    this._prefs.setBoolPref(CompactMenu.SHOWMENU + id, item.checked);
+  });
+  return true;
+},
+
+addVisibleMenuCheckbox: function(menu, id, checked) {
+  var container = document.getElementById('compact-visible_menus');
+  var item = document.createElement('checkbox');
+  item.setAttribute('id', id);
+  item.setAttribute('type', 'checkbox');
+  item.setAttribute('label', menu.getAttribute('label'));
+  item.setAttribute('accesskey', menu.getAttribute('accesskey'));
+  item.setAttribute('checked', checked);
+  container.appendChild(item);
+  return item;
 },
 
 hideItems: function() {
+  this.mapMenus(function(menu, index) {
+    var id = menu.id || index;
+    var pref = CompactMenu.SHOWMENU + id;
+    var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
+    menu.hidden = !visible;
+  });
   try {
-    this.map_menu_prefs(function(pref, item) {
-    var menu = document.getElementById(item.menuId);
-      if (!item.noParent)
-        menu = menu.parentNode;
-      menu.hidden = ! this._prefs.getBoolPref(pref);
-    });
   } catch (e) {
-    this.c_dump('initial prefs\n');
-    this.map_menu_prefs(function(pref) {
-      this._prefs.setBoolPref(pref, true);
+    this.c_dump('initial prefs');
+    this.mapMenus(function(menu, index) {
+      var id = menu.id || index;
+      menu.hidden = false;
+      this._prefs.setBoolPref(CompactMenu.SHOWMENU + id, true);
     });
   }
 },
@@ -99,7 +108,7 @@ hideMenu: function() {
   if (!button && !menu) {
     menubar.removeAttribute('hidden');
   } else {
-    this.menuIt('main-menubar');
+    this.menuIt(menubar.id);
     menubar.setAttribute('hidden', 'true');
   }
 },
@@ -110,6 +119,13 @@ hideAll: function() {
 },
 
 init: function() {
+  this.initToolbar();
+},
+
+initToolbar: function() {
+  if (!window.updateToolbarStates)
+    return;
+
   // check All-in-One-Sidebar
   var isAios = null != document.getElementById('aios-viewToolbar');
 
@@ -128,17 +144,22 @@ init: function() {
     }
   }
 
+  var original_onViewToolbarsPopupShowing = onViewToolbarsPopupShowing;
+  onViewToolbarsPopupShowing = function(aEvent) {
+    var menubar = document.getElementsByTagName("toolbar")[0];
+    var type = menubar.getAttribute('type');
+    menubar.removeAttribute('type');
+    original_onViewToolbarsPopupShowing(aEvent);
+    menubar.setAttribute('type', type);
+  }
+
   var original_onViewToolbarCommand = onViewToolbarCommand;
   onViewToolbarCommand = function(aEvent) {
-    var element = aEvent.originalTarget;
-    if (element) {
-      if (!isAios
-          && element.getAttribute('checked') != 'true'
-          && CompactMenu.getVisibleToolbarCount() <= 1) {
-        return;
-      }
-    }
-    original_onViewToolbarCommand(aEvent)
+    var element = (aEvent || {}).originalTarget;
+    if (isAios || !element
+        || 'true' == element.getAttribute('checked')
+        || 1 < CompactMenu.getVisibleToolbarCount())
+      original_onViewToolbarCommand(aEvent)
   }
 
   if (!isAios && 0 == this.getVisibleToolbarCount()) {
@@ -162,7 +183,7 @@ getVisibleToolbarCount: function()
 },
 
 menuIt: function(cmpopup) {
-  this.c_dump('menuIt(' + cmpopup + ');\n');
+  this.c_dump('menuIt : ' + cmpopup);
   var cmPop = document.getElementById(cmpopup);
 
   if (!cmPop.hasChildNodes()) {
@@ -184,27 +205,20 @@ menuIt: function(cmpopup) {
   }
 },
 
-saveSettings: function() {
-  this.map_menu_prefs(function(pref, item) {
-    var checked = document.getElementById(item.custId).checked;
-    this._prefs.setBoolPref(pref, checked);
-  });
-  return true;
-},
-
-tweakSize: function() {
-  window.outerHeight = window.outerHeight + 50;
-},
-
-update: function(menu) {
-  if (document.getElementById('compact-' + menu + 'Menu').checked) {
-    this.c_dump('show ' + menu + 'Menu\n');
-    this._prefs.setBoolPref("showmenu." + menu, true);
-  } else {
-    this.c_dump('hide ' + menu + 'Menu\n');
-    this._prefs.setBoolPref("showmenu." + menu, false);
+getMainWindow: function()
+{
+  const mediatorClass = '@mozilla.org/appshell/window-mediator;1';
+  const types = [
+    'navigator:browser',
+  ];
+  var mediator = Components.classes[mediatorClass].getService(Components.interfaces.nsIWindowMediator);
+  for each (var type in types) {
+    var window = mediator.getMostRecentWindow(type);
+    if (window)
+      return window;
   }
-}
+  return null;
+},
 
 } // CompactMenu
 

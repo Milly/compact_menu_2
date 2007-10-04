@@ -2,16 +2,7 @@
 
 <?xml-stylesheet href="chrome://compact/skin/compact.css" type="text/css"?>
 
-<!DOCTYPE overlay [
-<!ENTITY % identityDTD SYSTEM "chrome://compact/locale/compact.dtd" >
-%identityDTD;
-<!ENTITY % brandDTD SYSTEM "chrome://global/locale/brand.dtd" >
-%brandDTD;
-<!ENTITY % browserDTD SYSTEM "chrome://browser/locale/browser.dtd" >
-%browserDTD;
-<!ENTITY % menuDTD SYSTEM "chrome://browser/locale/baseMenuOverlay.dtd" >
-%menuDTD;
-]>
+<!DOCTYPE dialog SYSTEM "chrome://compact/locale/compact.dtd" >
 
 <overlay id="compactCustomiseOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
@@ -19,32 +10,22 @@
   <script type="application/x-javascript" src="chrome://compact/content/compact.js"/>
   <script type="application/x-javascript">
   <![CDATA[
-    window.addEventListener("load", function() { CompactMenu.custCustInit(); }, false);
+    (function() {
+      window.addEventListener("load", function() { CompactMenu.prefInit(); }, false);
+      var orig_onAccept = onAccept;
+      onAccept = function() {
+        CompactMenu.prefAccept();
+        return orig_onAccept();
+      }
+    })();
   ]]>
   </script>
 
   <vbox id="main-box">
     <vbox id="compact-box" insertafter="palette-box">
-
-      <separator class="groove"/>
-
-      <hbox align="center" pack="start">
-        <image id="somethingLogo"/>
-        <label value="&menu.label;"/>
-      </hbox>
-
-      <hbox align="center" pack="start">
-        <checkbox id="compact-fileMenu" label="&fileMenu.label;" oncommand="CompactMenu.update('file');"/>
-        <checkbox id="compact-editMenu" label="&editMenu.label;" oncommand="CompactMenu.update('edit');"/>
-        <checkbox id="compact-viewMenu" label="&viewMenu.label;" oncommand="CompactMenu.update('view');"/>
-        <checkbox id="compact-goMenu" label="&goMenu.label;" oncommand="CompactMenu.update('go');"/>
-        <checkbox id="compact-bookmarksMenu" label="&bookmarksMenu.label;" oncommand="CompactMenu.update('bookmarks');"/>
-        <checkbox id="compact-tasksMenu" label="&toolsMenu.label;" oncommand="CompactMenu.update('tasks');"/>
-        <checkbox id="compact-helpMenu" label="&helpMenu.label;" oncommand="CompactMenu.update('help');"/>
-      </hbox>
-
-      <separator class="groove"/>
-
+      <groupbox id="compact-visible_menus" align="start" pack="start" orient="horizontal">
+        <caption label="&menuPref.caption;"/>
+      </groupbox>
     </vbox>
   </vbox>
 

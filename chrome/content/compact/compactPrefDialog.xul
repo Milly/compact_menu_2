@@ -1,47 +1,23 @@
 <?xml version="1.0"?>
 
 <?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://compact/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://compact/skin/compact.css" type="text/css"?>
 
-<!DOCTYPE dialog [
-<!ENTITY % brandDTD SYSTEM "chrome://global/locale/brand.dtd" >
-%brandDTD;
-<!ENTITY % identityDTD SYSTEM "chrome://compact/locale/compact.dtd" >
-%identityDTD;
-<!ENTITY % browserDTD SYSTEM "chrome://browser/locale/browser.dtd" >
-%browserDTD;
-<!ENTITY % menuDTD SYSTEM "chrome://browser/locale/baseMenuOverlay.dtd" >
-%menuDTD;
-]>
+<!DOCTYPE dialog SYSTEM "chrome://compact/locale/compact.dtd" >
 
-<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        xmlns:html="http://www.w3.org/1999/xhtml"
+<dialog id="compactmenuPrefs" windowtype="menuedit:options"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         title="&menu.label;"
-        ondialogaccept="CompactMenu.saveSettings();"
-        onload="CompactMenu.custInit();"
-        id="pref-compact">
-
-  <stringbundle id="compact-bundle_prefutilities" src="chrome://browser/locale/pref/prefutilities.properties"/>
+        onload="CompactMenu.prefInit();"
+        ondialogaccept="CompactMenu.prefAccept();"
+        >
 
   <script type="application/x-javascript" src="chrome://compact/content/compact.js"/>
 
-  <vbox>
-
-    <groupbox flex="1" id="compact-prefShowButtons" orient="horizontal">
+  <vbox flex="1">
+    <groupbox id="compact-visible_menus" align="start" pack="start" orient="vertical">
       <caption label="&menuPref.caption;"/>
-      <vbox>
-        <checkbox id="compact-fileMenu" label="&fileMenu.label;" prefstring="showmenu.file"/>
-        <checkbox id="compact-editMenu" label="&editMenu.label;" prefstring="showmenu.edit"/>
-        <checkbox id="compact-viewMenu" label="&viewMenu.label;" prefstring="showmenu.view"/>
-        <checkbox id="compact-goMenu" label="&goMenu.label;" prefstring="showmenu.go"/>
-      </vbox>
-      <vbox>
-        <checkbox id="compact-bookmarksMenu" label="&bookmarksMenu.label;" prefstring="showmenu.bookmarks"/>
-        <checkbox id="compact-tasksMenu" label="&toolsMenu.label;" prefstring="showmenu.tasks"/>
-        <checkbox id="compact-helpMenu" label="&helpMenu.label;" prefstring="showmenu.help"/>
-      </vbox>
     </groupbox>
-
   </vbox>
 
 </dialog>

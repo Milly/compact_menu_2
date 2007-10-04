@@ -16,7 +16,6 @@
   <script type="application/x-javascript" src="chrome://compact/content/compactBookmarks.js"/>
 
   <toolbar id="toolbar-menubar"
-      type=""
       toolbarname="&menubarCmd.label;"
       accesskey="&menubarCmd.accesskey;" />
 
