@@ -23,8 +23,8 @@
     <toolbarbutton id="menu-button" />
     <toolbaritem id="compact-menu" />
     <toolbaritem id="compact-bk-menu" align="center" label="&bookmarksMenu.label;">
-      <menubar id="compact-bkmenubar">
-        <menu id="bookmarks-menu"
+      <menubar id="compact-bk-menubar">
+        <menu id="compact-bookmarks-menu"
               label="&bookmarksMenu.label;"
               accesskey="&bookmarksMenu.accesskey;"
               datasources="rdf:bookmarks rdf:files"

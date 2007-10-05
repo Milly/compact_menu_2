@@ -2,7 +2,7 @@ var CompactBookmarks = {
 
 init: function() {
   var bookmarks = document.getElementById('bookmarks-menu');
-  var compactBookmarks = (document.getElementById('compact-bkmenubar') || {}).firstChild;
+  var compactBookmarks = document.getElementById('compact-bookmarks-menu');
   if (!bookmarks || !compactBookmarks || compactBookmarks.initialized)
     return;
 
