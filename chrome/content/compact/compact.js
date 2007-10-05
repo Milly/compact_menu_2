@@ -72,13 +72,14 @@ hideAll: function() {
 },
 
 init: function() {
-  this.initToolbar();
+  if (window.updateToolbarStates) {
+    this.initToolbarContextMenu_Fx();
+  } else {
+    this.initToolbarContextMenu_Tb();
+  }
 },
 
-initToolbar: function() {
-  if (!window.updateToolbarStates)
-    return;
-
+initToolbarContextMenu_Fx: function() {
   // check All-in-One-Sidebar
   var isAios = null != document.getElementById('aios-viewToolbar');
 
@@ -120,6 +121,27 @@ initToolbar: function() {
     menubar.collapsed = false;
     document.persist(menubar.id, "collapsed");
   }
+},
+
+initToolbarContextMenu_Tb: function() {
+  var menubar = document.getElementById('mail-toolbar-menubar2');
+  var menu = document.getElementById('ShowMenubar');
+  var context = document.getElementById('toolbar-context-menu');
+  var pref = 'showtoolbar.' + menubar.id;
+  var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
+  if (visible == menubar.collapsed) {
+    toggleMenubarVisible();
+  }
+
+  function toggleMenubarVisible() {
+    menubar.collapsed = !menubar.collapsed;
+    CompactMenu._prefs.setBoolPref(pref, !menubar.collapsed);
+  }
+  function onToolbarContextMenuShowing() {
+    menu.setAttribute('checked', (!menubar.collapsed).toString());
+  }
+  menu.addEventListener('command', toggleMenubarVisible, false);
+  context.addEventListener('popupshowing', onToolbarContextMenuShowing, false);
 },
 
 getVisibleToolbarCount: function()

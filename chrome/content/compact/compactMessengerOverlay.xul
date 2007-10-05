@@ -8,24 +8,6 @@
 <overlay id="compactMessengerOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <script type="application/x-javascript">
-  <![CDATA[
-    function onToolbarContextShowing() {
-      var menubar = document.getElementById('mail-toolbar-menubar2');
-      var menu = document.getElementById('ShowMenubar');
-      menu.setAttribute('checked', (!menubar.collapsed).toString());
-    }
-    function toggleShowMenubar() {
-      var menubar = document.getElementById('mail-toolbar-menubar2');
-      menubar.collapsed = !menubar.collapsed;
-    }
-  ]]>
-  </script>
-
-  <toolbar id="mail-toolbar-menubar"
-      toolbarname="&menubarCmd.label;"
-      accesskey="&menubarCmd.accesskey;" />
-
   <toolbarpalette id="MailToolbarPalette">
     <toolbarbutton id="menu-button" />
     <toolbaritem id="compact-menu" />
@@ -35,13 +17,11 @@
     <popupset id="MenusPopupset" />
   </window>
 
-  <popup id="toolbar-context-menu"
-      onpopupshowing="onToolbarContextShowing()" >
+  <popup id="toolbar-context-menu">
     <menuitem id="ShowMenubar"
         type="checkbox"
         label="&menubarCmd.label;"
         accesskey="&menubarCmd.accesskey;"
-        oncommand="toggleShowMenubar()"
         checked="true"
         />
   </popup>
