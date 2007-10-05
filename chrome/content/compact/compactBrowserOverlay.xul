@@ -20,7 +20,7 @@
       accesskey="&menubarCmd.accesskey;" />
 
   <toolbarpalette id="BrowserToolbarPalette">
-    <toolbarbutton id="menu-button" />
+    <toolbaritem id="compact-menubutton" />
     <toolbaritem id="compact-menu" />
     <toolbaritem id="compact-bk-menu" align="center" label="&bookmarksMenu.label;">
       <menubar id="compact-bk-menubar">

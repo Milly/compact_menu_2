@@ -15,11 +15,12 @@
   ]]>
   </script>
 
-  <toolbarbutton id="menu-button"
-      class="toolbarbutton-1"
-      label="&menu.label;"
-      tooltiptext="&menu.tooltip;"
-      popup="menu-popup" />
+  <toolbaritem id="compact-menubutton" title="&menu.label;" align="center" pack="center">
+    <toolbarbutton id="menu-button"
+        class="toolbarbutton-1"
+        tooltiptext="&menu.tooltip;"
+        popup="menu-popup" />
+  </toolbaritem>
 
   <toolbaritem id="compact-menu" align="center" label="&menu.label;">
     <menubar id="compact-menubar" style="border:0px;padding:0px;margin:0px;-moz-appearance:none">
