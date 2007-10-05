@@ -43,42 +43,6 @@ mapMenus: function(it) {
   }
 },
 
-prefInit: function() {
-  this.mapMenus(function(menu, index) {
-    var id = menu.id || index;
-    var pref = CompactMenu.SHOWMENU + id;
-    var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
-    this.addVisibleMenuCheckbox(menu, id, visible);
-  });
-  var orig_onAccept = window.onAccept || function() { return true; };
-  window.onAccept = function() {
-    CompactMenu.prefAccept();
-    return orig_onAccept();
-  }
-},
-
-prefAccept: function() {
-  this.c_dump('save prefs');
-  this.mapMenus(function(menu, index) {
-    var id = menu.id || index;
-    var item = document.getElementById(id);
-    this._prefs.setBoolPref(CompactMenu.SHOWMENU + id, item.checked);
-  });
-  return true;
-},
-
-addVisibleMenuCheckbox: function(menu, id, checked) {
-  var container = document.getElementById('compact-visible_menus');
-  var item = document.createElement('checkbox');
-  item.setAttribute('id', id);
-  item.setAttribute('type', 'checkbox');
-  item.setAttribute('label', menu.getAttribute('label'));
-  item.setAttribute('accesskey', menu.getAttribute('accesskey'));
-  item.setAttribute('checked', checked);
-  container.appendChild(item);
-  return item;
-},
-
 hideItems: function() {
   this.mapMenus(function(menu, index) {
     var id = menu.id || index;
@@ -210,6 +174,44 @@ getMainWindow: function()
       return window;
   }
   return null;
+},
+
+// Preference
+
+prefInit: function() {
+  this.mapMenus(function(menu, index) {
+    var id = menu.id || index;
+    var pref = CompactMenu.SHOWMENU + id;
+    var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
+    this.addVisibleMenuCheckbox(menu, id, visible);
+  });
+  var orig_onAccept = window.onAccept || function() { return true; };
+  window.onAccept = function() {
+    CompactMenu.prefAccept();
+    return orig_onAccept();
+  }
+},
+
+prefAccept: function() {
+  this.c_dump('save prefs');
+  this.mapMenus(function(menu, index) {
+    var id = menu.id || index;
+    var item = document.getElementById(id);
+    this._prefs.setBoolPref(CompactMenu.SHOWMENU + id, item.checked);
+  });
+  return true;
+},
+
+addVisibleMenuCheckbox: function(menu, id, checked) {
+  var container = document.getElementById('compact-visible_menus');
+  var item = document.createElement('checkbox');
+  item.setAttribute('id', id);
+  item.setAttribute('type', 'checkbox');
+  item.setAttribute('label', menu.getAttribute('label'));
+  item.setAttribute('accesskey', menu.getAttribute('accesskey'));
+  item.setAttribute('checked', checked);
+  container.appendChild(item);
+  return item;
 },
 
 } // CompactMenu
