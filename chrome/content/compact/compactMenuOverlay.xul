@@ -30,7 +30,7 @@
   </toolbaritem>
 
   <popupset id="MenusPopupset">
-    <popup id="menu-popup" onpopupshowing="CompactMenu.menuIt('menu-popup');" position="after_start"/>
+    <menupopup id="menu-popup" onpopupshowing="CompactMenu.menuIt('menu-popup');" position="after_start"/>
   </popupset>
 
 </overlay>
