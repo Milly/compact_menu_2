@@ -43,10 +43,6 @@
   list-style-image: url("chrome://compact/skin/blue.png");
 }
 
-#somethingLogo {
-  list-style-image: url("chrome://compact/skin/blue.png");
-}
-
 #compact-bk-menubar {
   -moz-appearance: none;
   border: 0px;
