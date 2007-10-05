@@ -39,6 +39,7 @@
 			<fileset dir="${chrome.path}">
 				<exclude name="*.jar" />
 				<exclude name="**/.*" />
+				<exclude name="**/Thumbs.db" />
 			</fileset>
 		</zip>
 	</target>
