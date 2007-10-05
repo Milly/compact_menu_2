@@ -14,6 +14,11 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript" src="chrome://compact/content/compactBookmarks.js"/>
+  <script type="application/x-javascript">
+  <![CDATA[
+    window.addEventListener("focus", function() { CompactBookmarks.init(); }, false);
+  ]]>
+  </script>
 
   <toolbar id="toolbar-menubar"
       toolbarname="&menubarCmd.label;"
@@ -24,7 +29,7 @@
     <toolbaritem id="compact-menu" />
     <toolbaritem id="compact-bk-menu" align="center" label="&bookmarksMenu.label;">
       <menubar id="compact-bk-menubar">
-        <menu id="compact-bookmarks-menu"
+        <menu id="bookmarks-menu"
               label="&bookmarksMenu.label;"
               accesskey="&bookmarksMenu.accesskey;"
               datasources="rdf:bookmarks rdf:files"
@@ -32,7 +37,7 @@
               flags="dont-test-empty"
               template="bookmarks-template"
               infer="forward-proxy"
-              onpopupshowing="CompactBookmarks.init(); UpdateBookmarkAllTabsMenuitem(); BookmarksMenu.onShowMenu(event.target)"
+              onpopupshowing="UpdateBookmarkAllTabsMenuitem(); BookmarksMenu.onShowMenu(event.target)"
               onpopuphidden="BookmarksMenu.onHideMenu(event.target)"
               oncommand="BookmarksMenu.loadBookmark(event, event.target, this.database)"
               onclick="BookmarksMenu.loadBookmarkMiddleClick(event, this.database)"
@@ -40,8 +45,7 @@
               ondragdrop="nsDragAndDrop.drop(event, BookmarksMenuDNDObserver); event.stopPropagation()"
               ondragenter="nsDragAndDrop.dragEnter(event, BookmarksMenuDNDObserver); event.stopPropagation()"
               ondragexit="nsDragAndDrop.dragExit(event, BookmarksMenuDNDObserver); event.stopPropagation()"
-              ondragover="nsDragAndDrop.dragOver(event, BookmarksMenuDNDObserver); event.stopPropagation()"
-              >
+              ondragover="nsDragAndDrop.dragOver(event, BookmarksMenuDNDObserver); event.stopPropagation()">
           <menupopup id="menu_BookmarksPopup" contextmenu="bookmarks-context-menu">
             <menuseparator id="bookmarksMenuSeparator"/>
           </menupopup>

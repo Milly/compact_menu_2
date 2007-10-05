@@ -1,8 +1,12 @@
 var CompactBookmarks = {
 
 init: function() {
+  var bookmarkMenubar = document.getElementById('compact-bk-menubar');
+  if (!bookmarkMenubar)
+    return;
+
   var bookmarks = document.getElementById('bookmarks-menu');
-  var compactBookmarks = document.getElementById('compact-bookmarks-menu');
+  var compactBookmarks = bookmarkMenubar.firstChild;
   if (!bookmarks || !compactBookmarks || compactBookmarks.initialized)
     return;
 
