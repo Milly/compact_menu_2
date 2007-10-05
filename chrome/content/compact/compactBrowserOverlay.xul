@@ -23,7 +23,7 @@
     <toolbarbutton id="menu-button" />
     <toolbaritem id="compact-menu" />
     <toolbaritem id="compact-bk-menu" align="center" label="&bookmarksMenu.label;">
-      <menubar id="compact-bkmenubar" style="border:0px;padding:0px;margin:0px;-moz-appearance:none">
+      <menubar id="compact-bkmenubar">
         <menu id="bookmarks-menu"
               label="&bookmarksMenu.label;"
               accesskey="&bookmarksMenu.accesskey;"
