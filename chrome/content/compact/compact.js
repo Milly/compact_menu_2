@@ -50,6 +50,11 @@ prefInit: function() {
     var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
     this.addVisibleMenuCheckbox(menu, id, visible);
   });
+  var orig_onAccept = window.onAccept || function() { return true; };
+  window.onAccept = function() {
+    CompactMenu.prefAccept();
+    return orig_onAccept();
+  }
 },
 
 prefAccept: function() {

@@ -10,14 +10,7 @@
   <script type="application/x-javascript" src="chrome://compact/content/compact.js"/>
   <script type="application/x-javascript">
   <![CDATA[
-    (function() {
-      window.addEventListener("load", function() { CompactMenu.prefInit(); }, false);
-      var orig_onAccept = onAccept;
-      onAccept = function() {
-        CompactMenu.prefAccept();
-        return orig_onAccept();
-      }
-    })();
+    window.addEventListener("load", function() { CompactMenu.prefInit(); }, false);
   ]]>
   </script>
 
