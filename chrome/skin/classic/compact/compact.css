@@ -40,7 +40,6 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 #menu-button {
-  height: 15px;
   list-style-image: url("chrome://compact/skin/blue.png");
 }
 
