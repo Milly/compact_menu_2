@@ -3,12 +3,30 @@ var CompactBookmarks = {
 init: function() {
   var bookmarkMenubar = document.getElementById('compact-bk-menubar');
   if (!bookmarkMenubar)
+  {
+    if (this.orig_mObservers) {
+      BookmarksMenuDNDObserver.__defineGetter__('mObservers', this.orig_mObservers);
+      this.orig_mObservers = null;
+    }
+    return;
+  }
+  if (bookmarkMenubar.initialized)
     return;
 
   var bookmarks = document.getElementById('bookmarks-menu');
   var compactBookmarks = bookmarkMenubar.firstChild;
-  if (!bookmarks || !compactBookmarks || compactBookmarks.initialized)
-    return;
+  var isFx3 = bookmarks == compactBookmarks;
+  if (isFx3) {
+    bookmarks = document.getElementById('bookmarksMenu');
+    compactBookmarks.style.display = 'none';
+    compactBookmarks = compactBookmarks.nextSibling;
+    compactBookmarks.style.display = '';
+  } else {
+    this.orig_mObservers = BookmarksMenuDNDObserver.__lookupGetter__('mObservers');
+    BookmarksMenuDNDObserver.__defineGetter__('mObservers', function() {
+      return [compactBookmarksPopup].concat(CompactBookmarks.orig_mObservers.call(this));
+    });
+  }
 
   var compactBookmarksPopup = compactBookmarks.firstChild;
   var separator = compactBookmarksPopup.firstChild;
@@ -21,15 +39,7 @@ init: function() {
     }
   }
 
-  var DNDObserver = {
-    get mObservers() {
-      return [compactBookmarksPopup].concat(this.__proto__.mObservers);
-    }
-  }
-  DNDObserver.__proto__ = BookmarksMenuDNDObserver;
-  BookmarksMenuDNDObserver = DNDObserver;
-
-  compactBookmarks.initialized = true;
+  bookmarkMenubar.initialized = true;
 },
 
 cloneNode: function(node) {
