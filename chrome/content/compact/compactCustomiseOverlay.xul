@@ -7,7 +7,7 @@
 <overlay id="compactCustomiseOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <script type="application/x-javascript" src="chrome://compact/content/compact.js"/>
+  <script type="application/x-javascript" src="chrome://compact/content/compactMenu.js"/>
   <script type="application/x-javascript">
   <![CDATA[
     window.addEventListener("load", function() { CompactMenu.prefInit(); }, false);
