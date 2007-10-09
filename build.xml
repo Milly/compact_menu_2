@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="Shift_JIS"?>
-<project name="compact_menu_2" default="deploy" basedir=".">
+<project name="compact_menu_2" default="xpi" basedir=".">
 
 	<description>
 		Compact Menu 2 extension for Firefox
