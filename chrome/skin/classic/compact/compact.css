@@ -41,6 +41,19 @@
 
 #menu-button {
   list-style-image: url("chrome://compact/skin/blue.png");
+  -moz-image-region: rect(0px, 16px, 16px, 0px);
+}
+
+#menu-button:hover {
+  -moz-image-region: rect(16px, 16px, 32px, 0px);
+}
+
+#menu-button[open="true"] {
+  -moz-image-region: rect(32px, 16px, 48px, 0px);
+}
+
+#menu-button .toolbarbutton-menu-dropmarker {
+  display: none !important;
 }
 
 #compact-bk-menubar {

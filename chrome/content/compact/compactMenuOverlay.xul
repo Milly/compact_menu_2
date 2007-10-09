@@ -16,10 +16,9 @@
   </script>
 
   <toolbaritem id="compact-menubutton" title="&menu.label;" align="center" pack="center">
-    <toolbarbutton id="menu-button"
-        class="toolbarbutton-1"
-        tooltiptext="&menu.tooltip;"
-        popup="menu-popup" />
+    <toolbarbutton id="menu-button" type="menu" class="toolbarbutton-1" tooltiptext="&menu.tooltip;">
+      <menupopup id="menu-popup" onpopupshowing="CompactMenu.menuIt('menu-popup');"/>
+    </toolbarbutton>
   </toolbaritem>
 
   <toolbaritem id="compact-menu" align="center" label="&menu.label;">
@@ -29,10 +28,6 @@
       </menu>
     </menubar>
   </toolbaritem>
-
-  <popupset id="MenusPopupset">
-    <menupopup id="menu-popup" onpopupshowing="CompactMenu.menuIt('menu-popup');" position="after_start"/>
-  </popupset>
 
 </overlay>
 

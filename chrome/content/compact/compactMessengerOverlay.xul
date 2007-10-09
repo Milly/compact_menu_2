@@ -13,10 +13,6 @@
     <toolbaritem id="compact-menu" />
   </toolbarpalette>
 
-  <window id="messengerWindow">
-    <popupset id="MenusPopupset" />
-  </window>
-
   <popup id="toolbar-context-menu">
     <menuitem id="ShowMenubar"
         type="checkbox"

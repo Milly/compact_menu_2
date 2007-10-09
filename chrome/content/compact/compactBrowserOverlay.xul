@@ -75,10 +75,6 @@
     </toolbaritem>
   </toolbarpalette>
 
-  <window id="main-window">
-    <popupset id="MenusPopupset" />
-  </window>
-
 </overlay>
 
 <!-- ***** BEGIN LICENSE BLOCK *****
