@@ -12,6 +12,8 @@ _prefs:
 
 SHOWMENU: 'showmenu.',
 
+ELEMENT_SHOWMENU: 'compact-showmenu-',
+
 c_dump: function(msg) {
   if (this.DEBUG) {
     msg = 'Compact Menu :: ' + msg;
@@ -51,10 +53,13 @@ mapMenus: function(it) {
 },
 
 hideItems: function() {
+  const nsIPrefBranch = Components.interfaces.nsIPrefBranch;
   this.mapMenus(function(menu, index) {
     var id = menu.id || index;
     var pref = CompactMenu.SHOWMENU + id;
-    var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
+    var hasPref = this._prefs.prefHasUserValue(pref) && 
+      nsIPrefBranch.PREF_BOOL == this._prefs.getPrefType(pref);
+    var visible = hasPref? this._prefs.getBoolPref(pref): true;
     menu.hidden = !visible;
   });
 },
@@ -202,8 +207,9 @@ prefInit: function() {
   this.mapMenus(function(menu, index) {
     var id = menu.id || index;
     var pref = CompactMenu.SHOWMENU + id;
+    var eid = CompactMenu.ELEMENT_SHOWMENU + id;
     var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
-    this.addVisibleMenuCheckbox(menu, id, visible);
+    this.addVisibleMenuCheckbox(menu, eid, visible);
   });
   var orig_onAccept = window.onAccept || function() { return true; };
   window.onAccept = function() {
@@ -216,7 +222,9 @@ prefAccept: function() {
   this.c_dump('save prefs');
   this.mapMenus(function(menu, index) {
     var id = menu.id || index;
-    var item = document.getElementById(id);
+    var pref = CompactMenu.SHOWMENU + id;
+    var eid = CompactMenu.ELEMENT_SHOWMENU + id;
+    var item = document.getElementById(eid);
     this._prefs.setBoolPref(CompactMenu.SHOWMENU + id, item.checked);
   });
   return true;
