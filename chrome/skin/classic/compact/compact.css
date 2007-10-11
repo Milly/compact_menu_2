@@ -73,25 +73,3 @@ toolbar:not([mode="text"]) #menu-button .toolbarbutton-menu-dropmarker {
   padding: 0px;
   margin: 0px;
 }
-
-/* ::::: tooltip ::::: */
-
-#aHTMLTooltip,
-#menu-button tooltip,
-#menu-button > tooltip,
-tooltip {
-  margin-top: 21px;
-  border: 1px solid InfoText;
-  padding: 0;
-  max-width: 42em;
-  font: message-box;
-}
-
-.tooltip-label {
-  padding: 2px 3px;
-}
-
-tooltip[titletip="true"] {
-  margin: -2px 0px 0px -3px;
-  max-width: none;
-}
