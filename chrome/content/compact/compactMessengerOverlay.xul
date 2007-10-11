@@ -9,7 +9,7 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <toolbarpalette id="MailToolbarPalette">
-    <toolbaritem id="compact-menubutton" />
+    <toolbarbutton id="menu-button" />
     <toolbaritem id="compact-menu" />
   </toolbarpalette>
 

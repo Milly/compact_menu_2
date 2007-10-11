@@ -52,8 +52,13 @@
   -moz-image-region: rect(32px, 16px, 48px, 0px);
 }
 
+#menu-button .toolbarbutton-icon {
+  margin: 0;
+}
+
+toolbar[mode="full"] #menu-button .toolbarbutton-text,
 #menu-button .toolbarbutton-menu-dropmarker {
-  display: none !important;
+  display: none;
 }
 
 #compact-bk-menubar {
@@ -84,4 +89,3 @@ tooltip[titletip="true"] {
   margin: -2px 0px 0px -3px;
   max-width: none;
 }
-
