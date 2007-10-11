@@ -67,9 +67,10 @@ toolbar:not([mode="text"]) #menu-button .toolbarbutton-menu-dropmarker {
   display: none;
 }
 
+#compact-menubar,
 #compact-bk-menubar {
   -moz-appearance: none;
-  border: 0px;
-  padding: 0px;
-  margin: 0px;
+  border: 0;
+  padding: 0;
+  margin: 0;
 }

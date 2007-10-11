@@ -22,7 +22,7 @@
   </toolbarbutton>
 
   <toolbaritem id="compact-menu" align="center" label="&menu.label;">
-    <menubar id="compact-menubar" style="border:0px;padding:0px;margin:0px;-moz-appearance:none">
+    <menubar id="compact-menubar">
       <menu label="&compactMenu.label;" accesskey="&compactMenu.key;">
         <menupopup id="menu_Popup" onpopupshowing="CompactMenu.menuIt(this);"/>
       </menu>
