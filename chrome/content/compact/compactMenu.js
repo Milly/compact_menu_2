@@ -60,16 +60,17 @@ hideItems: function() {
 },
 
 hideMenu: function() {
-  var button  = document.getElementById('menu-button');
-  var menu    = document.getElementById('menu_Popup');
+  var menupopup  = document.getElementById('menu-popup')
+    || document.getElementById('menu_Popup');
   var menubar = document.getElementById('main-menubar')
     || document.getElementById('mail-menubar');
 
-  if (!button && !menu) {
-    menubar.removeAttribute('hidden');
-  } else {
+  if (menupopup) {
+    menupopup.hidePopup();
     this.menuIt(menubar);
     menubar.setAttribute('hidden', 'true');
+  } else {
+    menubar.removeAttribute('hidden');
   }
 },
 
