@@ -173,9 +173,9 @@ menuIt: function(targetMenu) {
     this.c_dump('menuIt : ' + targetMenu.id);
     var currentMenu = this.getCurrentMenuContainer();
     if (currentMenu && targetMenu != currentMenu) {
-      var range = document.createRange();
-      range.selectNodeContents(currentMenu);
-      targetMenu.appendChild(range.extractContents());
+      while (currentMenu.firstChild) {
+        targetMenu.appendChild(currentMenu.firstChild);
+      }
     }
   }
 },
