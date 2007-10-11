@@ -58,7 +58,7 @@
 }
 
 toolbar[mode="full"] #menu-button .toolbarbutton-text,
-#menu-button .toolbarbutton-menu-dropmarker {
+toolbar:not([mode="text"]) #menu-button .toolbarbutton-menu-dropmarker {
   display: none;
 }
 

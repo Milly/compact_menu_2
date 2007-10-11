@@ -17,7 +17,7 @@
 
   <toolbarbutton id="menu-button"
       type="menu" class="toolbarbutton-1"
-      title="&menu.label;" tooltiptext="&menu.tooltip;">
+      label="&menu.label;" tooltiptext="&menu.tooltip;">
     <menupopup id="menu-popup" onpopupshowing="CompactMenu.menuIt(this);"/>
   </toolbarbutton>
 
