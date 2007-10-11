@@ -68,7 +68,7 @@ hideMenu: function() {
   if (!button && !menu) {
     menubar.removeAttribute('hidden');
   } else {
-    this.menuIt(menubar.id);
+    this.menuIt(menubar);
     menubar.setAttribute('hidden', 'true');
   }
 },

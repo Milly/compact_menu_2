@@ -17,14 +17,14 @@
 
   <toolbaritem id="compact-menubutton" title="&menu.label;" align="center" pack="center">
     <toolbarbutton id="menu-button" type="menu" class="toolbarbutton-1" tooltiptext="&menu.tooltip;">
-      <menupopup id="menu-popup" onpopupshowing="CompactMenu.menuIt('menu-popup');"/>
+      <menupopup id="menu-popup" onpopupshowing="CompactMenu.menuIt(this);"/>
     </toolbarbutton>
   </toolbaritem>
 
   <toolbaritem id="compact-menu" align="center" label="&menu.label;">
     <menubar id="compact-menubar" style="border:0px;padding:0px;margin:0px;-moz-appearance:none">
       <menu label="&compactMenu.label;" accesskey="&compactMenu.key;">
-        <menupopup id="menu_Popup" onpopupshowing="CompactMenu.menuIt('menu_Popup');"/>
+        <menupopup id="menu_Popup" onpopupshowing="CompactMenu.menuIt(this);"/>
       </menu>
     </menubar>
   </toolbaritem>
