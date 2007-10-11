@@ -20,7 +20,7 @@ c_dump: function(msg) {
   }
 },
 
-mapMenus: function(it) {
+getCurrentMenuContainer: function(it) {
   var names = [
     'main-menubar',
     'mail-menubar',
@@ -30,15 +30,22 @@ mapMenus: function(it) {
   var document = this.getMainWindow().document;
   for each (var name in names) {
     var menuContainer = document.getElementById(name);
-    if (menuContainer && menuContainer.childNodes.length) {
-      for (var i = 0; i < menuContainer.childNodes.length; ++i) {
-        var menu = menuContainer.childNodes[i];
-        if ('menu' == menu.tagName)
-        {
-          it.call(this, menu, i);
-        }
+    if (menuContainer && menuContainer.hasChildNodes()) {
+      return menuContainer;
+    }
+  }
+  return null;
+},
+
+mapMenus: function(it) {
+  var menuContainer = this.getCurrentMenuContainer();
+  if (menuContainer) {
+    for (var i = 0; i < menuContainer.childNodes.length; ++i) {
+      var menu = menuContainer.childNodes[i];
+      if ('menu' == menu.tagName)
+      {
+        it.call(this, menu, i);
       }
-      return;
     }
   }
 },
@@ -158,26 +165,16 @@ getVisibleToolbarCount: function()
   return count;
 },
 
-menuIt: function(cmpopup) {
-  this.c_dump('menuIt : ' + cmpopup);
-  var cmPop = document.getElementById(cmpopup);
-
-  if (!cmPop.hasChildNodes()) {
-    var menuBars = [
-      'main-menubar',
-      'mail-menubar',
-      'menu-popup',
-      'menu_Popup'
-    ];
-    for (var i = 0; i < menuBars.length; ++i) {
-      var menuBar = document.getElementById(menuBars[i]);
-      if (menuBar && cmPop != menuBar) {
-        for (var j = menuBar.childNodes.length; 0 < j--;) {
-          var item = menuBar.firstChild;
-          menuBar.removeChild(item);
-          cmPop.appendChild(item);
-        }
-      }
+menuIt: function(targetMenu) {
+  if ('string' == typeof targetMenu)
+    targetMenu = document.getElementById(targetMenu);
+  if (targetMenu && !targetMenu.hasChildNodes()) {
+    this.c_dump('menuIt : ' + targetMenu.id);
+    var currentMenu = this.getCurrentMenuContainer();
+    if (currentMenu && targetMenu != currentMenu) {
+      var range = document.createRange();
+      range.selectNodeContents(currentMenu);
+      targetMenu.appendChild(range.extractContents());
     }
   }
 },
