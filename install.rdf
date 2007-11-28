@@ -10,7 +10,7 @@
 		<em:creator>Milly</em:creator>
 		<em:homepageURL>https://addons.mozilla.org/firefox/108029/author/</em:homepageURL>
 		<em:optionsURL>chrome://compact/content/compactPrefDialog.xul</em:optionsURL>
-		<em:iconURL>chrome://compact/skin/compact.png</em:iconURL>                
+		<em:iconURL>chrome://compact/skin/compact.png</em:iconURL>
 		<em:type>2</em:type>
 
 		<em:translator>Chris Neale</em:translator>
