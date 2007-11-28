@@ -85,7 +85,7 @@ hideAll: function() {
 },
 
 init: function() {
-  if (window.updateToolbarStates) {
+  if (window.onViewToolbarsPopupShowing ) {
     this.initToolbarContextMenu_Fx();
   } else {
     this.initToolbarContextMenu_Tb();
@@ -96,16 +96,18 @@ initToolbarContextMenu_Fx: function() {
   // check All-in-One-Sidebar
   var isAios = null != document.getElementById('aios-viewToolbar');
 
-  var original_updateToolbarStates = updateToolbarStates;
-  updateToolbarStates = function(toolbarMenuElt)
-  {
-    if (!gHaveUpdatedToolbarState) {
-      var mainWindow = document.getElementsByTagName('window')[0];
-      if (mainWindow.hasAttribute('chromehidden')) {
-        original_updateToolbarStates(toolbarMenuElt);
-        var menubar = document.getElementsByTagName('toolbar')[0];
-        if (menubar.getAttribute('class').indexOf('chromeclass') != -1) {
-          menubar.setAttribute('collapsed', 'true');
+  if (window.updateToolbarStates) {
+    var original_updateToolbarStates = updateToolbarStates;
+    updateToolbarStates = function(toolbarMenuElt)
+    {
+      if (!gHaveUpdatedToolbarState) {
+        var mainWindow = document.getElementsByTagName('window')[0];
+        if (mainWindow.hasAttribute('chromehidden')) {
+          original_updateToolbarStates(toolbarMenuElt);
+          var menubar = document.getElementsByTagName('toolbar')[0];
+          if (menubar.getAttribute('class').indexOf('chromeclass') != -1) {
+            menubar.setAttribute('collapsed', 'true');
+          }
         }
       }
     }
