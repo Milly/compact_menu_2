@@ -93,46 +93,44 @@ init: function() {
 },
 
 initToolbarContextMenu_Fx: function() {
-  // check All-in-One-Sidebar
-  var isAios = null != document.getElementById('aios-viewToolbar');
+  var menubar = document.getElementById('toolbar-menubar');
+  var collapsed = 'true' == menubar.getAttribute('collapsed');
 
-  if (window.updateToolbarStates) {
-    var original_updateToolbarStates = updateToolbarStates;
-    updateToolbarStates = function(toolbarMenuElt)
-    {
-      if (!gHaveUpdatedToolbarState) {
-        var mainWindow = document.getElementsByTagName('window')[0];
-        if (mainWindow.hasAttribute('chromehidden')) {
-          original_updateToolbarStates(toolbarMenuElt);
-          var menubar = document.getElementsByTagName('toolbar')[0];
-          if (menubar.getAttribute('class').indexOf('chromeclass') != -1) {
-            menubar.setAttribute('collapsed', 'true');
-          }
-        }
-      }
+  menubar.__defineGetter__('collapsed', function(){
+    var pref = 'showtoolbar.' + this.id;
+    return !(CompactMenu._prefs.prefHasUserValue(pref) ? CompactMenu._prefs.getBoolPref(pref) : true);
+  });
+  menubar.__defineSetter__('collapsed', function(){
+    CompactMenu._prefs.setBoolPref('showtoolbar.' + this.id, !arguments[0]);
+    if (arguments[0]) {
+      this.setAttribute('collapsed', true);
+    } else {
+      this.removeAttribute('collapsed');
     }
+  });
+
+  if (collapsed) {
+    menubar.removeAttribute('collapsed');
+    document.persist(menubar.id, 'collapsed');
+  }
+  menubar.collapsed = collapsed || menubar.collapsed;
+
+  function hookCode(orgFunc, orgCode, myCode) {
+    eval(orgFunc + '=' + eval(orgFunc).toString().replace(orgCode, myCode));
   }
 
-  var original_onViewToolbarsPopupShowing = onViewToolbarsPopupShowing;
-  onViewToolbarsPopupShowing = function(aEvent) {
-    var menubar = document.getElementsByTagName("toolbar")[0];
-    var type = menubar.getAttribute('type');
-    menubar.removeAttribute('type');
-    original_onViewToolbarsPopupShowing(aEvent);
-    menubar.setAttribute('type', type);
-  }
+  hookCode('onViewToolbarsPopupShowing', '&& type != "menubar"', '');
+  hookCode('onViewToolbarCommand',
+      'document.persist(toolbar.id, "collapsed");',
+      'if ("toolbar-menubar" == toolbar.id) return; $&');
 
-  var original_onViewToolbarCommand = onViewToolbarCommand;
-  onViewToolbarCommand = function(aEvent) {
-    var element = (aEvent || {}).originalTarget;
-    if (isAios || !element
-        || 'true' == element.getAttribute('checked')
-        || 1 < CompactMenu.getVisibleToolbarCount())
-      original_onViewToolbarCommand(aEvent)
-  }
+  // check All-in-One-Sidebar
+  if (document.getElementById('aios-viewToolbar')) return;
 
-  if (!isAios && 0 == this.getVisibleToolbarCount()) {
-    var menubar = document.getElementById('toolbar-menubar');
+  hookCode('onViewToolbarCommand',
+      'toolbar.collapsed = ',
+      '$& (1 < CompactMenu.getVisibleToolbarCount()) &&');
+  if (0 == this.getVisibleToolbarCount()) {
     menubar.collapsed = false;
     document.persist(menubar.id, "collapsed");
   }
@@ -159,8 +157,7 @@ initToolbarContextMenu_Tb: function() {
   context.addEventListener('popupshowing', onToolbarContextMenuShowing, false);
 },
 
-getVisibleToolbarCount: function()
-{
+getVisibleToolbarCount: function() {
   var count = 0;
   var toolbox = document.getElementById('navigator-toolbox')
     || document.getElementById('mail-toolbox');
@@ -187,8 +184,7 @@ menuIt: function(targetMenu) {
   }
 },
 
-getMainWindow: function()
-{
+getMainWindow: function() {
   const mediatorClass = '@mozilla.org/appshell/window-mediator;1';
   const types = [
     'navigator:browser',
