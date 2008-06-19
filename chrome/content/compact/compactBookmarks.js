@@ -49,7 +49,7 @@ cloneNode: function(node) {
     item.setAttribute(attr.name, attr.value);
   }
   return item;
-},
+}
 
 } // CompactBookmarks
 

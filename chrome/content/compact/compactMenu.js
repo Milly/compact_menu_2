@@ -238,7 +238,7 @@ addVisibleMenuCheckbox: function(menu, id, checked) {
   item.setAttribute('checked', checked);
   container.appendChild(item);
   return item;
-},
+}
 
 } // CompactMenu
 
