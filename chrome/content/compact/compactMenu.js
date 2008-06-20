@@ -73,6 +73,9 @@ hideMenu: function() {
   if (menupopup || menupopup2) {
     if (menupopup) menupopup.hidePopup();
     if (menupopup2) menupopup2.hidePopup();
+    CompactMenu.mapMenus(function(menu) {
+      if (menu && menu.hidePopup) menu.hidePopup();
+    });
     this.menuIt(menubar);
     menubar.setAttribute('hidden', 'true');
   } else {
@@ -91,6 +94,57 @@ init: function() {
   } else {
     this.initToolbarContextMenu_Tb();
   }
+  this.initKeyEvents();
+},
+
+initKeyEvents: function() {
+  window.addEventListener("keypress", function(event) {
+    if (!event.altKey) return;
+    var popup = document.getElementById('menu-popup')
+      || document.getElementById('menu_Popup');
+    if (!popup) return;
+
+    var c = String.fromCharCode(event.charCode);
+    function matchAccesskey(menu) {
+      if ('menu' == menu.localName) {
+        var accesskey = menu.getAttribute("accesskey").toLowerCase();
+        return c == accesskey;
+      }
+      return false;
+    }
+    function dispatchKeyEvent(item, keyCode) {
+      var event = document.createEvent('KeyboardEvent');
+      event.initKeyEvent('keypress', true, true, null, false, false, false, false, keyCode, 0);
+      item.dispatchEvent(event);
+    }
+
+    var menubars = document.getElementsByTagName('menubar');
+    for each (var menubar in menubars) {
+      if ('main-menubar' != menubar.id && 'mail-menubar' != menubar.id) {
+        for each (var menu in menubar.childNodes) {
+          if (matchAccesskey(menu)) return;
+        }
+      }
+    }
+
+    try {
+      CompactMenu.mapMenus(function(menu, index) {
+        if (matchAccesskey(menu)) {
+          popup.addEventListener('popupshown', function shown() {
+            popup.removeEventListener('popupshown', shown, true);
+            for (var i = index; 0 <= i--;)
+              dispatchKeyEvent(popup, 40);
+            dispatchKeyEvent(popup, 39);
+            menu.lastChild.showPopup();
+          }, true);
+          popup.showPopup();
+          throw 0;
+        }
+      });
+    } catch (e) {
+      event.stopPropagation();
+    }
+  } , true);
 },
 
 initToolbarContextMenu_Fx: function() {
