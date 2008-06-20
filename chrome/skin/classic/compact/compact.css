@@ -47,7 +47,6 @@
   padding: 2px 3px;
   list-style-image: url("chrome://compact/skin/blue.png");
   -moz-image-region: rect(0px, 16px, 16px, 0px);
-  -moz-box-orient: horizontal;
 }
 
 #menu-button:hover {
@@ -60,6 +59,10 @@
 
 #menu-button .toolbarbutton-icon {
   margin: 0;
+}
+
+toolbar #menu-button {
+  -moz-box-orient: horizontal;
 }
 
 toolbar:not([mode="text"]) #menu-button .toolbarbutton-text,
