@@ -27,26 +27,32 @@ initBookmarksMenubar: function() {
     compactBookmarksMenu = compactBookmarksMenu.nextSibling;
     compactBookmarksMenu.style.display = '';
   }
+  this.bookmarksMenuNodes = bookmarksMenu.firstChild.childNodes;
 
-  var compactBookmarksPopup = compactBookmarksMenu.firstChild;
-  var separator = compactBookmarksPopup.firstChild;
-  if ('bookmarksMenuSeparator' == separator.id) {
-    var nodes = bookmarksMenu.firstChild.childNodes;
-    for (var i = 0; i < nodes.length && 'menuseparator' != nodes[i].tagName; ++i) {
-      var node = nodes[i];
-      var item = this.cloneNode(node);
-      compactBookmarksPopup.insertBefore(item, separator);
-    }
-    var compactBookmarksToolbarFolderMenu = separator.nextSibling;
-    if (compactBookmarksToolbarFolderMenu) {
-      compactBookmarksToolbarFolderMenu.label =
-        PlacesUtils.bookmarks.getItemTitle(PlacesUtils.bookmarks.toolbarFolder);
-      compactBookmarksToolbarFolderMenu.firstChild.place =
-        PlacesUtils.getQueryStringForFolder(PlacesUtils.bookmarks.toolbarFolder);
-    }
-  }
+  this.cloneBookmarksMenu(compactBookmarksMenu);
 
   compactBookmarksMenubar.initialized = true;
+},
+
+cloneBookmarksMenu: function(menu) {
+  if (!menu) return;
+  var popup = menu.getElementsByTagName('menupopup')[0];
+  var separator = popup.firstChild;
+  if ('bookmarksMenuSeparator' != separator.id) return;
+
+  var nodes = this.bookmarksMenuNodes;
+  for (var i = 0; i < nodes.length && 'menuseparator' != nodes[i].tagName; ++i) {
+    var node = nodes[i];
+    var item = this.cloneNode(node);
+    popup.insertBefore(item, separator);
+  }
+  var compactBookmarksToolbarFolderMenu = separator.nextSibling;
+  if (compactBookmarksToolbarFolderMenu) {
+    compactBookmarksToolbarFolderMenu.label =
+      PlacesUtils.bookmarks.getItemTitle(PlacesUtils.bookmarks.toolbarFolder);
+    compactBookmarksToolbarFolderMenu.firstChild.place =
+      PlacesUtils.getQueryStringForFolder(PlacesUtils.bookmarks.toolbarFolder);
+  }
 },
 
 cloneNode: function(node) {
