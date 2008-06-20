@@ -66,12 +66,13 @@ hideItems: function() {
 
 hideMenu: function() {
   var menupopup  = document.getElementById('menu-popup')
-    || document.getElementById('menu_Popup');
+  var menupopup2 = document.getElementById('menu_Popup');
   var menubar = document.getElementById('main-menubar')
     || document.getElementById('mail-menubar');
 
-  if (menupopup) {
-    menupopup.hidePopup();
+  if (menupopup || menupopup2) {
+    if (menupopup) menupopup.hidePopup();
+    if (menupopup2) menupopup2.hidePopup();
     this.menuIt(menubar);
     menubar.setAttribute('hidden', 'true');
   } else {
