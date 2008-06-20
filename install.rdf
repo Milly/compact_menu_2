@@ -5,10 +5,10 @@
 
 		<em:id>{57068FBE-1506-42ee-AB02-BD183E7999E4}</em:id>
 		<em:name>Compact Menu 2</em:name>
-		<em:version>2.0.4</em:version>
+		<em:version>2.1.0</em:version>
 		<em:description>Duplicates the menubar on the toolbar as a menu of menus.</em:description>
 		<em:creator>Milly</em:creator>
-		<em:homepageURL>https://addons.mozilla.org/firefox/108029/author/</em:homepageURL>
+		<em:homepageURL>https://addons.mozilla.org/firefox/user/108029</em:homepageURL>
 		<em:optionsURL>chrome://compact/content/compactPrefDialog.xul</em:optionsURL>
 		<em:iconURL>chrome://compact/skin/compact.png</em:iconURL>
 		<em:type>2</em:type>
@@ -27,7 +27,7 @@
 			<Description>
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
 				<em:minVersion>2.0</em:minVersion>
-				<em:maxVersion>3.0b5</em:maxVersion>
+				<em:maxVersion>3.0.*</em:maxVersion>
 			</Description>
 		</em:targetApplication>
 
