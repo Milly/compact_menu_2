@@ -16,7 +16,8 @@
   <script type="application/x-javascript" src="chrome://compact/content/compactBookmarks.js"/>
   <script type="application/x-javascript">
   <![CDATA[
-    window.addEventListener("focus", function() { CompactBookmarks.init(); }, false);
+    window.addEventListener("load", function() { CompactBookmarks.init(); }, false);
+    window.addEventListener("focus", function() { CompactBookmarks.initBookmarksMenubar(); }, false);
   ]]>
   </script>
 
@@ -68,7 +69,16 @@
                      oncommand="BookmarksEventHandler.onCommand(event);"
                      onclick="BookmarksEventHandler.onClick(event);"
                      onpopupshowing="BookmarksEventHandler.onPopupShowing(event);">
-            <menuseparator id="bookmarksMenuSeparator" builder="start"/>
+            <menuseparator id="bookmarksMenuSeparator"/>
+            <menu id="bookmarksToolbarFolderMenu"
+                  class="menu-iconic bookmark-item"
+                  container="true">
+              <menupopup id="bookmarksToolbarFolderPopup"
+                         type="places"
+                         context="placesContext"
+                         onpopupshowing="BookmarksEventHandler.onPopupShowing(event);"/>
+            </menu>
+            <menuseparator builder="start"/>
           </menupopup>
         </menu>
       </menubar>
