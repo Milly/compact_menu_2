@@ -1,6 +1,6 @@
 var CompactMenu = {
 
-DEBUG: false,
+DEBUG: true,
 
 aConsoleService:
   Components.classes["@mozilla.org/consoleservice;1"]
@@ -65,6 +65,7 @@ hideItems: function() {
 },
 
 hideMenu: function() {
+  var document = this.getMainWindow().document;
   var menupopup  = document.getElementById('menu-popup')
   var menupopup2 = document.getElementById('menu_Popup');
   var menubar = document.getElementById('main-menubar')
@@ -259,6 +260,7 @@ getMainWindow: function() {
 // Preference
 
 prefInit: function() {
+  this.c_dump('load prefs');
   this.mapMenus(function(menu, index) {
     var id = menu.id || index;
     var pref = CompactMenu.SHOWMENU + id;
@@ -266,11 +268,6 @@ prefInit: function() {
     var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
     this.addVisibleMenuCheckbox(menu, eid, visible);
   });
-  var orig_onAccept = window.onAccept || function() { return true; };
-  window.onAccept = function() {
-    CompactMenu.prefAccept();
-    return orig_onAccept();
-  }
 },
 
 prefAccept: function() {
@@ -282,12 +279,13 @@ prefAccept: function() {
     var item = document.getElementById(eid);
     this._prefs.setBoolPref(CompactMenu.SHOWMENU + id, item.checked);
   });
+  this.hideAll();
   return true;
 },
 
 addVisibleMenuCheckbox: function(menu, id, checked) {
   var container = document.getElementById('compact-visible_menus');
-  var item = document.createElement('checkbox');
+  var item = document.getElementById(id) || document.createElement('checkbox');
   item.setAttribute('id', id);
   item.setAttribute('type', 'checkbox');
   item.setAttribute('label', menu.getAttribute('label'));
