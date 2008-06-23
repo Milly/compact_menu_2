@@ -1,5 +1,4 @@
 <!ENTITY menu.label   "Compact Menu">
-<!ENTITY menu.tooltip "File Edit ...">
 <!ENTITY menuPref.caption "Select the menus you want to see in the Compact Menu">
 <!ENTITY compactPopup.off "off">
 <!ENTITY compactPopup.image "image">

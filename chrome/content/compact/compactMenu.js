@@ -40,16 +40,19 @@ getCurrentMenuContainer: function(it) {
 },
 
 mapMenus: function(it) {
+  var res = [];
   var menuContainer = this.getCurrentMenuContainer();
   if (menuContainer) {
     for (var i = 0; i < menuContainer.childNodes.length; ++i) {
       var menu = menuContainer.childNodes[i];
-      if ('menu' == menu.tagName)
+      if ('menu' == menu.localName)
       {
-        it.call(this, menu, i);
+        var v = it.call(this, menu, i);
+        if ('undefined' != typeof v) res.push(v);
       }
     }
   }
+  return res;
 },
 
 hideItems: function() {
@@ -74,7 +77,7 @@ hideMenu: function() {
   if (menupopup || menupopup2) {
     if (menupopup) menupopup.hidePopup();
     if (menupopup2) menupopup2.hidePopup();
-    CompactMenu.mapMenus(function(menu) {
+    this.mapMenus(function(menu) {
       if (menu && menu.hidePopup) menu.hidePopup();
     });
     this.menuIt(menubar);
@@ -145,7 +148,7 @@ initKeyEvents: function() {
           popup.showPopup();
           throw 0;
         }
-        if ('menu' == menu.localName && !menu.hidden) ++index;
+        if (!menu.hidden) ++index;
       });
     } catch (e) {
       event.stopPropagation();
@@ -243,6 +246,25 @@ menuIt: function(targetMenu) {
       }
     }
   }
+},
+
+setMenuTooltip: function(tooltip, node) {
+  if ('menupopup' != node.parentNode.localName) {
+    var menus = this.mapMenus(function(menu) {
+      if (!menu.hidden) {
+        return menu.getAttribute('label');
+      }
+    });
+    var text = menus
+      .slice(0, 2)
+      .concat(2 < menus.length ? ['...'] : [])
+      .join(' ');
+    if (text) {
+      tooltip.setAttribute('label', text);
+      return true;
+    }
+  }
+  return false;
 },
 
 getMainWindow: function() {

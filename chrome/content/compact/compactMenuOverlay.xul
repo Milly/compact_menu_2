@@ -17,7 +17,8 @@
 
   <toolbarbutton id="menu-button"
       type="menu" class="toolbarbutton-1"
-      label="&menu.label;" tooltiptext="&menu.tooltip;">
+      label="&menu.label;"
+      tooltip="menu-button-tooltip">
     <menupopup id="menu-popup" onpopupshowing="CompactMenu.menuIt(this);"/>
   </toolbarbutton>
 
@@ -28,6 +29,8 @@
       </menu>
     </menubar>
   </toolbaritem>
+
+  <tooltip id="menu-button-tooltip" onpopupshowing="return CompactMenu.setMenuTooltip(this, document.tooltipNode);" />
 
 </overlay>
 

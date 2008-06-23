@@ -85,6 +85,10 @@
     </toolbaritem>
   </toolbarpalette>
 
+  <popupset id="mainPopupSet">
+    <tooltip id="menu-button-tooltip" />
+  </popupset>
+
 </overlay>
 
 <!-- ***** BEGIN LICENSE BLOCK *****

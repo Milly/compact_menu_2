@@ -1,5 +1,4 @@
 <!ENTITY menu.label   "Kompaktmeny">
-<!ENTITY menu.tooltip "Arkiv Redigera ...">
 <!ENTITY menuPref.caption "V&#228;lj de menyer du vill visa i Kompaktmenyn:">
 <!ENTITY compactPopup.off "Av">
 <!ENTITY compactPopup.image "Bild">

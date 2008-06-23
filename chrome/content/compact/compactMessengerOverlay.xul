@@ -22,6 +22,12 @@
         />
   </popup>
 
+  <window id="messengerWindow">
+    <popupset>
+      <tooltip id="menu-button-tooltip" />
+    </popupset>
+  </window>
+
 </overlay>
 
 <!-- ***** BEGIN LICENSE BLOCK *****

@@ -1,5 +1,4 @@
 <!ENTITY menu.label   "Compact Menu">
-<!ENTITY menu.tooltip "Bestand Wijzigen...">
 <!ENTITY menuPref.caption "Selecteer de menu's die je wilt zien in Compact Menu">
 <!ENTITY compactPopup.off "uit">
 <!ENTITY compactPopup.image "beeld">
