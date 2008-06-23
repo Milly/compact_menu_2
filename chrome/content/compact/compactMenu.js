@@ -118,6 +118,9 @@ initKeyEvents: function() {
       event.initKeyEvent('keypress', true, true, null, false, false, false, false, keyCode, 0);
       item.dispatchEvent(event);
     }
+    function isRTL(node) {
+      return 'rtl' == document.defaultView.getComputedStyle(node, "").direction;
+    }
 
     var menubars = document.getElementsByTagName('menubar');
     for each (var menubar in menubars) {
@@ -136,7 +139,7 @@ initKeyEvents: function() {
             popup.removeEventListener('popupshown', shown, true);
             for (var i = index; 0 <= i--;)
               dispatchKeyEvent(popup, KeyEvent.DOM_VK_DOWN);
-            dispatchKeyEvent(popup, KeyEvent.DOM_VK_RIGHT);
+            dispatchKeyEvent(popup, isRTL(popup) ? KeyEvent.DOM_VK_LEFT : KeyEvent.DOM_VK_RIGHT);
             menu.lastChild.showPopup();
           }, true);
           popup.showPopup();
