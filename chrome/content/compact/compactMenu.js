@@ -135,8 +135,8 @@ initKeyEvents: function() {
           popup.addEventListener('popupshown', function shown() {
             popup.removeEventListener('popupshown', shown, true);
             for (var i = index; 0 <= i--;)
-              dispatchKeyEvent(popup, 40);
-            dispatchKeyEvent(popup, 39);
+              dispatchKeyEvent(popup, KeyEvent.DOM_VK_DOWN);
+            dispatchKeyEvent(popup, KeyEvent.DOM_VK_RIGHT);
             menu.lastChild.showPopup();
           }, true);
           popup.showPopup();
