@@ -107,7 +107,7 @@ initKeyEvents: function() {
 
     var c = String.fromCharCode(event.charCode);
     function matchAccesskey(menu) {
-      if ('menu' == menu.localName) {
+      if ('menu' == menu.localName && !menu.hidden) {
         var accesskey = menu.getAttribute("accesskey").toLowerCase();
         return c == accesskey;
       }
