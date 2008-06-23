@@ -128,7 +128,8 @@ initKeyEvents: function() {
     }
 
     try {
-      CompactMenu.mapMenus(function(menu, index) {
+      var index = 0;
+      CompactMenu.mapMenus(function(menu) {
         if (matchAccesskey(menu)) {
           popup.addEventListener('popupshown', function shown() {
             popup.removeEventListener('popupshown', shown, true);
@@ -140,6 +141,7 @@ initKeyEvents: function() {
           popup.showPopup();
           throw 0;
         }
+        if ('menu' == menu.localName && !menu.hidden) ++index;
       });
     } catch (e) {
       event.stopPropagation();
