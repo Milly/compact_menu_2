@@ -101,12 +101,24 @@ init: function() {
   this.initKeyEvents();
 },
 
+isMenuAccessKey: function(event) {
+  var accessKey = nsPreferences.getIntPref('ui.key.menuAccessKey');
+  switch (accessKey) {
+    case KeyEvent.DOM_VK_CONTROL:
+      return !event.shiftKey && event.ctrlKey && !event.altKey && !event.metaKey;
+    case KeyEvent.DOM_VK_ALT:
+      return !event.shiftKey && !event.ctrlKey && event.altKey && !event.metaKey;
+    case KeyEvent.DOM_VK_META:
+      return !event.shiftKey && !event.ctrlKey && !event.altKey && event.metaKey;
+  }
+  return false;
+},
+
 initKeyEvents: function() {
   window.addEventListener("keypress", function(event) {
-    if (!event.altKey) return;
     var popup = document.getElementById('menu-popup')
       || document.getElementById('menu_Popup');
-    if (!popup) return;
+    if (!popup || !CompactMenu.isMenuAccessKey(event)) return;
 
     var c = String.fromCharCode(event.charCode);
     function matchAccesskey(menu) {
