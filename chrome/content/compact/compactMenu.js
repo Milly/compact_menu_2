@@ -1,6 +1,6 @@
 var CompactMenu = {
 
-DEBUG: true,
+DEBUG: false,
 
 aConsoleService:
   Components.classes["@mozilla.org/consoleservice;1"]
@@ -192,7 +192,7 @@ initToolbarContextMenu_Fx: function() {
     eval(orgFunc + '=' + eval(orgFunc).toString().replace(orgCode, myCode));
   }
 
-  hookCode('onViewToolbarsPopupShowing', '&& type != "menubar"', '');
+  hookCode('onViewToolbarsPopupShowing', 'type != "menubar"', 'true');
   hookCode('onViewToolbarCommand',
       'document.persist(toolbar.id, "collapsed");',
       'if ("toolbar-menubar" == toolbar.id) return; $&');
