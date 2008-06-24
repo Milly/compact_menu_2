@@ -104,12 +104,9 @@ init: function() {
 isMenuAccessKey: function(event) {
   var accessKey = nsPreferences.getIntPref('ui.key.menuAccessKey');
   switch (accessKey) {
-    case KeyEvent.DOM_VK_CONTROL:
-      return !event.shiftKey && event.ctrlKey && !event.altKey && !event.metaKey;
-    case KeyEvent.DOM_VK_ALT:
-      return !event.shiftKey && !event.ctrlKey && event.altKey && !event.metaKey;
-    case KeyEvent.DOM_VK_META:
-      return !event.shiftKey && !event.ctrlKey && !event.altKey && event.metaKey;
+    case KeyEvent.DOM_VK_CONTROL : return event.ctrlKey && !event.altKey && !event.metaKey;
+    case KeyEvent.DOM_VK_ALT     : return !event.ctrlKey && event.altKey && !event.metaKey;
+    case KeyEvent.DOM_VK_META    : return !event.ctrlKey && !event.altKey && event.metaKey;
   }
   return false;
 },
