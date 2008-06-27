@@ -25,6 +25,7 @@
   <window id="messengerWindow">
     <popupset>
       <tooltip id="menu-button-tooltip" />
+      <menupopup id="main-menu-popup"/>
     </popupset>
   </window>
 

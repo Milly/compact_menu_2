@@ -1,6 +1,6 @@
 var CompactMenu = {
 
-DEBUG: false,
+DEBUG: true,
 
 aConsoleService:
   Components.classes["@mozilla.org/consoleservice;1"]
@@ -14,6 +14,29 @@ SHOWMENU: 'showmenu.',
 
 ELEMENT_SHOWMENU: 'compact-showmenu-',
 
+MAINTOOLBARS: [
+    'toolbar-menubar',
+    'mail-toolbar-menubar2',
+  ],
+
+MENUBARS: [
+    'main-menubar',
+    'mail-menubar',
+  ],
+
+ITEMS: [
+    'menu-button',
+    'compact-menu',
+  ],
+
+POPUPS: [
+    'menu-button-popup',
+    'compact-menu-popup',
+    'main-menu-popup',
+  ],
+
+SINGLE_POPUP: 'main-menu-popup',
+
 c_dump: function(msg) {
   if (this.DEBUG) {
     msg = 'Compact Menu :: ' + msg;
@@ -22,19 +45,41 @@ c_dump: function(msg) {
   }
 },
 
-getCurrentMenuContainer: function(it) {
-  var names = [
-    'main-menubar',
-    'mail-menubar',
-    'menu-popup',
-    'menu_Popup',
-  ];
+getCurrentMenuContainer: function() {
   var document = this.getMainWindow().document;
-  for each (var name in names) {
-    var menuContainer = document.getElementById(name);
+  var containerIds = this.MENUBARS.concat(this.POPUPS);
+  for each (var id in containerIds) {
+    var menuContainer = document.getElementById(id);
     if (menuContainer && menuContainer.hasChildNodes()) {
       return menuContainer;
     }
+  }
+  return null;
+},
+
+getMenuItem: function() {
+  var document = this.getMainWindow().document;
+  for each (var id in this.ITEMS) {
+    var item = document.getElementById(id);
+    if (item && !item.parentNode.collapsed) return item;
+  }
+  return null;
+},
+
+getMenuBar: function() {
+  var document = this.getMainWindow().document;
+  for each (var id in this.MENUBARS) {
+    var item = document.getElementById(id);
+    if (item) return item;
+  }
+  return null;
+},
+
+getMainToolbar: function() {
+  var document = this.getMainWindow().document;
+  for each (var id in this.MAINTOOLBARS) {
+    var item = document.getElementById(id);
+    if (item) return item;
   }
   return null;
 },
@@ -67,20 +112,18 @@ hideItems: function() {
   });
 },
 
-hideMenu: function() {
+hidePopup: function() {
   var document = this.getMainWindow().document;
-  var menupopup  = document.getElementById('menu-popup')
-  var menupopup2 = document.getElementById('menu_Popup');
-  var menubar = document.getElementById('main-menubar')
-    || document.getElementById('mail-menubar');
+  for each (var id in this.POPUPS) {
+    var popup = document.getElementById(id);
+    if (popup && popup.hidePopup) popup.hidePopup();
+  }
+},
 
-  if (menupopup || menupopup2) {
-    if (menupopup) menupopup.hidePopup();
-    if (menupopup2) menupopup2.hidePopup();
-    this.mapMenus(function(menu) {
-      if (menu && menu.hidePopup) menu.hidePopup();
-    });
-    this.menuIt(menubar);
+hideMenu: function() {
+  var menubar = this.getMenuBar();
+  this.menuIt(menubar);
+  if (this.getMenuItem() || this.getMainToolbar().collapsed) {
     menubar.setAttribute('hidden', 'true');
   } else {
     menubar.removeAttribute('hidden');
@@ -89,16 +132,8 @@ hideMenu: function() {
 
 hideAll: function() {
   this.hideItems();
+  this.hidePopup();
   this.hideMenu();
-},
-
-init: function() {
-  if (window.onViewToolbarsPopupShowing ) {
-    this.initToolbarContextMenu_Fx();
-  } else {
-    this.initToolbarContextMenu_Tb();
-  }
-  this.initKeyEvents();
 },
 
 isMenuAccessKey: function(event) {
@@ -111,11 +146,93 @@ isMenuAccessKey: function(event) {
   return false;
 },
 
+isRTL: function(node) {
+  return 'rtl' == document.defaultView.getComputedStyle(node, '').direction;
+},
+
+addPopupMethods: function(e) {
+  if (!e.openPopup /* Mozilla < 1.9 */) {
+    this.c_dump('add openPopup, openPopupAtScreen');
+    e.openPopup = function(anchor, position, x, y, isContextMenu, attributesOverride) {
+      if (!anchor) {
+        anchor = document.documentElement;
+        position = null;
+      } else {
+        var posAttr = this.getAttribute('position');
+        position = attributesOverride ? (position || posAttr) : (posAttr || position);
+      }
+      var p = ({
+        after_start: ['bottomleft', 'topleft'],
+        after_end: ['bottomright', 'topright'],
+        before_start: ['topleft', 'bottomleft'],
+        before_end: ['topright', 'bottomright'],
+        end_after: ['bottomright', 'bottomleft'],
+        end_before: ['topright', 'topleft'],
+        start_after: ['bottomleft', 'bottomright'],
+        start_before: ['topleft', 'topright'],
+        overlap: ['topleft', 'topleft']
+      })[position] || [];
+      var popupType = isContextMenu ? 'context' : 'popup';
+      this.showPopup(anchor, -1, -1, popupType, p[0], p[1]);
+    };
+    e.openPopupAtScreen = function(x, y, isContextMenu) {
+      document.popupNode = null;
+      var popupType = isContextMenu ? 'context' : 'popup';
+      this.showPopup(document.documentElement, x, y, popupType, null, null);
+    };
+  }
+},
+
+dispatchKeyEvent: function(item, keyCode) {
+  var event = document.createEvent('KeyboardEvent');
+  event.initKeyEvent('keypress', true, true, null, false, false, false, false, keyCode, 0);
+  item.dispatchEvent(event);
+},
+
+openMenu: function(menu) {
+  var item = this.getMenuItem();
+  var x = 0, y = 0;
+  if (item) {
+    var popup = item.getElementsByTagName('menupopup')[0];
+    var anchor = popup.parentNode;
+    var position = 'after_start';
+  } else {
+    var popup = document.getElementById(this.SINGLE_POPUP);
+    var anchor = null;
+    var position = '';
+    // ToDo: fix popup position when RTL
+  }
+
+  popup.addEventListener('popupshown', function shown() {
+    popup.removeEventListener('popupshown', shown, false);
+    // dispatch DOWN key
+    for (var pmenu = menu; pmenu; pmenu = pmenu.previousSibling) {
+      if (!pmenu.hidden) {
+        CompactMenu.dispatchKeyEvent(popup, KeyEvent.DOM_VK_DOWN);
+      }
+    }
+    // dispatch LEFT or RIGHT key
+    var key = CompactMenu.isRTL(popup) ? KeyEvent.DOM_VK_LEFT : KeyEvent.DOM_VK_RIGHT;
+    CompactMenu.dispatchKeyEvent(popup, key);
+    // open popup
+  }, false);
+
+  this.addPopupMethods(popup);
+  popup.openPopup(anchor, position, x, y, false, false);
+},
+
+init: function() {
+  if (window.onViewToolbarsPopupShowing) {
+    this.initToolbarContextMenu_Fx();
+  } else {
+    this.initToolbarContextMenu_Tb();
+  }
+  this.initKeyEvents();
+},
+
 initKeyEvents: function() {
   window.addEventListener("keypress", function(event) {
-    var popup = document.getElementById('menu-popup')
-      || document.getElementById('menu_Popup');
-    if (!popup || !CompactMenu.isMenuAccessKey(event)) return;
+    if (!CompactMenu.isMenuAccessKey(event)) return;
 
     var c = String.fromCharCode(event.charCode);
     function matchAccesskey(menu) {
@@ -125,18 +242,13 @@ initKeyEvents: function() {
       }
       return false;
     }
-    function dispatchKeyEvent(item, keyCode) {
-      var event = document.createEvent('KeyboardEvent');
-      event.initKeyEvent('keypress', true, true, null, false, false, false, false, keyCode, 0);
-      item.dispatchEvent(event);
-    }
-    function isRTL(node) {
-      return 'rtl' == document.defaultView.getComputedStyle(node, "").direction;
-    }
 
+    // check visible menu accesskey
     var menubars = document.getElementsByTagName('menubar');
     for each (var menubar in menubars) {
-      if ('main-menubar' != menubar.id && 'mail-menubar' != menubar.id) {
+      if (menubar && !menubar.hidden
+          && menubar.parentNode && !menubar.parentNode.hidden
+          && menubar.parentNode.parentNode && !menubar.parentNode.parentNode.collapsed) {
         for each (var menu in menubar.childNodes) {
           if (matchAccesskey(menu)) return;
         }
@@ -144,24 +256,14 @@ initKeyEvents: function() {
     }
 
     try {
-      var index = 0;
       CompactMenu.mapMenus(function(menu) {
         if (matchAccesskey(menu)) {
-          popup.addEventListener('popupshown', function shown() {
-            popup.removeEventListener('popupshown', shown, true);
-            for (var i = index; 0 <= i--;)
-              dispatchKeyEvent(popup, KeyEvent.DOM_VK_DOWN);
-            dispatchKeyEvent(popup, isRTL(popup) ? KeyEvent.DOM_VK_LEFT : KeyEvent.DOM_VK_RIGHT);
-            menu.lastChild.showPopup();
-          }, true);
-          popup.showPopup();
-          throw 0;
+          CompactMenu.openMenu(menu);
+          event.stopPropagation();
+          throw 'break';
         }
-        if (!menu.hidden) ++index;
       });
-    } catch (e) {
-      event.stopPropagation();
-    }
+    } catch (e if 'break' == e) { }
   } , true);
 },
 
@@ -180,6 +282,7 @@ initToolbarContextMenu_Fx: function() {
     } else {
       this.removeAttribute('collapsed');
     }
+    CompactMenu.hideMenu();
   });
 
   if (collapsed) {
@@ -222,6 +325,7 @@ initToolbarContextMenu_Tb: function() {
   function toggleMenubarVisible() {
     menubar.collapsed = !menubar.collapsed;
     CompactMenu._prefs.setBoolPref(pref, !menubar.collapsed);
+    CompactMenu.hideMenu();
   }
   function onToolbarContextMenuShowing() {
     menu.setAttribute('checked', (!menubar.collapsed).toString());

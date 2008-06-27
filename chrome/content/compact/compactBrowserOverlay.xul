@@ -87,6 +87,7 @@
 
   <popupset id="mainPopupSet">
     <tooltip id="menu-button-tooltip" />
+    <menupopup id="main-menu-popup"/>
   </popupset>
 
 </overlay>
