@@ -48,6 +48,10 @@
   -moz-image-region: rect(0px, 16px, 16px, 0px);
 }
 
+#PersonalToolbar #menu-button {
+  padding: 0;
+}
+
 #menu-button:hover {
   -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
