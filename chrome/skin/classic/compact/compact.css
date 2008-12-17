@@ -44,7 +44,6 @@
   min-height: 0;
   width: auto;
   height: auto;
-  padding: 2px 3px;
   list-style-image: url("chrome://compact/skin/blue.png");
   -moz-image-region: rect(0px, 16px, 16px, 0px);
 }
