@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 
+<?xml-stylesheet href="chrome://mozapps/content/preferences/preferences.css"?>
+<?xml-stylesheet href="chrome://browser/skin/preferences/preferences.css"?>
 <?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
 <?xml-stylesheet href="chrome://compact/skin/compact.css" type="text/css"?>
 
@@ -17,6 +19,21 @@
   <vbox flex="1">
     <groupbox id="compact-visible_menus" align="start" pack="start" orient="vertical">
       <caption label="&menuPref.caption;"/>
+    </groupbox>
+    <groupbox id="compact-icon" align="start" pack="start" orient="vertical">
+      <caption>
+        <checkbox id="icon_enable"
+                  label="&iconPref.caption;"
+                  accesskey="&iconPref.accesskey;"
+                  oncommand="CompactMenu.disableGroup('compact-icon', !this.checked)"/>
+      </caption>
+      <hbox align="center">
+        <filefield id="icon_file" flex="1" />
+        <button id="icon_file_picker"
+                label="&iconFilePicker.label;"
+                accesskey="&iconFilePicker.accesskey;"
+                oncommand="CompactMenu.openImagePicker('&iconFilePicker.title;', 'icon_file')"/>
+      </hbox>
     </groupbox>
   </vbox>
 

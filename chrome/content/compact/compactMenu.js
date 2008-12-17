@@ -8,7 +8,14 @@ aConsoleService:
 
 _prefs:
   Components.classes["@mozilla.org/preferences-service;1"]
-    .getService(Components.interfaces.nsIPrefService).getBranch("compact.menu."),
+    .getService(Components.interfaces.nsIPrefService)
+    .getBranch("compact.menu."),
+
+getProfileDir: function() {
+  return Components.classes["@mozilla.org/file/directory_service;1"]
+    .getService(Components.interfaces.nsIProperties)
+    .get("ProfD", Components.interfaces.nsIFile);
+},
 
 SHOWMENU: 'showmenu.',
 
@@ -228,6 +235,7 @@ init: function() {
     this.initToolbarContextMenu_Tb();
   }
   this.initKeyEvents();
+  this.initIcon();
 },
 
 initKeyEvents: function() {
@@ -334,6 +342,59 @@ initToolbarContextMenu_Tb: function() {
   context.addEventListener('popupshowing', onToolbarContextMenuShowing, false);
 },
 
+resetIcon: function() {
+  var document = this.getMainWindow().document;
+  var button = document.getElementById('menu-button');
+  if (button) {
+    button.style.removeProperty('list-style-image');
+    button.style.removeProperty('-moz-image-region');
+  }
+
+  var icon_file = window.document.getElementById('icon_file');
+  if (icon_file) {
+    icon_file.image = null;
+  }
+},
+
+initIcon: function() {
+  var mainWindow = this.getMainWindow();
+  if (window != mainWindow)
+    return mainWindow.eval('CompactMenu.initIcon()');
+
+  var button = document.getElementById('menu-button');
+  if (!button) return;
+
+  this.resetIcon();
+
+  var iconEnable = this._prefs.getBoolPref('icon.enabled');
+  if (iconEnable) {
+    var icon = this.getLocalIconFile();
+    if (icon && icon.exists()) {
+      this.c_dump('change icon: ' +  icon.path);
+      var iconURI = this.toFileURI(icon).spec;
+      var listStyleImage = 'url(' + iconURI + ')';
+      button.style.setProperty('list-style-image', listStyleImage, '');
+    }
+  }
+  this.c_dump('iconURI: ' + iconURI);
+
+  if (!iconURI) {
+    var listStyleImage = window.getComputedStyle(button, '').getPropertyValue('list-style-image');
+    var iconURI = (listStyleImage.match(/url\((.*?)\)/) || [])[1] || '';
+  }
+  this.c_dump('iconURI: ' + iconURI);
+
+  if (iconURI) {
+    var img = new Image();
+    img.onload = function() {
+      if (img.width && img.height && (16 != img.width || 48 != img.height)) {
+        button.style.setProperty('-moz-image-region', 'rect(0px, ' + img.width + 'px, ' + img.height + 'px, 0px)', '');
+      }
+    };
+    img.src = iconURI;
+  }
+},
+
 getVisibleToolbarCount: function() {
   var count = 0;
   var toolbox = document.getElementById('navigator-toolbox')
@@ -395,6 +456,55 @@ getMainWindow: function() {
   return null;
 },
 
+getLocalIconFile: function() {
+  var localFileName = this._prefs.getCharPref('icon.localfilename');
+  if (!localFileName) return null;
+  var localFile = this.toLocalFile(this.getProfileDir());
+  localFile.appendRelativePath(localFileName);
+  return localFile;
+},
+
+getIconFile: function() {
+  try {
+    return this._prefs.getComplexValue('icon.file', Components.interfaces.nsILocalFile);
+  } catch (e) {
+    return null;
+  }
+},
+
+setIconFile: function(file) {
+  this.resetIcon();
+  var lastLocalIconFile = this.getLocalIconFile();
+  var destFile = this.toLocalIconFile(file);
+  file.copyTo(destFile.parent, destFile.leafName);
+  this._prefs.setCharPref('icon.localfilename', destFile.leafName);
+  this._prefs.setComplexValue('icon.file', Components.interfaces.nsILocalFile, file);
+  if (lastLocalIconFile && lastLocalIconFile.exists())
+    lastLocalIconFile.remove(false);
+},
+
+toFileURI: function(file) {
+  var IOService = Components.classes['@mozilla.org/network/io-service;1']
+    .getService(Components.interfaces.nsIIOService);
+  return IOService.newFileURI(file);
+},
+
+toLocalFile: function(file) {
+  if (file instanceof Components.interfaces.nsILocalFile)
+    return file
+  var localFile = Components.classes['@mozilla.org/file/local;1']
+    .createInstance(Components.interfaces.nsILocalFile);
+  localFile.initWithPath(file.path);
+  return localFile;
+},
+
+toLocalIconFile: function(file) {
+  var ext = (file.leafName.match(/\.[^.]+$/) || [''])[0];
+  var localFile = this.toLocalFile(this.getProfileDir());
+  localFile.appendRelativePath('compact' + (new Date()).getTime() + ext);
+  return localFile;
+},
+
 // Preference
 
 prefInit: function() {
@@ -406,6 +516,19 @@ prefInit: function() {
     var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
     this.addVisibleMenuCheckbox(menu, eid, visible);
   });
+
+  var icon_enable = document.getElementById('icon_enable');
+  if (icon_enable) {
+    icon_enable.checked = this._prefs.getBoolPref('icon.enabled');
+    icon_enable.doCommand();
+    var icon_file = document.getElementById('icon_file');
+    icon_file.file = this.getIconFile();
+    if (icon_file.file) {
+      var localIconFile = this.getLocalIconFile();
+      if (localIconFile && localIconFile.exists())
+        icon_file.image = this.toFileURI(localIconFile).spec;
+    }
+  }
 },
 
 prefAccept: function() {
@@ -417,7 +540,17 @@ prefAccept: function() {
     var item = document.getElementById(eid);
     this._prefs.setBoolPref(CompactMenu.SHOWMENU + id, item.checked);
   });
+
+  var icon_enable = document.getElementById('icon_enable');
+  if (icon_enable) {
+    var icon_file = document.getElementById('icon_file').file;
+    this._prefs.setBoolPref('icon.enabled', icon_enable.checked);
+    if (icon_enable.checked && icon_file && icon_file.exists())
+      this.setIconFile(icon_file);
+  }
+
   this.hideAll();
+  this.initIcon();
   return true;
 },
 
@@ -431,6 +564,29 @@ addVisibleMenuCheckbox: function(menu, id, checked) {
   item.setAttribute('checked', checked);
   container.appendChild(item);
   return item;
+},
+
+disableGroup: function(group, disabled) {
+  var group = document.getElementById(group);
+  var elements = group.getElementsByTagName('*');
+  for (var i = elements.length; 0 <= --i;) {
+    var element = elements[i];
+    if ('disabled' in element && 'caption' != element.parentNode.nodeName)
+      element.disabled = disabled;
+  }
+},
+
+openImagePicker: function(title, filefield) {
+  var nsIFilePicker = Components.interfaces.nsIFilePicker;
+  var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+  fp.init(window, title, nsIFilePicker.modeOpen);
+  fp.appendFilters(nsIFilePicker.filterImages);
+  fp.appendFilters(nsIFilePicker.filterAll);
+  if (nsIFilePicker.returnOK == fp.show()) {
+    filefield = document.getElementById(filefield);
+    filefield.file = fp.file;
+    filefield.image = fp.fileURL.spec;
+  }
 }
 
 } // CompactMenu
