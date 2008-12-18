@@ -12,6 +12,9 @@
 	<property name="xpi.file" value="${ant.project.name}-${RDF.Description.em:version}.xpi" />
 	<property name="jar.file" value="compact.jar" />
 
+	<!-- defines -->
+	<defaultexcludes add="**/.*" />
+
 	<!-- deploy -->	
 	<target name="deploy" depends="xpi">
 		<exec executable="cmd.exe" os="Windows XP">
