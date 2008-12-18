@@ -10,5 +10,5 @@
 <!ENTITY iconPref.caption "Compact Menu のアイコンを変更する">
 <!ENTITY iconPref.accesskey "I">
 <!ENTITY iconFilePicker.label "参照...">
-<!ENTITY iconFilePicker.accesskey "O">
+<!ENTITY iconFilePicker.accesskey "B">
 <!ENTITY iconFilePicker.title "Compact Menu のアイコンを選択">
