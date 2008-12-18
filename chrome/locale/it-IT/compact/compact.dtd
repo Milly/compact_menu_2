@@ -7,8 +7,3 @@
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Barra dei Menu">
 <!ENTITY menubarCmd.accesskey "M">
-<!ENTITY iconPref.caption "Change Compact Menu's icon">
-<!ENTITY iconPref.accesskey "I">
-<!ENTITY iconFilePicker.label "Browse...">
-<!ENTITY iconFilePicker.accesskey "B">
-<!ENTITY iconFilePicker.title "Select icon for Compact Menu">
