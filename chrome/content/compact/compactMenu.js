@@ -333,6 +333,8 @@ initToolbarContextMenu_Tb: function() {
   }
   menu.addEventListener('command', toggleMenubarVisible, false);
   context.addEventListener('popupshowing', onToolbarContextMenuShowing, false);
+
+  this.hookCode('CustomizeMailToolbar', '{', '{ CompactMenu.hideMenu();');
 },
 
 resetIcon: function() {
