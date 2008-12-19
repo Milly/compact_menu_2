@@ -40,9 +40,13 @@ c_dump: function(msg) {
     this._consoleService = this._consoleService
       || Components.classes["@mozilla.org/consoleservice;1"]
         .getService(Components.interfaces.nsIConsoleService);
-    this._ConsoleService.logStringMessage(msg);
+    this._consoleService.logStringMessage(msg);
     dump(msg);
   }
+},
+
+hookCode: function(orgFunc, orgCode, myCode) {
+  eval(orgFunc + '=' + eval(orgFunc).toString().replace(orgCode, myCode));
 },
 
 getCurrentMenuContainer: function() {
@@ -292,19 +296,15 @@ initToolbarContextMenu_Fx: function() {
   }
   menubar.collapsed = collapsed || menubar.collapsed;
 
-  function hookCode(orgFunc, orgCode, myCode) {
-    eval(orgFunc + '=' + eval(orgFunc).toString().replace(orgCode, myCode));
-  }
-
-  hookCode('onViewToolbarsPopupShowing', 'type != "menubar"', 'true');
-  hookCode('onViewToolbarCommand',
+  this.hookCode('onViewToolbarsPopupShowing', 'type != "menubar"', 'true');
+  this.hookCode('onViewToolbarCommand',
       'document.persist(toolbar.id, "collapsed");',
       'if ("toolbar-menubar" == toolbar.id) return; $&');
 
   // check All-in-One-Sidebar
   if (document.getElementById('aios-viewToolbar')) return;
 
-  hookCode('onViewToolbarCommand',
+  this.hookCode('onViewToolbarCommand',
       'toolbar.collapsed = ',
       '$& (1 < CompactMenu.getVisibleToolbarCount()) &&');
   if (0 == this.getVisibleToolbarCount()) {
