@@ -2,10 +2,6 @@ var CompactMenu = {
 
 DEBUG: true,
 
-aConsoleService:
-  Components.classes["@mozilla.org/consoleservice;1"]
-    .getService(Components.interfaces.nsIConsoleService),
-
 _prefs:
   Components.classes["@mozilla.org/preferences-service;1"]
     .getService(Components.interfaces.nsIPrefService)
@@ -47,7 +43,10 @@ SINGLE_POPUP: 'main-menu-popup',
 c_dump: function(msg) {
   if (this.DEBUG) {
     msg = 'Compact Menu :: ' + msg;
-    this.aConsoleService.logStringMessage(msg);
+    this._consoleService = this._consoleService
+      || Components.classes["@mozilla.org/consoleservice;1"]
+        .getService(Components.interfaces.nsIConsoleService);
+    this._ConsoleService.logStringMessage(msg);
     dump(msg);
   }
 },
