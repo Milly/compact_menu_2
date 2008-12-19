@@ -7,12 +7,6 @@ _prefs:
     .getService(Components.interfaces.nsIPrefService)
     .getBranch("compact.menu."),
 
-getProfileDir: function() {
-  return Components.classes["@mozilla.org/file/directory_service;1"]
-    .getService(Components.interfaces.nsIProperties)
-    .get("ProfD", Components.interfaces.nsIFile);
-},
-
 SHOWMENU: 'showmenu.',
 
 ELEMENT_SHOWMENU: 'compact-showmenu-',
@@ -502,6 +496,12 @@ toLocalIconFile: function(file) {
   var localFile = this.toLocalFile(this.getProfileDir());
   localFile.appendRelativePath('compact' + (new Date()).getTime() + ext);
   return localFile;
+},
+
+getProfileDir: function() {
+  return Components.classes["@mozilla.org/file/directory_service;1"]
+    .getService(Components.interfaces.nsIProperties)
+    .get("ProfD", Components.interfaces.nsIFile);
 },
 
 // Preference
