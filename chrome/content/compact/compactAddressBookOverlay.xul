@@ -3,10 +3,10 @@
 <?xml-stylesheet href="chrome://compact/skin/compact.css" type="text/css"?>
 <?xul-overlay href="chrome://compact/content/compactMenuOverlay.xul"?>
 
-<overlay id="compactMessengerOverlay"
+<overlay id="compactAddressBookOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
-  <toolbarpalette id="MailToolbarPalette">
+  <toolbarpalette id="AddressBookToolbarPalette">
     <toolbarbutton id="menu-button" />
     <toolbaritem id="compact-menu" />
   </toolbarpalette>
@@ -15,7 +15,7 @@
     <menuitem id="ShowMenubar" insertbefore="CustomizeMailToolbar" />
   </popup>
 
-  <window id="messengerWindow">
+  <window id="addressbookWindow">
     <popupset>
       <tooltip id="menu-button-tooltip" />
       <menupopup id="main-menu-popup"/>

@@ -39,6 +39,12 @@
       onpopupshowing="if (this == event.target) CompactMenu.menuIt(this);"
       onpopuphidden="if (this == event.target) CompactMenu.hideMenu();"/>
 
+  <menuitem id="ShowMenubar"
+      type="checkbox"
+      label="&menubarCmd.label;"
+      accesskey="&menubarCmd.accesskey;"
+      checked="true"/>
+
 </overlay>
 
 <!-- ***** BEGIN LICENSE BLOCK *****
