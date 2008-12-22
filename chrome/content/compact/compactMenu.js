@@ -10,7 +10,7 @@ _prefs:
 toMenuPrefId: function(id) {
   var mainWindow = this.getMainWindow();
   var windowElement = mainWindow.document.documentElement;
-  var windowId = windowElement.id || windowElement.getAttribute('windowtype') || '_unknown_';
+  var windowId = (windowElement.id || '_id_') + '-' + (windowElement.getAttribute('windowtype') || '_windowtype_');
   return 'showmenu.' + windowId + '.' + id;
 },
 
@@ -532,10 +532,10 @@ getProfileDir: function() {
     .get("ProfD", Components.interfaces.nsIFile);
 },
 
-// Preference
+// Customize
 
-prefInit: function() {
-  this.c_dump('load prefs');
+customizeInit: function() {
+  this.c_dump('customizeInit');
 
   if (window.gToolbox) {
     var windowtype = gToolbox.ownerDocument.documentElement.getAttribute('windowtype');
@@ -552,6 +552,38 @@ prefInit: function() {
     var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
     this.addVisibleMenuCheckbox(menu, eid, visible);
   });
+},
+
+customizeAccept: function() {
+  this.c_dump('customizeAccept');
+
+  this.mapMenus(function(menu, index) {
+    var id = menu.id || index;
+    var pref = this.toMenuPrefId(id);
+    var eid = this.toMenuElementId(id);
+    var item = document.getElementById(eid);
+    this._prefs.setBoolPref(pref, item.checked);
+  });
+
+  this.hideAll();
+},
+
+addVisibleMenuCheckbox: function(menu, id, checked) {
+  var container = document.getElementById('compact-visible_menus');
+  var item = document.getElementById(id) || document.createElement('checkbox');
+  item.setAttribute('id', id);
+  item.setAttribute('type', 'checkbox');
+  item.setAttribute('label', menu.getAttribute('label'));
+  item.setAttribute('accesskey', menu.getAttribute('accesskey'));
+  item.setAttribute('checked', checked);
+  container.appendChild(item);
+  return item;
+},
+
+// Preference
+
+prefInit: function() {
+  this.c_dump('prefInit');
 
   var icon_enable = document.getElementById('icon_enable');
   if (icon_enable) {
@@ -568,15 +600,7 @@ prefInit: function() {
 },
 
 prefAccept: function() {
-  this.c_dump('save prefs');
-
-  this.mapMenus(function(menu, index) {
-    var id = menu.id || index;
-    var pref = this.toMenuPrefId(id);
-    var eid = this.toMenuElementId(id);
-    var item = document.getElementById(eid);
-    this._prefs.setBoolPref(pref, item.checked);
-  });
+  this.c_dump('prefAccept');
 
   var icon_enable = document.getElementById('icon_enable');
   if (icon_enable) {
@@ -586,21 +610,7 @@ prefAccept: function() {
       this.setIconFile(icon_file);
   }
 
-  this.hideAll();
   this.initIcon();
-  return true;
-},
-
-addVisibleMenuCheckbox: function(menu, id, checked) {
-  var container = document.getElementById('compact-visible_menus');
-  var item = document.getElementById(id) || document.createElement('checkbox');
-  item.setAttribute('id', id);
-  item.setAttribute('type', 'checkbox');
-  item.setAttribute('label', menu.getAttribute('label'));
-  item.setAttribute('accesskey', menu.getAttribute('accesskey'));
-  item.setAttribute('checked', checked);
-  container.appendChild(item);
-  return item;
 },
 
 disableGroup: function(group, disabled) {

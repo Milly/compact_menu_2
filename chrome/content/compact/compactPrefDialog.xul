@@ -18,9 +18,6 @@
   <script type="application/x-javascript" src="chrome://compact/content/compactMenu.js"/>
 
   <vbox flex="1">
-    <groupbox id="compact-visible_menus" align="start" pack="start" orient="vertical">
-      <caption label="&menuPref.caption;"/>
-    </groupbox>
     <groupbox id="compact-icon" align="start" pack="start" orient="vertical">
       <caption>
         <checkbox id="icon_enable"

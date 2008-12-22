@@ -10,9 +10,9 @@
   <script type="application/x-javascript" src="chrome://compact/content/compactMenu.js"/>
   <script type="application/x-javascript">
   <![CDATA[
-    window.addEventListener("load", function() { CompactMenu.prefInit(); }, false);
-    window.addEventListener("unload", function() { CompactMenu.prefAccept(); }, false);
-    window.addEventListener("dialogcancel", function() { CompactMenu.prefInit(); }, false);
+    window.addEventListener("load", function() { CompactMenu.customizeInit(); }, false);
+    window.addEventListener("unload", function() { CompactMenu.customizeAccept(); }, false);
+    window.addEventListener("dialogcancel", function() { CompactMenu.customizeInit(); }, false);
   ]]>
   </script>
 
