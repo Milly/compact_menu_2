@@ -18,8 +18,9 @@
 
   <vbox id="main-box">
     <vbox id="compact-box" insertafter="palette-box">
-      <groupbox id="compact-visible_menus" align="start" pack="start" orient="horizontal">
+      <groupbox id="compact-visible_menus" align="start" pack="start" orient="vertical">
         <caption label="&menuPref.caption;"/>
+        <hbox/>
       </groupbox>
     </vbox>
   </vbox>

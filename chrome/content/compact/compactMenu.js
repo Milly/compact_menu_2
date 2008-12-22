@@ -576,7 +576,12 @@ addVisibleMenuCheckbox: function(menu, id, checked) {
   item.setAttribute('label', menu.getAttribute('label'));
   item.setAttribute('accesskey', menu.getAttribute('accesskey'));
   item.setAttribute('checked', checked);
-  container.appendChild(item);
+  var row = container.lastChild;
+  if (4 <= row.childNodes.length) {
+	  row = document.createElement(row.nodeName);
+	  container.appendChild(row);
+  }
+  row.appendChild(item);
   return item;
 },
 
