@@ -7,11 +7,24 @@ _prefs:
     .getService(Components.interfaces.nsIPrefService)
     .getBranch("compact.menu."),
 
+toToolbarPrefId: function(element_or_id) {
+  if (element_or_id.ownerDocument) {
+    var windowElement = element_or_id.ownerDocument.documentElement;
+    var id = element_or_id.id;
+  } else {
+    var mainWindow = this.getMainWindow();
+    var windowElement = mainWindow.document.documentElement;
+    var id = element_or_id;
+  }
+  var windowId = (windowElement.id || '_id_') + '-' + (windowElement.getAttribute('windowtype') || '_windowtype_');
+  return 'hidetoolbar.' + windowId + '.' + id;
+},
+
 toMenuPrefId: function(id) {
   var mainWindow = this.getMainWindow();
   var windowElement = mainWindow.document.documentElement;
   var windowId = (windowElement.id || '_id_') + '-' + (windowElement.getAttribute('windowtype') || '_windowtype_');
-  return 'showmenu.' + windowId + '.' + id;
+  return 'hidemenu.' + windowId + '.' + id;
 },
 
 toMenuElementId: function(id) {
@@ -64,6 +77,30 @@ c_dump: function(msg) {
 
 hookCode: function(orgFunc, orgCode, myCode) {
   eval(orgFunc + '=' + eval(orgFunc).toString().replace(orgCode, myCode));
+},
+
+getBoolPref: function(pref, defaultValue) {
+  const nsIPrefBranch = Components.interfaces.nsIPrefBranch;
+  if (this._prefs.prefHasUserValue(pref) && nsIPrefBranch.PREF_BOOL == this._prefs.getPrefType(pref))
+    return this._prefs.getBoolPref(pref);
+  return defaultValue;
+},
+
+setBoolPref: function(pref, value, clearOnFalse) {
+  if (this._prefs.prefHasUserValue(pref))
+    CompactMenu._prefs.clearUserPref(pref);
+  if (value || !clearOnFalse)
+    CompactMenu._prefs.setBoolPref(pref, !!value);
+},
+
+isToolbarHidden: function(element_or_id) {
+  var pref = this.toToolbarPrefId(element_or_id);
+  return this.getBoolPref(pref, false);
+},
+
+isMenuHidden: function(id) {
+  var pref = this.toMenuPrefId(id);
+  return this.getBoolPref(pref, false);
 },
 
 getCurrentMenuContainer: function() {
@@ -146,14 +183,9 @@ mapMenus: function(it) {
 },
 
 hideItems: function() {
-  const nsIPrefBranch = Components.interfaces.nsIPrefBranch;
   this.mapMenus(function(menu, index) {
     var id = menu.id || index;
-    var pref = this.toMenuPrefId(id);
-    var hasPref = this._prefs.prefHasUserValue(pref) && 
-      nsIPrefBranch.PREF_BOOL == this._prefs.getPrefType(pref);
-    var visible = hasPref? this._prefs.getBoolPref(pref): true;
-    menu.hidden = !visible;
+    menu.hidden = this.isMenuHidden(id);
   });
 },
 
@@ -318,12 +350,14 @@ initToolbarContextMenu_Fx: function() {
   var collapsed = 'true' == menubar.getAttribute('collapsed');
 
   menubar.__defineGetter__('collapsed', function(){
-    var pref = 'showtoolbar.' + this.id;
-    return !(CompactMenu._prefs.prefHasUserValue(pref) ? CompactMenu._prefs.getBoolPref(pref) : true);
+    return CompactMenu.isToolbarHidden(this);
   });
+
   menubar.__defineSetter__('collapsed', function(){
-    CompactMenu._prefs.setBoolPref('showtoolbar.' + this.id, !arguments[0]);
-    if (arguments[0]) {
+    var collapsed = arguments[0];
+    var pref = CompactMenu.toToolbarPrefId(this);
+    CompactMenu.setBoolPref(pref, collapsed, true);
+    if (collapsed) {
       this.setAttribute('collapsed', true);
     } else {
       this.removeAttribute('collapsed');
@@ -358,15 +392,15 @@ initToolbarContextMenu_Tb: function() {
   var menubar = this.getMainToolbar();
   var menu = document.getElementById('ShowMenubar');
   var context = document.getElementById('toolbar-context-menu');
-  var pref = 'showtoolbar.' + menubar.id;
-  var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
-  if (visible == menubar.collapsed) {
+  var hidden = this.isToolbarHidden(menubar);
+  if (hidden != menubar.collapsed) {
     toggleMenubarVisible();
   }
 
   function toggleMenubarVisible() {
     menubar.collapsed = !menubar.collapsed;
-    CompactMenu._prefs.setBoolPref(pref, !menubar.collapsed);
+    var pref = CompactMenu.toToolbarPrefId(menubar);
+    CompactMenu.setBoolPref(pref, menubar.collapsed, true);
     CompactMenu.hideMenu();
   }
   function onToolbarContextMenuShowing() {
@@ -404,7 +438,7 @@ loadIcon: function() {
   var button = document.getElementById('menu-button');
   if (!button) return;
 
-  var iconEnable = this._prefs.getBoolPref('icon.enabled');
+  var iconEnable = this.getBoolPref('icon.enabled', false);
   if (iconEnable) {
     var icon = this.getLocalIconFile();
     if (icon && icon.exists()) {
@@ -547,9 +581,8 @@ customizeInit: function() {
 
   this.mapMenus(function(menu, index) {
     var id = menu.id || index;
-    var pref = this.toMenuPrefId(id);
     var eid = this.toMenuElementId(id);
-    var visible = this._prefs.prefHasUserValue(pref)? this._prefs.getBoolPref(pref): true;
+    var visible = !this.isMenuHidden(id);
     this.addVisibleMenuCheckbox(menu, eid, visible);
   });
 },
@@ -562,7 +595,7 @@ customizeAccept: function() {
     var pref = this.toMenuPrefId(id);
     var eid = this.toMenuElementId(id);
     var item = document.getElementById(eid);
-    this._prefs.setBoolPref(pref, item.checked);
+    this.setBoolPref(pref, !item.checked, true);
   });
 
   this.hideAll();
@@ -578,8 +611,8 @@ addVisibleMenuCheckbox: function(menu, id, checked) {
   item.setAttribute('checked', checked);
   var row = container.lastChild;
   if (4 <= row.childNodes.length) {
-	  row = document.createElement(row.nodeName);
-	  container.appendChild(row);
+    row = document.createElement(row.nodeName);
+    container.appendChild(row);
   }
   row.appendChild(item);
   return item;
@@ -592,7 +625,7 @@ prefInit: function() {
 
   var icon_enable = document.getElementById('icon_enable');
   if (icon_enable) {
-    icon_enable.checked = this._prefs.getBoolPref('icon.enabled');
+    icon_enable.checked = this.getBoolPref('icon.enabled', false);
     icon_enable.doCommand();
     var icon_file = document.getElementById('icon_file');
     icon_file.file = this.getIconFile();
@@ -610,7 +643,7 @@ prefAccept: function() {
   var icon_enable = document.getElementById('icon_enable');
   if (icon_enable) {
     var icon_file = document.getElementById('icon_file').file;
-    this._prefs.setBoolPref('icon.enabled', icon_enable.checked);
+    this.setBoolPref('icon.enabled', icon_enable.checked);
     if (icon_enable.checked && icon_file && icon_file.exists())
       this.setIconFile(icon_file);
   }
