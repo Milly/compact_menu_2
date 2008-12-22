@@ -1,0 +1,14 @@
+<!ENTITY menu.label "Menu kompaktowe">
+<!ENTITY menuPref.caption "Zaznacz menu, które będą wyświetlane w menu kompaktowym">
+<!ENTITY compactPopup.off "wyłączone">
+<!ENTITY compactPopup.image "obrazek">
+<!ENTITY compactPopup.text "tekst">
+<!ENTITY compactMenu.label "Menu">
+<!ENTITY compactMenu.key "M">
+<!ENTITY menubarCmd.label "Pasek menu">
+<!ENTITY menubarCmd.accesskey "M">
+<!ENTITY iconPref.caption "Zmień ikonę rozszerzenia">
+<!ENTITY iconPref.accesskey "Z">
+<!ENTITY iconFilePicker.label "Przeglądaj">
+<!ENTITY iconFilePicker.accesskey "P">
+<!ENTITY iconFilePicker.title "Wybierz ikonę">

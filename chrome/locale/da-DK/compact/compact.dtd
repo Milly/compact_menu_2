@@ -1,0 +1,14 @@
+<!ENTITY menu.label "Compact Menu">
+<!ENTITY menuPref.caption "Vælg de menuer du ønsker at se i Compact menuen">
+<!ENTITY compactPopup.off "fra">
+<!ENTITY compactPopup.image "billede">
+<!ENTITY compactPopup.text "tekst">
+<!ENTITY compactMenu.label "Menu">
+<!ENTITY compactMenu.key "M">
+<!ENTITY menubarCmd.label "Menulinje">
+<!ENTITY menubarCmd.accesskey "M">
+<!ENTITY iconPref.caption "Skift Compact Menus ikon">
+<!ENTITY iconPref.accesskey "I">
+<!ENTITY iconFilePicker.label "Gennemse...">
+<!ENTITY iconFilePicker.accesskey "G">
+<!ENTITY iconFilePicker.title "Vælg ikon til Compact Menu">

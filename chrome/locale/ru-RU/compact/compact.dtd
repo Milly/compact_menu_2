@@ -1,0 +1,14 @@
+<!ENTITY menu.label "Compact Menu">
+<!ENTITY menuPref.caption "Выберите подменю, которые вы хотите видеть в Compact Menu">
+<!ENTITY compactPopup.off "выкл.">
+<!ENTITY compactPopup.image "изображение">
+<!ENTITY compactPopup.text "текст">
+<!ENTITY compactMenu.label "Меню">
+<!ENTITY compactMenu.key "М">
+<!ENTITY menubarCmd.label "Панель меню">
+<!ENTITY menubarCmd.accesskey "м">
+<!ENTITY iconPref.caption "Изменить значок Compact Menu">
+<!ENTITY iconPref.accesskey "з">
+<!ENTITY iconFilePicker.label "Обзор…">
+<!ENTITY iconFilePicker.accesskey "б">
+<!ENTITY iconFilePicker.title "Выберите значок для Compact Menu">

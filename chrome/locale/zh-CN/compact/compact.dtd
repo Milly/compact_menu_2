@@ -1,0 +1,14 @@
+<!ENTITY menu.label "Compact Menu">
+<!ENTITY menuPref.caption "选择要显示在整合菜单/按钮内的项目">
+<!ENTITY compactPopup.off "关闭">
+<!ENTITY compactPopup.image "图像">
+<!ENTITY compactPopup.text "文字">
+<!ENTITY compactMenu.label "菜单">
+<!ENTITY compactMenu.key "M">
+<!ENTITY menubarCmd.label "菜单栏">
+<!ENTITY menubarCmd.accesskey "M">
+<!ENTITY iconPref.caption "更改 Compact Menu 图标">
+<!ENTITY iconPref.accesskey "I">
+<!ENTITY iconFilePicker.label "浏览">
+<!ENTITY iconFilePicker.accesskey "B">
+<!ENTITY iconFilePicker.title "选择 Compact Menu 的新图标">

@@ -1,9 +1,9 @@
-<!ENTITY menu.label   "Kompaktmeny">
+<!ENTITY menu.label "Kompaktmeny">
 <!ENTITY menuPref.caption "V&#228;lj de menyer du vill visa i Kompaktmenyn:">
 <!ENTITY compactPopup.off "Av">
 <!ENTITY compactPopup.image "Bild">
 <!ENTITY compactPopup.text "Text">
 <!ENTITY compactMenu.label "Meny">
-<!ENTITY compactMenu.key   "M">
+<!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Menyf&#228;ltet">
 <!ENTITY menubarCmd.accesskey "M">
