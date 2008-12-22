@@ -1,8 +1,5 @@
 <!ENTITY menu.label "Compact Menu">
 <!ENTITY menuPref.caption "Selecteer de menu&apos;s die je wilt zien in Compact Menu">
-<!ENTITY compactPopup.off "uit">
-<!ENTITY compactPopup.image "beeld">
-<!ENTITY compactPopup.text "tekst">
 <!ENTITY compactMenu.label "Menu">
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Menubalk">

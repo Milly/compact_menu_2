@@ -1,8 +1,5 @@
 <!ENTITY menu.label "Compact Menu">
 <!ENTITY menuPref.caption "Compact Menu に表示するメニューを選択">
-<!ENTITY compactPopup.off "off">
-<!ENTITY compactPopup.image "image">
-<!ENTITY compactPopup.text "text">
 <!ENTITY compactMenu.label "メニュー">
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "メニューバー">

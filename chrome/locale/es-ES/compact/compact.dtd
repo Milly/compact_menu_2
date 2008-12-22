@@ -1,8 +1,5 @@
 <!ENTITY menu.label "Compact Menu">
 <!ENTITY menuPref.caption "Seleccione los menús a mostrar en Compact Menu">
-<!ENTITY compactPopup.off "desactivado">
-<!ENTITY compactPopup.image "imagen">
-<!ENTITY compactPopup.text "texto">
 <!ENTITY compactMenu.label "Menú">
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Barra de menú">
