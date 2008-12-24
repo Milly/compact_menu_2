@@ -197,7 +197,7 @@ hidePopup: function() {
   }
 },
 
-hideMenu: function() {
+hideMenuBar: function() {
   var menubar = this.getMenuBar();
   this.menuIt(menubar);
   if (this.getMenuItem() || this.getMainToolbar().collapsed) {
@@ -210,7 +210,7 @@ hideMenu: function() {
 hideAll: function() {
   this.hideItems();
   this.hidePopup();
-  this.hideMenu();
+  this.hideMenuBar();
 },
 
 isMenuAccessKey: function(event) {
@@ -362,7 +362,7 @@ initToolbarContextMenu_Fx: function() {
     } else {
       this.removeAttribute('collapsed');
     }
-    CompactMenu.hideMenu();
+    CompactMenu.hideMenuBar();
   });
 
   if (collapsed) {
@@ -401,7 +401,7 @@ initToolbarContextMenu_Tb: function() {
     menubar.collapsed = !menubar.collapsed;
     var pref = CompactMenu.toToolbarPrefId(menubar);
     CompactMenu.setBoolPref(pref, menubar.collapsed, true);
-    CompactMenu.hideMenu();
+    CompactMenu.hideMenuBar();
   }
   function onToolbarContextMenuShowing() {
     menu.setAttribute('checked', (!menubar.collapsed).toString());
@@ -409,7 +409,7 @@ initToolbarContextMenu_Tb: function() {
   menu.addEventListener('command', toggleMenubarVisible, false);
   context.addEventListener('popupshowing', onToolbarContextMenuShowing, false);
 
-  this.hookCode('CustomizeMailToolbar', '{', '{ CompactMenu.hideMenu();');
+  this.hookCode('CustomizeMailToolbar', '{', '{ CompactMenu.hideMenuBar();');
 },
 
 resetIcon: function() {
