@@ -243,8 +243,10 @@ isMenuAccessKey: function(event, checkKeyCode) {
   return false;
 },
 
-isRTL: function(node) {
-  return 'rtl' == document.defaultView.getComputedStyle(node, '').direction;
+isRTL: function() {
+  var document = this.getMainWindow().document;
+  var menubar = this.getMenuBar();
+  return 'rtl' == document.defaultView.getComputedStyle(menubar, '').direction;
 },
 
 addPopupMethods: function(e) {
