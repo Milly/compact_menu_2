@@ -249,10 +249,10 @@ isRTL: function() {
   return 'rtl' == document.defaultView.getComputedStyle(menubar, '').direction;
 },
 
-addPopupMethods: function(e) {
-  if (!e.openPopup /* Mozilla < 1.9 */) {
-    this.c_dump('add openPopup, openPopupAtScreen');
-    e.openPopup = function(anchor, position, x, y, isContextMenu, attributesOverride) {
+addPopupMethods: function(popup) {
+  if (!('openPopup' in popup) /* Mozilla < 1.9 */) {
+    this.c_dump('add popup.openPopup');
+    popup.openPopup = function(anchor, position, x, y, isContextMenu, attributesOverride) {
       if (!anchor) {
         anchor = document.documentElement;
         position = null;
@@ -274,11 +274,24 @@ addPopupMethods: function(e) {
       var popupType = isContextMenu ? 'context' : 'popup';
       this.showPopup(anchor, -1, -1, popupType, p[0], p[1]);
     };
-    e.openPopupAtScreen = function(x, y, isContextMenu) {
+
+    this.c_dump('add popup.openPopupAtScreen');
+    popup.openPopupAtScreen = function(x, y, isContextMenu) {
       document.popupNode = null;
       var popupType = isContextMenu ? 'context' : 'popup';
       this.showPopup(document.documentElement, x, y, popupType, null, null);
     };
+
+    this.c_dump('add popup.state');
+    var popup_state = 'closed';
+    popup.__defineGetter__('state', function() { return popup_state; });
+    function addPopupStateEvent(type, state) {
+      popup.addEventListener(type, function() { popup_state = state; }, true);
+    }
+    addPopupStateEvent('popupshowing', 'showing');
+    addPopupStateEvent('popupshown',   'open');
+    addPopupStateEvent('popuphiding',  'hiding');
+    addPopupStateEvent('popuphidden',  'closed');
   }
 },
 
