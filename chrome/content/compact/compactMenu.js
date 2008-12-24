@@ -274,14 +274,18 @@ addPopupMethods: function(popup) {
       var popupType = isContextMenu ? 'context' : 'popup';
       this.showPopup(anchor, -1, -1, popupType, p[0], p[1]);
     };
+  }
 
+  if (!('openPopupAtScreen' in popup) /* Mozilla < 1.9 */) {
     this.c_dump('add popup.openPopupAtScreen');
     popup.openPopupAtScreen = function(x, y, isContextMenu) {
       document.popupNode = null;
       var popupType = isContextMenu ? 'context' : 'popup';
       this.showPopup(document.documentElement, x, y, popupType, null, null);
     };
+  }
 
+  if (!('state' in popup) /* Mozilla < 1.9 */) {
     this.c_dump('add popup.state');
     var popup_state = 'closed';
     popup.__defineGetter__('state', function() { return popup_state; });
