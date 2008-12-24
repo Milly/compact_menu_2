@@ -75,6 +75,7 @@
                   container="true">
               <menupopup id="bookmarksToolbarFolderPopup"
                          type="places"
+                         place="place:folder=TOOLBAR"
                          context="placesContext"
                          onpopupshowing="BookmarksEventHandler.onPopupShowing(event);"/>
             </menu>

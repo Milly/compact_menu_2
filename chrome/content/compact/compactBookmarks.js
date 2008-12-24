@@ -48,10 +48,12 @@ cloneBookmarksMenu: function(menu) {
   }
   var compactBookmarksToolbarFolderMenu = separator.nextSibling;
   if (compactBookmarksToolbarFolderMenu) {
-    compactBookmarksToolbarFolderMenu.label =
-      PlacesUtils.bookmarks.getItemTitle(PlacesUtils.bookmarks.toolbarFolder);
-    compactBookmarksToolbarFolderMenu.firstChild.place =
-      PlacesUtils.getQueryStringForFolder(PlacesUtils.bookmarks.toolbarFolder);
+    var bms = PlacesUtils.bookmarks;
+    compactBookmarksToolbarFolderMenu.label = bms.getItemTitle(bms.toolbarFolder);
+    if (PlacesUtils.getQueryStringForFolder) {
+      compactBookmarksToolbarFolderMenu.firstChild.place =
+        PlacesUtils.getQueryStringForFolder(bms.toolbarFolder);
+    }
   }
 },
 
