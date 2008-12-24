@@ -542,9 +542,7 @@ menuIt: function(targetMenu) {
 setMenuTooltip: function(tooltip, node) {
   if ('menupopup' != node.parentNode.localName) {
     var menus = this.mapMenus(function(menu) {
-      if (!menu.hidden) {
-        return menu.getAttribute('label');
-      }
+      return menu.hidden ? undefined : menu.getAttribute('label');
     });
     var text = menus
       .slice(0, 2)
@@ -699,7 +697,8 @@ prefAccept: function() {
 },
 
 disableGroup: function(group, disabled) {
-  var group = document.getElementById(group);
+  if ('string' == typeof group)
+    group = document.getElementById(group);
   var elements = group.getElementsByTagName('*');
   for (var i = elements.length; 0 <= --i;) {
     var element = elements[i];
