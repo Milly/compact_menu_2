@@ -175,33 +175,36 @@ addPopupMethods: function(popup) {
 },
 
 getCurrentMenuContainer: function() {
-  var document = this.getMainWindow().document;
-  var containerIds = this.MENUBARS.concat(this.POPUPS);
-  for each (var id in containerIds) {
-    var menuContainer = document.getElementById(id);
-    if (menuContainer && menuContainer.hasChildNodes()) {
-      return menuContainer;
+  var document = (this.getMainWindow() || {}).document;
+  if (document) {
+    var containerIds = this.MENUBARS.concat(this.POPUPS);
+    for each (var id in containerIds) {
+      var menuContainer = document.getElementById(id);
+      if (menuContainer && menuContainer.hasChildNodes()) {
+        return menuContainer;
+      }
+    }
+  }
+  return null;
+},
+
+getElementByIds: function(ids) {
+  var document = (this.getMainWindow() || {}).document;
+  if (document) {
+    for each (var id in ids) {
+      var item = document.getElementById(id);
+      if (item) return item;
     }
   }
   return null;
 },
 
 getMainToolbar: function() {
-  var document = this.getMainWindow().document;
-  for each (var id in this.MAINTOOLBARS) {
-    var item = document.getElementById(id);
-    if (item) return item;
-  }
-  return null;
+  return this.getElementByIds(this.MAINTOOLBARS);
 },
 
 getMainToolbox: function() {
-  var document = this.getMainWindow().document;
-  for each (var id in this.MAINTOOLBOXS) {
-    var item = document.getElementById(id);
-    if (item) return item;
-  }
-  return null;
+  return this.getElementByIds(this.MAINTOOLBOXS);
 },
 
 getMainWindows: function() {
@@ -229,32 +232,18 @@ getMainWindow: function() {
 },
 
 getMenuBar: function() {
-  var document = this.getMainWindow().document;
-  for each (var id in this.MENUBARS) {
-    var item = document.getElementById(id);
-    if (item) return item;
-  }
-  return null;
+  return this.getElementByIds(this.MENUBARS);
 },
 
 getMenuItem: function() {
-  var document = this.getMainWindow().document;
-  for each (var id in this.ITEMS) {
-    var item = document.getElementById(id);
-    if (item && !item.parentNode.collapsed) return item;
-  }
-  return null;
+  return this.getElementByIds(this.ITEMS);
 },
 
 getMenuPopup: function(menu) {
   var item = this.getMenuItem();
-  if (item) {
-    var popup = item.getElementsByTagName('menupopup')[0];
-  } else {
-    var document = this.getMainWindow().document;
-    var popup = document.getElementById(this.SINGLE_POPUP);
-  }
-  this.addPopupMethods(popup);
+  var popup = item? item.getElementsByTagName('menupopup')[0]:
+                    this.getElementByIds([this.SINGLE_POPUP]);
+  if (popup) this.addPopupMethods(popup);
   return popup;
 },
 
@@ -278,10 +267,12 @@ hideItems: function() {
 },
 
 hidePopup: function() {
-  var document = this.getMainWindow().document;
-  for each (var id in this.POPUPS) {
-    var popup = document.getElementById(id);
-    if (popup && popup.hidePopup) popup.hidePopup();
+  var document = (this.getMainWindow() || {}).document;
+  if (document) {
+    for each (var id in this.POPUPS) {
+      var popup = document.getElementById(id);
+      if (popup && popup.hidePopup) popup.hidePopup();
+    }
   }
 },
 
@@ -339,6 +330,7 @@ menuIt: function(targetMenu) {
 
 openMenuPopup: function() {
   var popup = this.getMenuPopup();
+  if (!popup) return;
   var x = 0, y = 0;
   if (this.SINGLE_POPUP != popup.id) {
     var anchor = popup.parentNode;
@@ -629,7 +621,7 @@ _menuOpened: false,
 onKeyDown: function(event) {
   var pressing = this.isMenuAccessKey(event, true);
   if (pressing && !this._menuKeyPressing) {
-    this._menuOpened = ('open' == this.getMenuPopup().state);
+    this._menuOpened = ('open' == (this.getMenuPopup() || {}).state);
   }
   this._menuKeyPressing = pressing && this.isMenuBarHidden();
 },
@@ -647,7 +639,7 @@ onKeyUp: function(event) {
 onKeyPress: function(event) {
   if (!this.isMenuAccessKey(event)) return;
   var popup = this.getMenuPopup();
-  if ('open' == popup.state) return;
+  if (!popup || 'open' == popup.state) return;
 
   var c = String.fromCharCode(event.charCode);
   function matchAccesskey(menu) {
