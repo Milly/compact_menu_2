@@ -161,10 +161,11 @@ addPopupMethods: function(popup) {
 
   if (!('state' in popup) /* Mozilla < 1.9 */) {
     this.c_dump('add popup.state');
+    var self = this;
     var popup_state = 'closed';
     popup.__defineGetter__('state', function() { return popup_state; });
     function addPopupStateEvent(type, state) {
-      popup.addEventListener(type, function() { popup_state = state; }, true);
+      self.addEventListener(popup, type, function() { popup_state = state; }, true);
     }
     addPopupStateEvent('popupshowing', 'showing');
     addPopupStateEvent('popupshown',   'open');
@@ -494,6 +495,13 @@ toLocalIconFile: function(file) {
 
 // initialize methods
 
+_eventListeners: [],
+
+addEventListener: function(target, type, listener, useCapture) {
+  target.addEventListener(type, listener, useCapture);
+  this._eventListeners.push([target, type, listener, useCapture]);
+},
+
 hookFunction: function(orgFunc, orgCode, newCode) {
   var orgSource = eval(orgFunc).toSource();
   var newSource = orgSource.replace(orgCode, newCode);
@@ -511,9 +519,12 @@ init: function() {
   } else {
     this.initToolbarContextMenu_Tb();
   }
-  this.initKeyEvents();
   this.initIcon();
-  window.addEventListener('focus', this, false);
+  this.addEventListener(window, 'unload', this, false);
+  this.addEventListener(window, 'focus', this, false);
+  this.addEventListener(window, 'keydown', this, true);
+  this.addEventListener(window, 'keyup', this, true);
+  this.addEventListener(window, 'keypress', this, true);
 },
 
 initIcon: function() {
@@ -521,69 +532,6 @@ initIcon: function() {
   for each (var win in this.getMainWindows()) {
     win.eval('CompactMenu.loadIcon()');
   }
-},
-
-initKeyEvents: function() {
-  var menuKeyPressing = false;
-  var menuOpened = false;
-
-  window.addEventListener("keydown", function(event) {
-    var pressing = CompactMenu.isMenuAccessKey(event, true);
-    if (pressing && !menuKeyPressing) {
-      menuOpened = ('open' == CompactMenu.getMenuPopup().state);
-    }
-    menuKeyPressing = pressing && CompactMenu.isMenuBarHidden();
-  }, true);
-
-  window.addEventListener("keyup", function(event) {
-    if (menuKeyPressing && CompactMenu.isMenuAccessKey(event, true)) {
-      menuKeyPressing = false;
-      event.stopPropagation();
-      if (!menuOpened) {
-        CompactMenu.openMenuPopup();
-      }
-    }
-  }, true);
-
-  window.addEventListener("keypress", function(event) {
-    if (!CompactMenu.isMenuAccessKey(event)) return;
-    var popup = CompactMenu.getMenuPopup();
-    if ('open' == popup.state) return;
-
-    var c = String.fromCharCode(event.charCode);
-    function matchAccesskey(menu) {
-      if ('menu' == menu.localName && !menu.hidden) {
-        return c == menu.getAttribute("accesskey").toLowerCase();
-      }
-      return false;
-    }
-
-    // check visible menu accesskey
-    var menubars = document.getElementsByTagName('menubar');
-    for each (var menubar in menubars) {
-      if (menubar && !menubar.hidden
-          && menubar.parentNode && !menubar.parentNode.hidden
-          && menubar.parentNode.parentNode && !menubar.parentNode.parentNode.collapsed) {
-        for each (var menu in menubar.childNodes) {
-          if (matchAccesskey(menu)) return;
-        }
-      }
-    }
-
-    try {
-      CompactMenu.mapMenus(function(menu) {
-        if (matchAccesskey(menu)) {
-          event.stopPropagation();
-          popup.addEventListener('popupshown', function shown(event) {
-            popup.removeEventListener('popupshown', shown, false);
-            CompactMenu.dispatchKeyEvent(popup, 0, c.charCodeAt(0));
-          }, false);
-          CompactMenu.openMenuPopup();
-          throw 'break';
-        }
-      });
-    } catch (e if 'break' == e) {}
-  }, true);
 },
 
 initToolbarContextMenu_Fx: function() {
@@ -625,7 +573,6 @@ initToolbarContextMenu_Fx: function() {
       '$& (1 < CompactMenu.getVisibleToolbars().length) &&');
   if (0 == this.getVisibleToolbars().length) {
     menubar.collapsed = false;
-    document.persist(menubar.id, "collapsed");
   }
 },
 
@@ -647,23 +594,95 @@ initToolbarContextMenu_Tb: function() {
   function onToolbarContextMenuShowing() {
     menu.setAttribute('checked', (!menubar.collapsed).toString());
   }
-  menu.addEventListener('command', toggleMenubarVisible, false);
-  context.addEventListener('popupshowing', onToolbarContextMenuShowing, false);
+  this.addEventListener(menu, 'command', toggleMenubarVisible, false);
+  this.addEventListener(context, 'popupshowing', onToolbarContextMenuShowing, false);
 
   this.hookFunction('CustomizeMailToolbar', '{', '{ CompactMenu.hideMenuBar();');
+},
+
+// destroy methods
+
+destroy: function() {
+  var listeners = this._eventListeners;
+  this._eventListeners = [];
+  for each (var l in listeners) {
+    l[0].removeEventListener(l[1], l[2], l[3]);
+  }
 },
 
 // handle events
 
 handleEvent: function(event) {
   switch (event.type) {
-    case 'load':
-      this.init();
-      break;
-    case 'focus':
-      this.hideAll();
-      break;
+    case 'load'    : this.init(); break;
+    case 'unload'  : this.destroy(); break;
+    case 'focus'   : this.hideAll(); break;
+    case 'keydown' : this.onKeyDown(event); break;
+    case 'keyup'   : this.onKeyUp(event); break;
+    case 'keypress': this.onKeyPress(event); break;
   }
+},
+
+_menuKeyPressing: false,
+_menuOpened: false,
+
+onKeyDown: function(event) {
+  var pressing = this.isMenuAccessKey(event, true);
+  if (pressing && !this._menuKeyPressing) {
+    this._menuOpened = ('open' == this.getMenuPopup().state);
+  }
+  this._menuKeyPressing = pressing && this.isMenuBarHidden();
+},
+
+onKeyUp: function(event) {
+  if (this._menuKeyPressing && this.isMenuAccessKey(event, true)) {
+    this._menuKeyPressing = false;
+    event.stopPropagation();
+    if (!this._menuOpened) {
+      this.openMenuPopup();
+    }
+  }
+},
+
+onKeyPress: function(event) {
+  if (!this.isMenuAccessKey(event)) return;
+  var popup = this.getMenuPopup();
+  if ('open' == popup.state) return;
+
+  var c = String.fromCharCode(event.charCode);
+  function matchAccesskey(menu) {
+    if ('menu' == menu.localName && !menu.hidden) {
+      return c == menu.getAttribute("accesskey").toLowerCase();
+    }
+    return false;
+  }
+
+  // check visible menu accesskey
+  var menubars = document.getElementsByTagName('menubar');
+  for each (var menubar in menubars) {
+    if (menubar && !menubar.hidden
+        && menubar.parentNode && !menubar.parentNode.hidden
+        && menubar.parentNode.parentNode && !menubar.parentNode.parentNode.collapsed) {
+      for each (var menu in menubar.childNodes) {
+        if (matchAccesskey(menu)) return;
+      }
+    }
+  }
+
+  try {
+    this.mapMenus(function(menu) {
+      if (matchAccesskey(menu)) {
+        event.stopPropagation();
+        var self = this;
+        popup.addEventListener('popupshown', function shown(event) {
+          popup.removeEventListener('popupshown', shown, false);
+          self.dispatchKeyEvent(popup, 0, c.charCodeAt(0));
+        }, false);
+        this.openMenuPopup();
+        throw 'break';
+      }
+    });
+  } catch (e if 'break' == e) {}
 }
 
 } // CompactMenu

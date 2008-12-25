@@ -18,8 +18,8 @@ init: function() {
     this.addVisibleMenuCheckbox(menu, eid, visible);
   });
 
-  window.addEventListener('unload', this, false);
-  window.addEventListener('dialogcancel', this, false);
+  this.addEventListener(window, 'unload', this, false);
+  this.addEventListener(window, 'dialogcancel', this, true);
 },
 
 accept: function() {
@@ -63,9 +63,10 @@ handleEvent: function(event) {
       break;
     case 'unload':
       this.accept();
+	  this.destroy();
       break;
   }
 }
 
 } // CompactMenuCustomize
-window.addEventListener('load', CompactMenuCustomize, false);
+CompactMenuCustomize.addEventListener(window, 'load', CompactMenuCustomize, false);

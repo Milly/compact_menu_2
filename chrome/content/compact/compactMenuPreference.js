@@ -16,7 +16,8 @@ init: function() {
     }
   }
 
-  window.addEventListener('dialogaccept', this, false);
+  this.addEventListener(window, 'unload', this, false);
+  this.addEventListener(window, 'dialogaccept', this, true);
 },
 
 accept: function() {
@@ -61,14 +62,11 @@ openImagePicker: function(title, filefield) {
 
 handleEvent: function(event) {
   switch (event.type) {
-    case 'load':
-      this.init();
-      break;
-    case 'dialogaccept':
-      this.accept();
-      break;
+    case 'load'        : this.init(); break;
+    case 'unload'      : this.destroy(); break;
+    case 'dialogaccept': this.accept(); break;
   }
 }
 
 } // CompactMenuPreference
-window.addEventListener('load', CompactMenuPreference, false);
+CompactMenuPreference.addEventListener(window, 'load', CompactMenuPreference, false);

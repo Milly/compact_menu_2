@@ -1,4 +1,4 @@
-var CompactBookmarks = {
+var CompactBookmarks = { __proto__: CompactMenu,
 
 init: function() {
   if (window.BookmarksMenuDNDObserver) {
@@ -13,7 +13,8 @@ init: function() {
       return observers;
     });
   }
-  window.addEventListener('focus', this, false);
+  this.addEventListener(window, 'unload', this, false);
+  this.addEventListener(window, 'focus', this, false);
 },
 
 initBookmarksMenubar: function() {
@@ -71,14 +72,11 @@ cloneNode: function(node) {
 
 handleEvent: function(event) {
   switch (event.type) {
-    case 'load':
-      this.init();
-      break;
-    case 'focus':
-      this.initBookmarksMenubar();
-      break;
+    case 'load'  : this.init(); break;
+    case 'unload': this.destroy(); break;
+    case 'focus' : this.initBookmarksMenubar(); break;
   }
 }
 
 } // CompactBookmarks
-window.addEventListener('load', CompactBookmarks, false);
+CompactBookmarks.addEventListener(window, 'load', CompactBookmarks, false);
