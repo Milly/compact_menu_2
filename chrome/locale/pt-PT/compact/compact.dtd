@@ -1,0 +1,11 @@
+<!ENTITY menu.label "Compact Menu">
+<!ENTITY menuPref.caption "Seleccione os menus que deseja ver no Menu compacto">
+<!ENTITY compactMenu.label "Menu">
+<!ENTITY compactMenu.key "M">
+<!ENTITY menubarCmd.label "Barra de menu">
+<!ENTITY menubarCmd.accesskey "m">
+<!ENTITY iconPref.caption "Mudar o ícone do Menu compacto">
+<!ENTITY iconPref.accesskey "d">
+<!ENTITY iconFilePicker.label "Navegar...">
+<!ENTITY iconFilePicker.accesskey "n">
+<!ENTITY iconFilePicker.title "Seleccione ícone para o Menu compacto">

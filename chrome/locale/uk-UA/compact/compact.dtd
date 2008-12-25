@@ -1,0 +1,11 @@
+<!ENTITY menu.label "Compact Menu">
+<!ENTITY menuPref.caption "Виберіть підменю, які Ви бажаєте бачити у Compact Menu">
+<!ENTITY compactMenu.label "Меню">
+<!ENTITY compactMenu.key "М">
+<!ENTITY menubarCmd.label "Панель меню">
+<!ENTITY menubarCmd.accesskey "П">
+<!ENTITY iconPref.caption "Змінити піктограму Compact Menu">
+<!ENTITY iconPref.accesskey "З">
+<!ENTITY iconFilePicker.label "Вибір...">
+<!ENTITY iconFilePicker.accesskey "В">
+<!ENTITY iconFilePicker.title "Виберіть піктограму для Compact Menu">

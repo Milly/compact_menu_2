@@ -13,12 +13,19 @@
 		<em:iconURL>chrome://compact/skin/compact.png</em:iconURL>
 		<em:type>2</em:type>
 
-		<em:translator>Chris Neale</em:translator>
-		<em:translator>T Veidt aka 'two legged freak'</em:translator>
-		<em:translator>Seb Delahaye</em:translator>
-		<em:translator>Francesco Castellana aka 'XF'</em:translator>
-		<em:translator>Rob de Vries</em:translator>
-		<em:translator>David Tenser</em:translator>
+		<em:translator>Joergen (da-DK)</em:translator>
+		<em:translator>T Veidt aka 'two legged freak' (de-DE)</em:translator>
+		<em:translator>urko (es-ES)</em:translator>
+		<em:translator>jojaba (fr-FR)</em:translator>
+		<em:translator>Francesco Castellana aka 'XF' (it-IT)</em:translator>
+		<em:translator>Rob de Vries (nl-NL)</em:translator>
+		<em:translator>teo (pl-PL)</em:translator>
+		<em:translator>lloco (pt-PT)</em:translator>
+		<em:translator>PiVV (ru-RU)</em:translator>
+		<em:translator>David Tenser (sv-SE)</em:translator>
+		<em:translator>manilyildiz (tr-TR)</em:translator>
+		<em:translator>Sappa (uk-UA)</em:translator>
+		<em:translator>xmoke (zh-CN)</em:translator>
 
 		<em:contributor>Chris Neale</em:contributor>
 
