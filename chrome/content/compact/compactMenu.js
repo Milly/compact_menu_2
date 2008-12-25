@@ -7,30 +7,6 @@ _prefs:
     .getService(Components.interfaces.nsIPrefService)
     .getBranch("compact.menu."),
 
-toToolbarPrefId: function(element_or_id) {
-  if (element_or_id.ownerDocument) {
-    var windowElement = element_or_id.ownerDocument.documentElement;
-    var id = element_or_id.id;
-  } else {
-    var mainWindow = this.getMainWindow();
-    var windowElement = mainWindow.document.documentElement;
-    var id = element_or_id;
-  }
-  var windowId = (windowElement.id || '_id_') + '-' + (windowElement.getAttribute('windowtype') || '_windowtype_');
-  return 'hidetoolbar.' + windowId + '.' + id;
-},
-
-toMenuPrefId: function(id) {
-  var mainWindow = this.getMainWindow();
-  var windowElement = mainWindow.document.documentElement;
-  var windowId = (windowElement.id || '_id_') + '-' + (windowElement.getAttribute('windowtype') || '_windowtype_');
-  return 'hidemenu.' + windowId + '.' + id;
-},
-
-toMenuElementId: function(id) {
-  return 'compact-showmenu-' + id;
-},
-
 MAINWINDOWS: [
     'navigator:browser',
     'mail:3pane',
@@ -64,6 +40,8 @@ POPUPS: [
 
 SINGLE_POPUP: 'main-menu-popup',
 
+// debug methods
+
 c_dump: function(msg) {
   if (this.DEBUG) {
     msg = 'Compact Menu :: ' + msg;
@@ -75,27 +53,13 @@ c_dump: function(msg) {
   }
 },
 
-hookCode: function(orgFunc, orgCode, newCode) {
-  if (!eval(orgFunc).toSource().match(orgCode)) {
-    this.c_dump('hook failed for "' + orgFunc + '" at ' + Error().stack.split(/\n/)[2]);
-    return false;
-  }
-  eval(orgFunc + '=' + eval(orgFunc).toSource().replace(orgCode, newCode));
-  return true;
-},
+// preferences methods
 
 getBoolPref: function(pref, defaultValue) {
   const nsIPrefBranch = Components.interfaces.nsIPrefBranch;
   if (this._prefs.prefHasUserValue(pref) && nsIPrefBranch.PREF_BOOL == this._prefs.getPrefType(pref))
     return this._prefs.getBoolPref(pref);
   return defaultValue;
-},
-
-setBoolPref: function(pref, value, clearOnFalse) {
-  if (this._prefs.prefHasUserValue(pref))
-    CompactMenu._prefs.clearUserPref(pref);
-  if (value || !clearOnFalse)
-    CompactMenu._prefs.setBoolPref(pref, !!value);
 },
 
 isToolbarHidden: function(element_or_id) {
@@ -112,147 +76,38 @@ isMenuBarHidden: function() {
   return this.getMenuBar().hasAttribute('hidden');
 },
 
-getCurrentMenuContainer: function() {
-  var document = this.getMainWindow().document;
-  var containerIds = this.MENUBARS.concat(this.POPUPS);
-  for each (var id in containerIds) {
-    var menuContainer = document.getElementById(id);
-    if (menuContainer && menuContainer.hasChildNodes()) {
-      return menuContainer;
-    }
-  }
-  return null;
+setBoolPref: function(pref, value, clearOnFalse) {
+  if (this._prefs.prefHasUserValue(pref))
+    CompactMenu._prefs.clearUserPref(pref);
+  if (value || !clearOnFalse)
+    CompactMenu._prefs.setBoolPref(pref, !!value);
 },
 
-getMenuPopup: function(menu) {
-  var item = this.getMenuItem();
-  if (item) {
-    var popup = item.getElementsByTagName('menupopup')[0];
+toMenuElementId: function(id) {
+  return 'compact-showmenu-' + id;
+},
+
+toMenuPrefId: function(id) {
+  var mainWindow = this.getMainWindow();
+  var windowElement = mainWindow.document.documentElement;
+  var windowId = (windowElement.id || '_id_') + '-' + (windowElement.getAttribute('windowtype') || '_windowtype_');
+  return 'hidemenu.' + windowId + '.' + id;
+},
+
+toToolbarPrefId: function(element_or_id) {
+  if (element_or_id.ownerDocument) {
+    var windowElement = element_or_id.ownerDocument.documentElement;
+    var id = element_or_id.id;
   } else {
-    var document = this.getMainWindow().document;
-    var popup = document.getElementById(this.SINGLE_POPUP);
+    var mainWindow = this.getMainWindow();
+    var windowElement = mainWindow.document.documentElement;
+    var id = element_or_id;
   }
-  this.addPopupMethods(popup);
-  return popup;
+  var windowId = (windowElement.id || '_id_') + '-' + (windowElement.getAttribute('windowtype') || '_windowtype_');
+  return 'hidetoolbar.' + windowId + '.' + id;
 },
 
-getMenuItem: function() {
-  var document = this.getMainWindow().document;
-  for each (var id in this.ITEMS) {
-    var item = document.getElementById(id);
-    if (item && !item.parentNode.collapsed) return item;
-  }
-  return null;
-},
-
-getMenuBar: function() {
-  var document = this.getMainWindow().document;
-  for each (var id in this.MENUBARS) {
-    var item = document.getElementById(id);
-    if (item) return item;
-  }
-  return null;
-},
-
-getMainToolbar: function() {
-  var document = this.getMainWindow().document;
-  for each (var id in this.MAINTOOLBARS) {
-    var item = document.getElementById(id);
-    if (item) return item;
-  }
-  return null;
-},
-
-getMainWindows: function() {
-  const windowMediator = Components.classes['@mozilla.org/appshell/window-mediator;1']
-    .getService(Components.interfaces.nsIWindowMediator);
-
-  var types = [].concat(this.MAINWINDOWS);
-  var currentWindowType = document.documentElement.getAttribute('windowtype');
-  var pos = this.MAINWINDOWS.indexOf(currentWindowType);
-  if (0 <= pos) {
-    types.splice(pos, 1);
-    types.unshift(currentWindowType);
-  }
-
-  var windows = [];
-  for each (var type in types) {
-    var window = windowMediator.getMostRecentWindow(type);
-    if (window) windows.push(window);
-  }
-  return windows;
-},
-
-getMainWindow: function() {
-  return this.getMainWindows()[0] || null;
-},
-
-mapMenus: function(it) {
-  var res = [];
-  var menuContainer = this.getCurrentMenuContainer();
-  if (menuContainer) {
-    for (var i = 0; i < menuContainer.childNodes.length; ++i) {
-      var menu = menuContainer.childNodes[i];
-      if ('menu' == menu.localName)
-      {
-        var v = it.call(this, menu, i);
-        if ('undefined' != typeof v) res.push(v);
-      }
-    }
-  }
-  return res;
-},
-
-hideItems: function() {
-  this.mapMenus(function(menu, index) {
-    var id = menu.id || index;
-    menu.hidden = this.isMenuHidden(id);
-  });
-},
-
-hidePopup: function() {
-  var document = this.getMainWindow().document;
-  for each (var id in this.POPUPS) {
-    var popup = document.getElementById(id);
-    if (popup && popup.hidePopup) popup.hidePopup();
-  }
-},
-
-hideMenuBar: function() {
-  var menubar = this.getMenuBar();
-  this.menuIt(menubar);
-  if (this.getMenuItem() || this.getMainToolbar().collapsed) {
-    menubar.setAttribute('hidden', 'true');
-  } else {
-    menubar.removeAttribute('hidden');
-  }
-},
-
-hideAll: function() {
-  this.hideItems();
-  this.hidePopup();
-  this.hideMenuBar();
-},
-
-isMenuAccessKey: function(event, checkKeyCode) {
-  var accessKey = nsPreferences.getIntPref('ui.key.menuAccessKey');
-  if (checkKeyCode) {
-    if (event.keyCode != accessKey) return false;
-    if ('keyup' == event.type) return !event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey;
-  }
-  switch (accessKey) {
-    case KeyEvent.DOM_VK_CONTROL : return event.ctrlKey && !event.altKey && !event.metaKey;
-    case KeyEvent.DOM_VK_ALT     : return !event.ctrlKey && event.altKey && !event.metaKey;
-    case KeyEvent.DOM_VK_META    : return !event.ctrlKey && !event.altKey && event.metaKey;
-  }
-  return false;
-},
-
-isRTL: function() {
-  var document = this.getMainWindow().document;
-  var menubar = this.getMenuBar();
-  return 'rtl' == document.defaultView.getComputedStyle(menubar, '').direction;
-},
+// element manipulate methods
 
 addPopupMethods: function(popup) {
   if (!('openPopup' in popup) /* Mozilla < 1.9 */) {
@@ -304,10 +159,159 @@ addPopupMethods: function(popup) {
   }
 },
 
-dispatchKeyEvent: function(item, keyCode, charCode) {
-  var event = document.createEvent('KeyboardEvent');
-  event.initKeyEvent('keypress', true, true, null, false, false, false, false, keyCode || 0, charCode || 0);
-  item.dispatchEvent(event);
+getCurrentMenuContainer: function() {
+  var document = this.getMainWindow().document;
+  var containerIds = this.MENUBARS.concat(this.POPUPS);
+  for each (var id in containerIds) {
+    var menuContainer = document.getElementById(id);
+    if (menuContainer && menuContainer.hasChildNodes()) {
+      return menuContainer;
+    }
+  }
+  return null;
+},
+
+getMainToolbar: function() {
+  var document = this.getMainWindow().document;
+  for each (var id in this.MAINTOOLBARS) {
+    var item = document.getElementById(id);
+    if (item) return item;
+  }
+  return null;
+},
+
+getMainWindows: function() {
+  const windowMediator = Components.classes['@mozilla.org/appshell/window-mediator;1']
+    .getService(Components.interfaces.nsIWindowMediator);
+
+  var types = [].concat(this.MAINWINDOWS);
+  var currentWindowType = document.documentElement.getAttribute('windowtype');
+  var pos = this.MAINWINDOWS.indexOf(currentWindowType);
+  if (0 <= pos) {
+    types.splice(pos, 1);
+    types.unshift(currentWindowType);
+  }
+
+  var windows = [];
+  for each (var type in types) {
+    var window = windowMediator.getMostRecentWindow(type);
+    if (window) windows.push(window);
+  }
+  return windows;
+},
+
+getMainWindow: function() {
+  return this.getMainWindows()[0] || null;
+},
+
+getMenuBar: function() {
+  var document = this.getMainWindow().document;
+  for each (var id in this.MENUBARS) {
+    var item = document.getElementById(id);
+    if (item) return item;
+  }
+  return null;
+},
+
+getMenuItem: function() {
+  var document = this.getMainWindow().document;
+  for each (var id in this.ITEMS) {
+    var item = document.getElementById(id);
+    if (item && !item.parentNode.collapsed) return item;
+  }
+  return null;
+},
+
+getMenuPopup: function(menu) {
+  var item = this.getMenuItem();
+  if (item) {
+    var popup = item.getElementsByTagName('menupopup')[0];
+  } else {
+    var document = this.getMainWindow().document;
+    var popup = document.getElementById(this.SINGLE_POPUP);
+  }
+  this.addPopupMethods(popup);
+  return popup;
+},
+
+getVisibleToolbarCount: function() {
+  var count = 0;
+  var toolbox = document.getElementById('navigator-toolbox')
+    || document.getElementById('mail-toolbox');
+  for (var i = 0; i < toolbox.childNodes.length; ++i) {
+    var toolbar = toolbox.childNodes[i];
+    var name = toolbar.getAttribute('toolbarname');
+    var collapsed = toolbar.getAttribute('collapsed') != 'true';
+    count += (name && collapsed)? 1: 0;
+  }
+  return count;
+},
+
+hideItems: function() {
+  this.mapMenus(function(menu, index) {
+    var id = menu.id || index;
+    menu.hidden = this.isMenuHidden(id);
+  });
+},
+
+hidePopup: function() {
+  var document = this.getMainWindow().document;
+  for each (var id in this.POPUPS) {
+    var popup = document.getElementById(id);
+    if (popup && popup.hidePopup) popup.hidePopup();
+  }
+},
+
+hideMenuBar: function() {
+  var menubar = this.getMenuBar();
+  this.menuIt(menubar);
+  if (this.getMenuItem() || this.getMainToolbar().collapsed) {
+    menubar.setAttribute('hidden', 'true');
+  } else {
+    menubar.removeAttribute('hidden');
+  }
+},
+
+hideAll: function() {
+  this.hideItems();
+  this.hidePopup();
+  this.hideMenuBar();
+},
+
+isRTL: function() {
+  var document = this.getMainWindow().document;
+  var menubar = this.getMenuBar();
+  return 'rtl' == document.defaultView.getComputedStyle(menubar, '').direction;
+},
+
+mapMenus: function(it) {
+  var res = [];
+  var menuContainer = this.getCurrentMenuContainer();
+  if (menuContainer) {
+    for (var i = 0; i < menuContainer.childNodes.length; ++i) {
+      var menu = menuContainer.childNodes[i];
+      if ('menu' == menu.localName)
+      {
+        var v = it.call(this, menu, i);
+        if ('undefined' != typeof v) res.push(v);
+      }
+    }
+  }
+  return res;
+},
+
+menuIt: function(targetMenu) {
+  if ('string' == typeof targetMenu)
+    targetMenu = document.getElementById(targetMenu);
+  if (targetMenu && !targetMenu.hasChildNodes()) {
+    this.c_dump('menuIt : ' + targetMenu.id);
+    var currentMenu = this.getCurrentMenuContainer();
+    if (currentMenu && targetMenu != currentMenu) {
+      while (currentMenu.firstChild) {
+        targetMenu.appendChild(currentMenu.firstChild);
+      }
+    }
+  }
 },
 
 openMenuPopup: function() {
@@ -324,6 +328,159 @@ openMenuPopup: function() {
   popup.openPopup(anchor, position, x, y, false, false);
 },
 
+setMenuTooltip: function(tooltip, node) {
+  if ('menupopup' != node.parentNode.localName) {
+    var menus = this.mapMenus(function(menu) {
+      return menu.hidden ? undefined : menu.getAttribute('label');
+    });
+    var text = menus
+      .slice(0, 2)
+      .concat(2 < menus.length ? ['...'] : [])
+      .join(' ');
+    if (text) {
+      tooltip.setAttribute('label', text);
+      return true;
+    }
+  }
+  return false;
+},
+
+// keybord methods
+
+dispatchKeyEvent: function(item, keyCode, charCode) {
+  var event = document.createEvent('KeyboardEvent');
+  event.initKeyEvent('keypress', true, true, null, false, false, false, false, keyCode || 0, charCode || 0);
+  item.dispatchEvent(event);
+},
+
+isMenuAccessKey: function(event, checkKeyCode) {
+  var accessKey = nsPreferences.getIntPref('ui.key.menuAccessKey');
+  if (checkKeyCode) {
+    if (event.keyCode != accessKey) return false;
+    if ('keyup' == event.type) return !event.shiftKey && !event.ctrlKey && !event.altKey && !event.metaKey;
+  }
+  switch (accessKey) {
+    case KeyEvent.DOM_VK_CONTROL : return event.ctrlKey && !event.altKey && !event.metaKey;
+    case KeyEvent.DOM_VK_ALT     : return !event.ctrlKey && event.altKey && !event.metaKey;
+    case KeyEvent.DOM_VK_META    : return !event.ctrlKey && !event.altKey && event.metaKey;
+  }
+  return false;
+},
+
+// icon methods
+
+getIconFile: function() {
+  try {
+    return this._prefs.getComplexValue('icon.file', Components.interfaces.nsILocalFile);
+  } catch (e) {
+    return null;
+  }
+},
+
+getLocalIconFile: function() {
+  var localFileName = this._prefs.getCharPref('icon.localfilename');
+  if (!localFileName) return null;
+  var localFile = this.toLocalFile(this.getProfileDir());
+  localFile.appendRelativePath(localFileName);
+  return localFile;
+},
+
+getProfileDir: function() {
+  return Components.classes["@mozilla.org/file/directory_service;1"]
+    .getService(Components.interfaces.nsIProperties)
+    .get("ProfD", Components.interfaces.nsIFile);
+},
+
+loadIcon: function() {
+  var button = document.getElementById('menu-button');
+  if (!button) return;
+
+  var iconEnable = this.getBoolPref('icon.enabled', false);
+  if (iconEnable) {
+    var icon = this.getLocalIconFile();
+    if (icon && icon.exists()) {
+      this.c_dump('change icon: ' +  icon.path);
+      var iconURI = this.toFileURI(icon).spec;
+      var listStyleImage = 'url(' + iconURI + ')';
+      button.style.setProperty('list-style-image', listStyleImage, '');
+    }
+  }
+
+  if (!iconURI) {
+    var listStyleImage = window.getComputedStyle(button, '').getPropertyValue('list-style-image');
+    var iconURI = (listStyleImage.match(/url\((.*?)\)/) || [])[1] || '';
+  }
+
+  if (iconURI) {
+    var img = new Image();
+    img.onload = function() {
+      if (img.width && img.height && (16 != img.width || 48 != img.height)) {
+        button.style.setProperty('-moz-image-region', 'rect(0px, ' + img.width + 'px, ' + img.height + 'px, 0px)', '');
+      }
+    };
+    img.src = iconURI;
+  }
+},
+
+resetIcon: function() {
+  for each (var win in this.getMainWindows()) {
+    var button = win.document.getElementById('menu-button');
+    if (button) {
+      button.style.removeProperty('list-style-image');
+      button.style.removeProperty('-moz-image-region');
+    }
+  }
+
+  var icon_file = window.document.getElementById('icon_file');
+  if (icon_file) {
+    icon_file.image = null;
+  }
+},
+
+setIconFile: function(file) {
+  this.resetIcon();
+  var lastLocalIconFile = this.getLocalIconFile();
+  var destFile = this.toLocalIconFile(file);
+  file.copyTo(destFile.parent, destFile.leafName);
+  this._prefs.setCharPref('icon.localfilename', destFile.leafName);
+  this._prefs.setComplexValue('icon.file', Components.interfaces.nsILocalFile, file);
+  if (lastLocalIconFile && lastLocalIconFile.exists())
+    lastLocalIconFile.remove(false);
+},
+
+toFileURI: function(file) {
+  return Components.classes['@mozilla.org/network/io-service;1']
+    .getService(Components.interfaces.nsIIOService)
+    .newFileURI(file);
+},
+
+toLocalFile: function(file) {
+  if (file instanceof Components.interfaces.nsILocalFile)
+    return file
+  var localFile = Components.classes['@mozilla.org/file/local;1']
+    .createInstance(Components.interfaces.nsILocalFile);
+  localFile.initWithPath(file.path);
+  return localFile;
+},
+
+toLocalIconFile: function(file) {
+  var ext = (file.leafName.match(/\.[^.]+$/) || [''])[0];
+  var localFile = this.toLocalFile(this.getProfileDir());
+  localFile.appendRelativePath('compact' + (new Date()).getTime() + ext);
+  return localFile;
+},
+
+// initialize methods
+
+hookCode: function(orgFunc, orgCode, newCode) {
+  if (!eval(orgFunc).toSource().match(orgCode)) {
+    this.c_dump('hook failed for "' + orgFunc + '" at ' + Error().stack.split(/\n/)[2]);
+    return false;
+  }
+  eval(orgFunc + '=' + eval(orgFunc).toSource().replace(orgCode, newCode));
+  return true;
+},
+
 init: function() {
   if (window.onViewToolbarsPopupShowing) {
     this.initToolbarContextMenu_Fx();
@@ -333,6 +490,13 @@ init: function() {
   this.initKeyEvents();
   this.initIcon();
   window.addEventListener('focus', this, false);
+},
+
+initIcon: function() {
+  this.resetIcon();
+  for each (var win in this.getMainWindows()) {
+    win.eval('CompactMenu.loadIcon()');
+  }
 },
 
 initKeyEvents: function() {
@@ -463,158 +627,6 @@ initToolbarContextMenu_Tb: function() {
   context.addEventListener('popupshowing', onToolbarContextMenuShowing, false);
 
   this.hookCode('CustomizeMailToolbar', '{', '{ CompactMenu.hideMenuBar();');
-},
-
-resetIcon: function() {
-  for each (var win in this.getMainWindows()) {
-    var button = win.document.getElementById('menu-button');
-    if (button) {
-      button.style.removeProperty('list-style-image');
-      button.style.removeProperty('-moz-image-region');
-    }
-  }
-
-  var icon_file = window.document.getElementById('icon_file');
-  if (icon_file) {
-    icon_file.image = null;
-  }
-},
-
-initIcon: function() {
-  this.resetIcon();
-  for each (var win in this.getMainWindows()) {
-    win.eval('CompactMenu.loadIcon()');
-  }
-},
-
-loadIcon: function() {
-  var button = document.getElementById('menu-button');
-  if (!button) return;
-
-  var iconEnable = this.getBoolPref('icon.enabled', false);
-  if (iconEnable) {
-    var icon = this.getLocalIconFile();
-    if (icon && icon.exists()) {
-      this.c_dump('change icon: ' +  icon.path);
-      var iconURI = this.toFileURI(icon).spec;
-      var listStyleImage = 'url(' + iconURI + ')';
-      button.style.setProperty('list-style-image', listStyleImage, '');
-    }
-  }
-
-  if (!iconURI) {
-    var listStyleImage = window.getComputedStyle(button, '').getPropertyValue('list-style-image');
-    var iconURI = (listStyleImage.match(/url\((.*?)\)/) || [])[1] || '';
-  }
-
-  if (iconURI) {
-    var img = new Image();
-    img.onload = function() {
-      if (img.width && img.height && (16 != img.width || 48 != img.height)) {
-        button.style.setProperty('-moz-image-region', 'rect(0px, ' + img.width + 'px, ' + img.height + 'px, 0px)', '');
-      }
-    };
-    img.src = iconURI;
-  }
-},
-
-getVisibleToolbarCount: function() {
-  var count = 0;
-  var toolbox = document.getElementById('navigator-toolbox')
-    || document.getElementById('mail-toolbox');
-  for (var i = 0; i < toolbox.childNodes.length; ++i) {
-    var toolbar = toolbox.childNodes[i];
-    var name = toolbar.getAttribute('toolbarname');
-    var collapsed = toolbar.getAttribute('collapsed') != 'true';
-    count += (name && collapsed)? 1: 0;
-  }
-  return count;
-},
-
-menuIt: function(targetMenu) {
-  if ('string' == typeof targetMenu)
-    targetMenu = document.getElementById(targetMenu);
-  if (targetMenu && !targetMenu.hasChildNodes()) {
-    this.c_dump('menuIt : ' + targetMenu.id);
-    var currentMenu = this.getCurrentMenuContainer();
-    if (currentMenu && targetMenu != currentMenu) {
-      while (currentMenu.firstChild) {
-        targetMenu.appendChild(currentMenu.firstChild);
-      }
-    }
-  }
-},
-
-setMenuTooltip: function(tooltip, node) {
-  if ('menupopup' != node.parentNode.localName) {
-    var menus = this.mapMenus(function(menu) {
-      return menu.hidden ? undefined : menu.getAttribute('label');
-    });
-    var text = menus
-      .slice(0, 2)
-      .concat(2 < menus.length ? ['...'] : [])
-      .join(' ');
-    if (text) {
-      tooltip.setAttribute('label', text);
-      return true;
-    }
-  }
-  return false;
-},
-
-getLocalIconFile: function() {
-  var localFileName = this._prefs.getCharPref('icon.localfilename');
-  if (!localFileName) return null;
-  var localFile = this.toLocalFile(this.getProfileDir());
-  localFile.appendRelativePath(localFileName);
-  return localFile;
-},
-
-getIconFile: function() {
-  try {
-    return this._prefs.getComplexValue('icon.file', Components.interfaces.nsILocalFile);
-  } catch (e) {
-    return null;
-  }
-},
-
-setIconFile: function(file) {
-  this.resetIcon();
-  var lastLocalIconFile = this.getLocalIconFile();
-  var destFile = this.toLocalIconFile(file);
-  file.copyTo(destFile.parent, destFile.leafName);
-  this._prefs.setCharPref('icon.localfilename', destFile.leafName);
-  this._prefs.setComplexValue('icon.file', Components.interfaces.nsILocalFile, file);
-  if (lastLocalIconFile && lastLocalIconFile.exists())
-    lastLocalIconFile.remove(false);
-},
-
-toFileURI: function(file) {
-  return Components.classes['@mozilla.org/network/io-service;1']
-    .getService(Components.interfaces.nsIIOService)
-    .newFileURI(file);
-},
-
-toLocalFile: function(file) {
-  if (file instanceof Components.interfaces.nsILocalFile)
-    return file
-  var localFile = Components.classes['@mozilla.org/file/local;1']
-    .createInstance(Components.interfaces.nsILocalFile);
-  localFile.initWithPath(file.path);
-  return localFile;
-},
-
-toLocalIconFile: function(file) {
-  var ext = (file.leafName.match(/\.[^.]+$/) || [''])[0];
-  var localFile = this.toLocalFile(this.getProfileDir());
-  localFile.appendRelativePath('compact' + (new Date()).getTime() + ext);
-  return localFile;
-},
-
-getProfileDir: function() {
-  return Components.classes["@mozilla.org/file/directory_service;1"]
-    .getService(Components.interfaces.nsIProperties)
-    .get("ProfD", Components.interfaces.nsIFile);
 },
 
 // handle events
