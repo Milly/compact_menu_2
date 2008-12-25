@@ -1,0 +1,11 @@
+<!ENTITY menu.label "Compact Menu">
+<!ENTITY menuPref.caption "Válassza ki, hogy a menü eszköztár mely menüjei jelenjenek meg:">
+<!ENTITY compactMenu.label "Menü">
+<!ENTITY compactMenu.key "M">
+<!ENTITY menubarCmd.label "Menü eszköztár">
+<!ENTITY menubarCmd.accesskey "M">
+<!ENTITY iconPref.caption "A Compact Menu ikonjának testreszabása">
+<!ENTITY iconPref.accesskey "i">
+<!ENTITY iconFilePicker.label "Tallózás...">
+<!ENTITY iconFilePicker.accesskey "T">
+<!ENTITY iconFilePicker.title "Compact Menu - eszköztár ikon kiválasztása">
