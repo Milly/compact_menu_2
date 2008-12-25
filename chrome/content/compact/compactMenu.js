@@ -2,10 +2,12 @@ var CompactMenu = {
 
 DEBUG: true,
 
-_prefs:
-  Components.classes["@mozilla.org/preferences-service;1"]
-    .getService(Components.interfaces.nsIPrefService)
-    .getBranch("compact.menu."),
+COMPACTMENU_PREFBASE:    'compact.menu.',
+HIDEMENU_PREFBASE:       'hidemenu.',
+HIDETOOLBAR_PREFBASE:    'hidetoolbar.',
+ICON_ENABLED_PREF:       'icon.enabled',
+ICON_FILE_PREF:          'icon.file',
+ICON_LOCALFILENAME_PREF: 'icon.localfilename',
 
 MAINWINDOWS: [
     'navigator:browser',
@@ -13,6 +15,11 @@ MAINWINDOWS: [
     'mail:messageWindow',
     'mail:addressbook',
     'msgcompose',
+  ],
+
+MAINTOOLBOXS: [
+    'navigator-toolbox',
+    'mail-toolbox',
   ],
 
 MAINTOOLBARS: [
@@ -55,10 +62,17 @@ c_dump: function(msg) {
 
 // preferences methods
 
+get prefs function() {
+  return this._prefs || (this._prefs =
+    Components.classes["@mozilla.org/preferences-service;1"]
+                      .getService(Components.interfaces.nsIPrefService)
+                      .getBranch(this.COMPACTMENU_PREFBASE));
+},
+
 getBoolPref: function(pref, defaultValue) {
   const nsIPrefBranch = Components.interfaces.nsIPrefBranch;
-  if (this._prefs.prefHasUserValue(pref) && nsIPrefBranch.PREF_BOOL == this._prefs.getPrefType(pref))
-    return this._prefs.getBoolPref(pref);
+  if (this.prefs.prefHasUserValue(pref) && nsIPrefBranch.PREF_BOOL == this.prefs.getPrefType(pref))
+    return this.prefs.getBoolPref(pref);
   return defaultValue;
 },
 
@@ -77,10 +91,10 @@ isMenuBarHidden: function() {
 },
 
 setBoolPref: function(pref, value, clearOnFalse) {
-  if (this._prefs.prefHasUserValue(pref))
-    CompactMenu._prefs.clearUserPref(pref);
+  if (this.prefs.prefHasUserValue(pref))
+    CompactMenu.prefs.clearUserPref(pref);
   if (value || !clearOnFalse)
-    CompactMenu._prefs.setBoolPref(pref, !!value);
+    CompactMenu.prefs.setBoolPref(pref, !!value);
 },
 
 toMenuElementId: function(id) {
@@ -91,7 +105,7 @@ toMenuPrefId: function(id) {
   var mainWindow = this.getMainWindow();
   var windowElement = mainWindow.document.documentElement;
   var windowId = (windowElement.id || '_id_') + '-' + (windowElement.getAttribute('windowtype') || '_windowtype_');
-  return 'hidemenu.' + windowId + '.' + id;
+  return this.HIDEMENU_PREFBASE + windowId + '.' + id;
 },
 
 toToolbarPrefId: function(element_or_id) {
@@ -104,7 +118,7 @@ toToolbarPrefId: function(element_or_id) {
     var id = element_or_id;
   }
   var windowId = (windowElement.id || '_id_') + '-' + (windowElement.getAttribute('windowtype') || '_windowtype_');
-  return 'hidetoolbar.' + windowId + '.' + id;
+  return this.HIDETOOLBAR_PREFBASE + windowId + '.' + id;
 },
 
 // element manipulate methods
@@ -180,6 +194,15 @@ getMainToolbar: function() {
   return null;
 },
 
+getMainToolbox: function() {
+  var document = this.getMainWindow().document;
+  for each (var id in this.MAINTOOLBOXS) {
+    var item = document.getElementById(id);
+    if (item) return item;
+  }
+  return null;
+},
+
 getMainWindows: function() {
   const windowMediator = Components.classes['@mozilla.org/appshell/window-mediator;1']
     .getService(Components.interfaces.nsIWindowMediator);
@@ -234,17 +257,16 @@ getMenuPopup: function(menu) {
   return popup;
 },
 
-getVisibleToolbarCount: function() {
-  var count = 0;
-  var toolbox = document.getElementById('navigator-toolbox')
-    || document.getElementById('mail-toolbox');
+getVisibleToolbars: function() {
+  var toolbars = [];
+  var toolbox = this.getMainToolbox();
   for (var i = 0; i < toolbox.childNodes.length; ++i) {
     var toolbar = toolbox.childNodes[i];
-    var name = toolbar.getAttribute('toolbarname');
-    var collapsed = toolbar.getAttribute('collapsed') != 'true';
-    count += (name && collapsed)? 1: 0;
+    var hasName = !!toolbar.getAttribute('toolbarname');
+    var visible = toolbar.getAttribute('collapsed') != 'true';
+    if (hasName && visible) toolbars.push(toolbar);
   }
-  return count;
+  return toolbars;
 },
 
 hideItems: function() {
@@ -371,14 +393,14 @@ isMenuAccessKey: function(event, checkKeyCode) {
 
 getIconFile: function() {
   try {
-    return this._prefs.getComplexValue('icon.file', Components.interfaces.nsILocalFile);
+    return this.prefs.getComplexValue(this.ICON_FILE_PREF, Components.interfaces.nsILocalFile);
   } catch (e) {
     return null;
   }
 },
 
 getLocalIconFile: function() {
-  var localFileName = this._prefs.getCharPref('icon.localfilename');
+  var localFileName = this.prefs.getCharPref(this.ICON_LOCALFILENAME_PREF);
   if (!localFileName) return null;
   var localFile = this.toLocalFile(this.getProfileDir());
   localFile.appendRelativePath(localFileName);
@@ -395,7 +417,7 @@ loadIcon: function() {
   var button = document.getElementById('menu-button');
   if (!button) return;
 
-  var iconEnable = this.getBoolPref('icon.enabled', false);
+  var iconEnable = this.getBoolPref(this.ICON_ENABLED_PREF, false);
   if (iconEnable) {
     var icon = this.getLocalIconFile();
     if (icon && icon.exists()) {
@@ -442,8 +464,8 @@ setIconFile: function(file) {
   var lastLocalIconFile = this.getLocalIconFile();
   var destFile = this.toLocalIconFile(file);
   file.copyTo(destFile.parent, destFile.leafName);
-  this._prefs.setCharPref('icon.localfilename', destFile.leafName);
-  this._prefs.setComplexValue('icon.file', Components.interfaces.nsILocalFile, file);
+  this.prefs.setCharPref(this.ICON_LOCALFILENAME_PREF, destFile.leafName);
+  this.prefs.setComplexValue(this.ICON_FILE_PREF, Components.interfaces.nsILocalFile, file);
   if (lastLocalIconFile && lastLocalIconFile.exists())
     lastLocalIconFile.remove(false);
 },
@@ -598,8 +620,8 @@ initToolbarContextMenu_Fx: function() {
 
   this.hookCode('onViewToolbarCommand',
       'toolbar\\.collapsed = ',
-      '$& (1 < CompactMenu.getVisibleToolbarCount()) &&');
-  if (0 == this.getVisibleToolbarCount()) {
+      '$& (1 < CompactMenu.getVisibleToolbars().length) &&');
+  if (0 == this.getVisibleToolbars().length) {
     menubar.collapsed = false;
     document.persist(menubar.id, "collapsed");
   }
