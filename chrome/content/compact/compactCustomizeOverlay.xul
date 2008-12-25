@@ -4,7 +4,7 @@
 
 <!DOCTYPE dialog SYSTEM "chrome://compact/locale/compact.dtd" >
 
-<overlay id="compactCustomiseOverlay"
+<overlay id="compactCustomizeOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript" src="chrome://compact/content/compactMenu.js"/>

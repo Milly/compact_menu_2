@@ -14,7 +14,7 @@ locale	compact	ru-RU	jar:chrome/compact.jar!/locale/ru-RU/compact/
 locale	compact	sv-SE	jar:chrome/compact.jar!/locale/sv-SE/compact/
 locale	compact	zh-CN	jar:chrome/compact.jar!/locale/zh-CN/compact/
 
-overlay	chrome://global/content/customizeToolbar.xul	chrome://compact/content/compactCustomiseOverlay.xul
+overlay	chrome://global/content/customizeToolbar.xul	chrome://compact/content/compactCustomizeOverlay.xul
 # Firefox
 overlay	chrome://browser/content/browser.xul	chrome://compact/content/compactBrowserOverlay.xul	application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}
 # Thunderbird
