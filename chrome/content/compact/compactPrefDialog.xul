@@ -11,11 +11,10 @@
 <dialog id="compactmenuPrefs" windowtype="menuedit:options"
         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
         title="&menu.label;"
-        onload="CompactMenu.prefInit();"
-        ondialogaccept="CompactMenu.prefAccept();"
         >
 
   <script type="application/x-javascript" src="chrome://compact/content/compactMenu.js"/>
+  <script type="application/x-javascript" src="chrome://compact/content/compactMenuPreference.js"/>
 
   <vbox flex="1">
     <groupbox id="compact-icon" align="start" pack="start" orient="vertical">
@@ -23,14 +22,14 @@
         <checkbox id="icon_enable"
                   label="&iconPref.caption;"
                   accesskey="&iconPref.accesskey;"
-                  oncommand="CompactMenu.disableGroup('compact-icon', !this.checked)"/>
+                  oncommand="CompactMenuPreference.disableGroup('compact-icon', !this.checked)"/>
       </caption>
       <hbox align="center">
         <filefield id="icon_file" flex="1" />
         <button id="icon_file_picker"
                 label="&iconFilePicker.label;"
                 accesskey="&iconFilePicker.accesskey;"
-                oncommand="CompactMenu.openImagePicker('&iconFilePicker.title;', 'icon_file')"/>
+                oncommand="CompactMenuPreference.openImagePicker('&iconFilePicker.title;', 'icon_file')"/>
       </hbox>
     </groupbox>
   </vbox>

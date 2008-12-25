@@ -13,6 +13,7 @@ init: function() {
       return observers;
     });
   }
+  window.addEventListener('focus', this, false);
 },
 
 initBookmarksMenubar: function() {
@@ -64,9 +65,23 @@ cloneNode: function(node) {
     item.setAttribute(attr.name, attr.value);
   }
   return item;
+},
+
+// handle events
+
+handleEvent: function(event) {
+  switch (event.type) {
+    case 'load':
+      this.init();
+      break;
+    case 'focus':
+      this.initBookmarksMenubar();
+      break;
+  }
 }
 
 } // CompactBookmarks
+window.addEventListener('load', CompactBookmarks, false);
 
 /* ***** BEGIN LICENSE BLOCK *****
  * Version: MPL 1.1/GPL 2.0/LGPL 2.1

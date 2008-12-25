@@ -8,13 +8,7 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <script type="application/x-javascript" src="chrome://compact/content/compactMenu.js"/>
-  <script type="application/x-javascript">
-  <![CDATA[
-    window.addEventListener("load", function() { CompactMenu.customizeInit(); }, false);
-    window.addEventListener("unload", function() { CompactMenu.customizeAccept(); }, false);
-    window.addEventListener("dialogcancel", function() { CompactMenu.customizeInit(); }, false);
-  ]]>
-  </script>
+  <script type="application/x-javascript" src="chrome://compact/content/compactMenuCustomize.js"/>
 
   <vbox id="main-box">
     <vbox id="compact-box" insertafter="palette-box">

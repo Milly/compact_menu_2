@@ -11,8 +11,7 @@
   <script type="application/x-javascript" src="chrome://compact/content/compactMenu.js"/>
   <script type="application/x-javascript">
   <![CDATA[
-    window.addEventListener("load", function() { CompactMenu.init(); }, false);
-    window.addEventListener("focus", function() { CompactMenu.hideAll(); }, false);
+    window.addEventListener('load', CompactMenu, false);
   ]]>
   </script>
 

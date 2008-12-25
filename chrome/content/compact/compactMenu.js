@@ -332,6 +332,7 @@ init: function() {
   }
   this.initKeyEvents();
   this.initIcon();
+  window.addEventListener('focus', this, false);
 },
 
 initKeyEvents: function() {
@@ -616,112 +617,16 @@ getProfileDir: function() {
     .get("ProfD", Components.interfaces.nsIFile);
 },
 
-// Customize
+// handle events
 
-customizeInit: function() {
-  this.c_dump('customizeInit');
-
-  if (window.gToolbox) {
-    var windowtype = gToolbox.ownerDocument.documentElement.getAttribute('windowtype');
-    if (windowtype) {
-      this.c_dump('detect window : ' + windowtype);
-      this.MAINWINDOWS = [windowtype];
-    }
-  }
-
-  this.mapMenus(function(menu, index) {
-    var id = menu.id || index;
-    var eid = this.toMenuElementId(id);
-    var visible = !this.isMenuHidden(id);
-    this.addVisibleMenuCheckbox(menu, eid, visible);
-  });
-},
-
-customizeAccept: function() {
-  this.c_dump('customizeAccept');
-
-  this.mapMenus(function(menu, index) {
-    var id = menu.id || index;
-    var pref = this.toMenuPrefId(id);
-    var eid = this.toMenuElementId(id);
-    var item = document.getElementById(eid);
-    this.setBoolPref(pref, !item.checked, true);
-  });
-
-  this.hideAll();
-},
-
-addVisibleMenuCheckbox: function(menu, id, checked) {
-  var container = document.getElementById('compact-visible_menus');
-  var item = document.getElementById(id) || document.createElement('checkbox');
-  item.setAttribute('id', id);
-  item.setAttribute('type', 'checkbox');
-  item.setAttribute('label', menu.getAttribute('label'));
-  item.setAttribute('accesskey', menu.getAttribute('accesskey'));
-  item.setAttribute('checked', checked);
-  var row = container.lastChild;
-  if (4 <= row.childNodes.length) {
-    row = document.createElement(row.nodeName);
-    container.appendChild(row);
-  }
-  row.appendChild(item);
-  return item;
-},
-
-// Preference
-
-prefInit: function() {
-  this.c_dump('prefInit');
-
-  var icon_enable = document.getElementById('icon_enable');
-  if (icon_enable) {
-    icon_enable.checked = this.getBoolPref('icon.enabled', false);
-    icon_enable.doCommand();
-    var icon_file = document.getElementById('icon_file');
-    icon_file.file = this.getIconFile();
-    if (icon_file.file) {
-      var localIconFile = this.getLocalIconFile();
-      if (localIconFile && localIconFile.exists())
-        icon_file.image = this.toFileURI(localIconFile).spec;
-    }
-  }
-},
-
-prefAccept: function() {
-  this.c_dump('prefAccept');
-
-  var icon_enable = document.getElementById('icon_enable');
-  if (icon_enable) {
-    var icon_file = document.getElementById('icon_file').file;
-    this.setBoolPref('icon.enabled', icon_enable.checked);
-    if (icon_enable.checked && icon_file && icon_file.exists())
-      this.setIconFile(icon_file);
-  }
-
-  this.initIcon();
-},
-
-disableGroup: function(group, disabled) {
-  if ('string' == typeof group)
-    group = document.getElementById(group);
-  var elements = group.getElementsByTagName('*');
-  for (var i = elements.length; 0 <= --i;) {
-    var element = elements[i];
-    if ('disabled' in element && 'caption' != element.parentNode.nodeName)
-      element.disabled = disabled;
-  }
-},
-
-openImagePicker: function(title, filefield) {
-  var nsIFilePicker = Components.interfaces.nsIFilePicker;
-  var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
-  fp.init(window, title, nsIFilePicker.modeOpen);
-  fp.appendFilters(nsIFilePicker.filterImages);
-  fp.appendFilters(nsIFilePicker.filterAll);
-  if (nsIFilePicker.returnOK == fp.show()) {
-    filefield = document.getElementById(filefield);
-    filefield.file = fp.file;
-    filefield.image = fp.fileURL.spec;
+handleEvent: function(event) {
+  switch (event.type) {
+    case 'load':
+      this.init();
+      break;
+    case 'focus':
+      this.hideAll();
+      break;
   }
 }
 
