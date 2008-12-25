@@ -494,12 +494,14 @@ toLocalIconFile: function(file) {
 
 // initialize methods
 
-hookCode: function(orgFunc, orgCode, newCode) {
-  if (!eval(orgFunc).toSource().match(orgCode)) {
+hookFunction: function(orgFunc, orgCode, newCode) {
+  var orgSource = eval(orgFunc).toSource();
+  var newSource = orgSource.replace(orgCode, newCode);
+  if (orgSource == newSource) {
     this.c_dump('hook failed for "' + orgFunc + '" at ' + Error().stack.split(/\n/)[2]);
     return false;
   }
-  eval(orgFunc + '=' + eval(orgFunc).toSource().replace(orgCode, newCode));
+  eval(orgFunc + '=' + newSource);
   return true;
 },
 
@@ -610,16 +612,16 @@ initToolbarContextMenu_Fx: function() {
   }
   menubar.collapsed = collapsed || menubar.collapsed;
 
-  this.hookCode('onViewToolbarsPopupShowing', 'type != "menubar"', 'true');
-  this.hookCode('onViewToolbarCommand',
-      'document\\.persist\\(toolbar\\.id, "collapsed"\\);',
+  this.hookFunction('onViewToolbarsPopupShowing', 'type != "menubar"', 'true');
+  this.hookFunction('onViewToolbarCommand',
+      'document.persist(toolbar.id, "collapsed");',
       'if ("toolbar-menubar" != toolbar.id) { $& }');
 
   // check All-in-One-Sidebar
   if (document.getElementById('aios-viewToolbar')) return;
 
-  this.hookCode('onViewToolbarCommand',
-      'toolbar\\.collapsed = ',
+  this.hookFunction('onViewToolbarCommand',
+      'toolbar.collapsed = ',
       '$& (1 < CompactMenu.getVisibleToolbars().length) &&');
   if (0 == this.getVisibleToolbars().length) {
     menubar.collapsed = false;
@@ -648,7 +650,7 @@ initToolbarContextMenu_Tb: function() {
   menu.addEventListener('command', toggleMenubarVisible, false);
   context.addEventListener('popupshowing', onToolbarContextMenuShowing, false);
 
-  this.hookCode('CustomizeMailToolbar', '{', '{ CompactMenu.hideMenuBar();');
+  this.hookFunction('CustomizeMailToolbar', '{', '{ CompactMenu.hideMenuBar();');
 },
 
 // handle events
