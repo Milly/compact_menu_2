@@ -75,8 +75,13 @@ c_dump: function(msg) {
   }
 },
 
-hookCode: function(orgFunc, orgCode, myCode) {
-  eval(orgFunc + '=' + eval(orgFunc).toString().replace(orgCode, myCode));
+hookCode: function(orgFunc, orgCode, newCode) {
+  if (!eval(orgFunc).toSource().match(orgCode)) {
+    this.c_dump('hook failed for "' + orgFunc + '" at ' + Error().stack.split(/\n/)[2]);
+    return false;
+  }
+  eval(orgFunc + '=' + eval(orgFunc).toSource().replace(orgCode, newCode));
+  return true;
 },
 
 getBoolPref: function(pref, defaultValue) {
@@ -420,14 +425,14 @@ initToolbarContextMenu_Fx: function() {
 
   this.hookCode('onViewToolbarsPopupShowing', 'type != "menubar"', 'true');
   this.hookCode('onViewToolbarCommand',
-      'document.persist(toolbar.id, "collapsed");',
-      'if ("toolbar-menubar" == toolbar.id) return; $&');
+      'document\\.persist\\(toolbar\\.id, "collapsed"\\);',
+      'if ("toolbar-menubar" != toolbar.id) { $& }');
 
   // check All-in-One-Sidebar
   if (document.getElementById('aios-viewToolbar')) return;
 
   this.hookCode('onViewToolbarCommand',
-      'toolbar.collapsed = ',
+      'toolbar\\.collapsed = ',
       '$& (1 < CompactMenu.getVisibleToolbarCount()) &&');
   if (0 == this.getVisibleToolbarCount()) {
     menubar.collapsed = false;
