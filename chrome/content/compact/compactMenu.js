@@ -546,6 +546,7 @@ hookFunction: function(orgFunc, orgCode, newCode) {
 },
 
 init: function() {
+  this.initMainToolbar();
   if (window.onViewToolbarsPopupShowing) {
     this.initToolbarContextMenu_Fx();
   } else {
@@ -598,9 +599,13 @@ initIcon: function() {
   }
 },
 
-initToolbarContextMenu_Fx: function() {
+initMainToolbar: function() {
   var menubar = this.getMainToolbar();
-  var collapsed = 'true' == menubar.getAttribute('collapsed');
+
+  if ('true' == menubar.getAttribute('collapsed')) {
+    menubar.removeAttribute('collapsed');
+    document.persist(menubar.id, 'collapsed');
+  }
 
   menubar.__defineGetter__('collapsed', function(){
     return CompactMenu.isToolbarHidden(this);
@@ -618,11 +623,11 @@ initToolbarContextMenu_Fx: function() {
     CompactMenu.hideMenuBar();
   });
 
-  if (collapsed) {
-    menubar.removeAttribute('collapsed');
-    document.persist(menubar.id, 'collapsed');
-  }
-  menubar.collapsed = collapsed || menubar.collapsed;
+  menubar.collapsed = this.isToolbarHidden(menubar);
+},
+
+initToolbarContextMenu_Fx: function() {
+  var menubar = this.getMainToolbar();
 
   this.hookFunction('onViewToolbarsPopupShowing', 'type != "menubar"', 'true');
   this.hookFunction('onViewToolbarCommand',
@@ -644,22 +649,14 @@ initToolbarContextMenu_Tb: function() {
   var menubar = this.getMainToolbar();
   var menu = document.getElementById('ShowMenubar');
   var context = document.getElementById('toolbar-context-menu');
-  var hidden = this.isToolbarHidden(menubar);
-  if (hidden != menubar.collapsed) {
-    toggleMenubarVisible();
-  }
 
-  function toggleMenubarVisible() {
+  this.addEventListener(menu, 'command', function() {
     menubar.collapsed = !menubar.collapsed;
-    var pref = CompactMenu.toToolbarPrefId(menubar);
-    CompactMenu.setBoolPref(pref, menubar.collapsed, true);
-    CompactMenu.hideMenuBar();
-  }
-  function onToolbarContextMenuShowing() {
+  }, false);
+
+  this.addEventListener(context, 'popupshowing', function() {
     menu.setAttribute('checked', (!menubar.collapsed).toString());
-  }
-  this.addEventListener(menu, 'command', toggleMenubarVisible, false);
-  this.addEventListener(context, 'popupshowing', onToolbarContextMenuShowing, false);
+  }, false);
 
   this.hookFunction('CustomizeMailToolbar', '{', '{ CompactMenu.hideMenuBar();');
 },
