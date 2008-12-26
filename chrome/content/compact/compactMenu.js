@@ -1,13 +1,16 @@
 var CompactMenu = {
 
+// constants
+
 DEBUG: true,
 
-COMPACTMENU_PREFBASE:    'compact.menu.',
+COMPACTMENU_PREFROOT:    'compact.menu.',
 HIDEMENU_PREFBASE:       'hidemenu.',
 HIDETOOLBAR_PREFBASE:    'hidetoolbar.',
 ICON_ENABLED_PREF:       'icon.enabled',
 ICON_FILE_PREF:          'icon.file',
 ICON_LOCALFILENAME_PREF: 'icon.localfilename',
+INITIALIZED_PREFBASE:    'initialized.',
 
 MAINWINDOWS: [
     'navigator:browser',
@@ -27,6 +30,14 @@ MAINTOOLBARS: [
     'mail-toolbar-menubar2',
     'addrbook-toolbar-menubar2',
     'compose-toolbar-menubar2',
+  ],
+
+NAVITOOLBARS: [
+    'nav-bar',
+    'navigation-toolbar',
+    'mail-bar2',
+    'ab-bar2',
+    'composeToolbar2',
   ],
 
 MENUBARS: [
@@ -60,13 +71,31 @@ c_dump: function(msg) {
   }
 },
 
+// string methods
+
+_strings: null,
+get strings function() {
+  return this._strings || (this._strings =
+    Components.classes['@mozilla.org/intl/stringbundle;1']
+              .getService(Components.interfaces.nsIStringBundleService)
+              .createBundle('chrome://compact/locale/global.properties'));
+},
+
+getString: function(key, replacements) {
+  if (!replacements)
+    return this.strings.GetStringFromName(key);
+  else
+    return this.strings.formatStringFromName(key, replacements, replacements.length);
+},
+
 // preferences methods
 
+_prefs: null,
 get prefs function() {
   return this._prefs || (this._prefs =
-    Components.classes["@mozilla.org/preferences-service;1"]
-                      .getService(Components.interfaces.nsIPrefService)
-                      .getBranch(this.COMPACTMENU_PREFBASE));
+    Components.classes['@mozilla.org/preferences-service;1']
+              .getService(Components.interfaces.nsIPrefService)
+              .getBranch(this.COMPACTMENU_PREFROOT));
 },
 
 getBoolPref: function(pref, defaultValue) {
@@ -101,14 +130,21 @@ toMenuElementId: function(id) {
   return 'compact-showmenu-' + id;
 },
 
-toMenuPrefId: function(id) {
-  var mainWindow = this.getMainWindow();
-  var windowElement = mainWindow.document.documentElement;
-  var windowId = (windowElement.id || '_id_') + '-' + (windowElement.getAttribute('windowtype') || '_windowtype_');
-  return this.HIDEMENU_PREFBASE + windowId + '.' + id;
+toInitializedPrefId: function(element_or_id) {
+  return this.toPrefId(element_or_id, this.INITIALIZED_PREFBASE);
+},
+
+toMenuPrefId: function(element_or_id) {
+  return this.toPrefId(element_or_id, this.HIDEMENU_PREFBASE);
 },
 
 toToolbarPrefId: function(element_or_id) {
+  return this.toPrefId(element_or_id, this.HIDETOOLBAR_PREFBASE);
+},
+
+toPrefId: function(element_or_id, prefBase) {
+  if (!element_or_id)
+    this.c_dump('toPrefId : ' + Error().stack);
   if (element_or_id.ownerDocument) {
     var windowElement = element_or_id.ownerDocument.documentElement;
     var id = element_or_id.id;
@@ -118,7 +154,7 @@ toToolbarPrefId: function(element_or_id) {
     var id = element_or_id;
   }
   var windowId = (windowElement.id || '_id_') + '-' + (windowElement.getAttribute('windowtype') || '_windowtype_');
-  return this.HIDETOOLBAR_PREFBASE + windowId + '.' + id;
+  return prefBase + windowId + '.' + id;
 },
 
 // element manipulate methods
@@ -245,6 +281,10 @@ getMenuPopup: function(menu) {
                     this.getElementByIds([this.SINGLE_POPUP]);
   if (popup) this.addPopupMethods(popup);
   return popup;
+},
+
+getNavigationToolbar: function() {
+  return this.getElementByIds(this.NAVITOOLBARS);
 },
 
 getVisibleToolbars: function() {
@@ -517,6 +557,38 @@ init: function() {
   this.addEventListener(window, 'keydown', this, true);
   this.addEventListener(window, 'keyup', this, true);
   this.addEventListener(window, 'keypress', this, true);
+  this.initFirst();
+},
+
+initFirst: function() {
+  var navbar = this.getNavigationToolbar();
+  var initializedPref = this.toInitializedPrefId(navbar);
+  if (!this.getBoolPref(initializedPref)) {
+    if (!this.getMenuItem()) {
+      const PromptService = Components.classes['@mozilla.org/embedcomp/prompt-service;1']
+                                      .getService(Components.interfaces.nsIPromptService);
+      var res = PromptService.confirmEx(
+        null,
+        this.getString('initialize.confirm.title'),
+        this.getString('initialize.confirm.description'),
+        (PromptService.BUTTON_TITLE_YES * PromptService.BUTTON_POS_0) +
+        (PromptService.BUTTON_TITLE_NO  * PromptService.BUTTON_POS_1),
+        null, null, null, null, {}
+      );
+      if (0 == res) {
+        var newset = 'menu-button,' + navbar.currentSet;
+        navbar.currentSet = newset;
+        navbar.setAttribute('currentset', newset);
+        document.persist(navbar.id, 'currentset');
+        var menubar = this.getMainToolbar();
+        menubar.collapsed = true;
+        if ('BrowserToolboxCustomizeDone' in window)
+          window.setTimeout('BrowserToolboxCustomizeDone(true);', 0);
+      }
+    }
+
+    this.setBoolPref(initializedPref, true);
+  }
 },
 
 initIcon: function() {
