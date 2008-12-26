@@ -4,13 +4,13 @@ var CompactMenu = {
 
 DEBUG: true,
 
-COMPACTMENU_PREFROOT:    'compact.menu.',
-HIDEMENU_PREFBASE:       'hidemenu.',
-HIDETOOLBAR_PREFBASE:    'hidetoolbar.',
-ICON_ENABLED_PREF:       'icon.enabled',
-ICON_FILE_PREF:          'icon.file',
-ICON_LOCALFILENAME_PREF: 'icon.localfilename',
-INITIALIZED_PREFBASE:    'initialized.',
+PREFROOT_COMPACTMENU:    'compact.menu.',
+PREFBASE_HIDEMENU:       'hidemenu.',
+PREFBASE_HIDETOOLBAR:    'hidetoolbar.',
+PREF_ICON_ENABLED:       'icon.enabled',
+PREF_ICON_FILE:          'icon.file',
+PREF_ICON_LOCALFILENAME: 'icon.localfilename',
+PREFBASE_INITIALIZED:    'initialized.',
 
 MAINWINDOWS: [
     'navigator:browser',
@@ -95,7 +95,7 @@ get prefs function() {
   return this._prefs || (this._prefs =
     Components.classes['@mozilla.org/preferences-service;1']
               .getService(Components.interfaces.nsIPrefService)
-              .getBranch(this.COMPACTMENU_PREFROOT));
+              .getBranch(this.PREFROOT_COMPACTMENU));
 },
 
 getBoolPref: function(pref, defaultValue) {
@@ -131,15 +131,15 @@ toMenuElementId: function(id) {
 },
 
 toInitializedPrefId: function(element_or_id) {
-  return this.toPrefId(element_or_id, this.INITIALIZED_PREFBASE);
+  return this.toPrefId(element_or_id, this.PREFBASE_INITIALIZED);
 },
 
 toMenuPrefId: function(element_or_id) {
-  return this.toPrefId(element_or_id, this.HIDEMENU_PREFBASE);
+  return this.toPrefId(element_or_id, this.PREFBASE_HIDEMENU);
 },
 
 toToolbarPrefId: function(element_or_id) {
-  return this.toPrefId(element_or_id, this.HIDETOOLBAR_PREFBASE);
+  return this.toPrefId(element_or_id, this.PREFBASE_HIDETOOLBAR);
 },
 
 toPrefId: function(element_or_id, prefBase) {
@@ -426,14 +426,14 @@ isMenuAccessKey: function(event, checkKeyCode) {
 
 getIconFile: function() {
   try {
-    return this.prefs.getComplexValue(this.ICON_FILE_PREF, Components.interfaces.nsILocalFile);
+    return this.prefs.getComplexValue(this.PREF_ICON_FILE, Components.interfaces.nsILocalFile);
   } catch (e) {
     return null;
   }
 },
 
 getLocalIconFile: function() {
-  var localFileName = this.prefs.getCharPref(this.ICON_LOCALFILENAME_PREF);
+  var localFileName = this.prefs.getCharPref(this.PREF_ICON_LOCALFILENAME);
   if (!localFileName) return null;
   var localFile = this.toLocalFile(this.getProfileDir());
   localFile.appendRelativePath(localFileName);
@@ -450,7 +450,7 @@ loadIcon: function() {
   var button = document.getElementById('menu-button');
   if (!button) return;
 
-  var iconEnable = this.getBoolPref(this.ICON_ENABLED_PREF, false);
+  var iconEnable = this.getBoolPref(this.PREF_ICON_ENABLED, false);
   if (iconEnable) {
     var icon = this.getLocalIconFile();
     if (icon && icon.exists()) {
@@ -497,8 +497,8 @@ setIconFile: function(file) {
   var lastLocalIconFile = this.getLocalIconFile();
   var destFile = this.toLocalIconFile(file);
   file.copyTo(destFile.parent, destFile.leafName);
-  this.prefs.setCharPref(this.ICON_LOCALFILENAME_PREF, destFile.leafName);
-  this.prefs.setComplexValue(this.ICON_FILE_PREF, Components.interfaces.nsILocalFile, file);
+  this.prefs.setCharPref(this.PREF_ICON_LOCALFILENAME, destFile.leafName);
+  this.prefs.setComplexValue(this.PREF_ICON_FILE, Components.interfaces.nsILocalFile, file);
   if (lastLocalIconFile && lastLocalIconFile.exists())
     lastLocalIconFile.remove(false);
 },
