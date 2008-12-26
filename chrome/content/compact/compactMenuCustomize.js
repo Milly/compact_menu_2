@@ -1,5 +1,8 @@
 var CompactMenuCustomize = { __proto__: CompactMenu,
 
+_mainToolbarCollapsed: null,
+_canceled: false,
+
 init: function() {
   this.c_dump('customizeInit');
 
@@ -18,6 +21,11 @@ init: function() {
     this.addVisibleMenuCheckbox(menu, eid, visible);
   });
 
+  var toolbar = this.getMainToolbar();
+  this._mainToolbarCollapsed = toolbar && toolbar.collapsed
+
+  this.hookFunction('restoreDefaultSet', /toolboxChanged\(\);|gToolboxChanged = true;/, 'CompactMenuCustomize.restoreMainToolbar(); $&');
+
   this.addEventListener(window, 'unload', this, false);
   this.addEventListener(window, 'dialogcancel', this, true);
 },
@@ -33,6 +41,14 @@ accept: function() {
     this.setBoolPref(pref, !item.checked, true);
   });
 
+  this.hideAll();
+},
+
+cancel: function() {
+  this.c_dump('customizeCancel');
+  this._canceled = true;
+  var toolbar = this.getMainToolbar();
+  if (toolbar) toolbar.collapsed = this._mainToolbarCollapsed;
   this.hideAll();
 },
 
@@ -53,17 +69,34 @@ addVisibleMenuCheckbox: function(menu, id, checked) {
   return item;
 },
 
+restoreMainToolbar: function() {
+  this.c_dump('restoreMainToolbar');
+
+  this.mapMenus(function(menu, index) {
+    var id = menu.id || index;
+    var eid = this.toMenuElementId(id);
+    var item = document.getElementById(eid);
+    item.checked = true;
+  });
+
+  var toolbar = this.getMainToolbar();
+  if (toolbar) toolbar.collapsed = false;
+  this.hideAll();
+},
+
 // handle events
 
 handleEvent: function(event) {
   switch (event.type) {
     case 'load':
-    case 'dialogcancel':
       this.init();
       break;
+    case 'dialogcancel':
+      this.cancel();
+      break;
     case 'unload':
-      this.accept();
-	  this.destroy();
+      if (!this._canceled) this.accept();
+      this.destroy();
       break;
   }
 }
