@@ -583,9 +583,11 @@ initFirst: function() {
         null, null, null, null, {}
       );
       if (0 == res) {
-        var newset = 'menu-button,' + navbar.currentSet;
+        var buttons = navbar.currentSet.split(',');
+        var newset = ['menu-button'].concat(buttons).join(',');
         navbar.currentSet = newset;
         navbar.setAttribute('currentset', newset);
+        navbar.collapsed = false;
         document.persist(navbar.id, 'currentset');
         var menubar = this.getMainToolbar();
         menubar.collapsed = true;
