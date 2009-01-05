@@ -293,18 +293,6 @@ getNavigationToolbar: function() {
   return this.getElementByIds(this.NAVITOOLBARS);
 },
 
-getVisibleToolbars: function() {
-  var toolbars = [];
-  var toolbox = this.getMainToolbox();
-  for (var i = 0; i < toolbox.childNodes.length; ++i) {
-    var toolbar = toolbox.childNodes[i];
-    var hasName = !!toolbar.getAttribute('toolbarname');
-    var visible = toolbar.getAttribute('collapsed') != 'true';
-    if (hasName && visible) toolbars.push(toolbar);
-  }
-  return toolbars;
-},
-
 hideItems: function() {
   this.mapMenus(function(menu, index) {
     var id = menu.id || index;
@@ -641,16 +629,6 @@ initToolbarContextMenu_Fx: function() {
   this.hookFunction('onViewToolbarCommand',
       'document.persist(toolbar.id, "collapsed");',
       'if ("toolbar-menubar" != toolbar.id) { $& }');
-
-  // check All-in-One-Sidebar
-  if (document.getElementById('aios-viewToolbar')) return;
-
-  this.hookFunction('onViewToolbarCommand',
-      'toolbar.collapsed = ',
-      '$& (1 < CompactMenu.getVisibleToolbars().length) &&');
-  if (0 == this.getVisibleToolbars().length) {
-    menubar.collapsed = false;
-  }
 },
 
 initToolbarContextMenu_Tb: function() {
