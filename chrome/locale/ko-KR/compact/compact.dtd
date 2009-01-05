@@ -1,0 +1,11 @@
+<!ENTITY menu.label "Compact Menu">
+<!ENTITY menuPref.caption "Compact Menu에서 보일 메뉴를 선택">
+<!ENTITY compactMenu.label "메뉴">
+<!ENTITY compactMenu.key "M">
+<!ENTITY menubarCmd.label "메뉴 모음">
+<!ENTITY menubarCmd.accesskey "M">
+<!ENTITY iconPref.caption "Compact Menu의 아이콘 바꾸기">
+<!ENTITY iconPref.accesskey "I">
+<!ENTITY iconFilePicker.label "찾아보기...">
+<!ENTITY iconFilePicker.accesskey "B">
+<!ENTITY iconFilePicker.title "Compact Menu의 아이콘을 선택">

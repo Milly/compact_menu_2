@@ -9,14 +9,17 @@ locale	compact	fr-FR	jar:chrome/compact.jar!/locale/fr-FR/compact/
 locale	compact	hu-HU	jar:chrome/compact.jar!/locale/hu-HU/compact/
 locale	compact	it-IT	jar:chrome/compact.jar!/locale/it-IT/compact/
 locale	compact	ja-JP	jar:chrome/compact.jar!/locale/ja-JP/compact/
+locale	compact	ko-KR	jar:chrome/compact.jar!/locale/ko-KR/compact/
 locale	compact	nl-NL	jar:chrome/compact.jar!/locale/nl-NL/compact/
 locale	compact	pl-PL	jar:chrome/compact.jar!/locale/pl-PL/compact/
+locale	compact	pt-BR	jar:chrome/compact.jar!/locale/pt-BR/compact/
 locale	compact	pt-PT	jar:chrome/compact.jar!/locale/pt-PT/compact/
 locale	compact	ru-RU	jar:chrome/compact.jar!/locale/ru-RU/compact/
 locale	compact	sv-SE	jar:chrome/compact.jar!/locale/sv-SE/compact/
 locale	compact	tr-TR	jar:chrome/compact.jar!/locale/tr-TR/compact/
 locale	compact	uk-UA	jar:chrome/compact.jar!/locale/uk-UA/compact/
 locale	compact	zh-CN	jar:chrome/compact.jar!/locale/zh-CN/compact/
+locale	compact	zh-TW	jar:chrome/compact.jar!/locale/zh-TW/compact/
 
 # Common
 overlay	chrome://global/content/customizeToolbar.xul	chrome://compact/content/customizeToolbarOverlay.xul

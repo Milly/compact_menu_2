@@ -1,6 +1,11 @@
 <!ENTITY menu.label "Compact Menu">
-<!ENTITY menuPref.caption "Selecteer de menu&apos;s die je wilt zien in Compact Menu">
+<!ENTITY menuPref.caption "Selecteer de menu’s die u wilt zien in Compact Menu">
 <!ENTITY compactMenu.label "Menu">
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Menubalk">
 <!ENTITY menubarCmd.accesskey "M">
+<!ENTITY iconPref.caption "Pictogram van Compact Menu wijzigen">
+<!ENTITY iconPref.accesskey "P">
+<!ENTITY iconFilePicker.label "Bladeren..">
+<!ENTITY iconFilePicker.accesskey "B">
+<!ENTITY iconFilePicker.title "Selecteer pictogram voor Compact Menu">

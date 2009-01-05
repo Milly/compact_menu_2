@@ -1,0 +1,11 @@
+<!ENTITY menu.label "簡潔選單">
+<!ENTITY menuPref.caption "請選擇您要收進「簡潔選單」的選單項目">
+<!ENTITY compactMenu.label "選單">
+<!ENTITY compactMenu.key "M">
+<!ENTITY menubarCmd.label "選單工具列">
+<!ENTITY menubarCmd.accesskey "M">
+<!ENTITY iconPref.caption "更換「簡潔選單」的圖示">
+<!ENTITY iconPref.accesskey "I">
+<!ENTITY iconFilePicker.label "瀏覽...">
+<!ENTITY iconFilePicker.accesskey "B">
+<!ENTITY iconFilePicker.title "選取代表「簡潔選單」的圖示">
