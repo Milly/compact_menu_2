@@ -277,8 +277,14 @@ getMenuItem: function() {
 
 getMenuPopup: function(menu) {
   var item = this.getMenuItem();
-  var popup = item? item.getElementsByTagName('menupopup')[0]:
-                    this.getElementByIds([this.SINGLE_POPUP]);
+  if (item) {
+    var parent = item.parentNode;
+    while (parent && 'toolbar' != parent.nodeName)
+      parent = parent.parentNode;
+    if (parent && !parent.collapsed)
+      var popup = item.getElementsByTagName('menupopup')[0];
+  }
+  var popup = popup || this.getElementByIds([this.SINGLE_POPUP]);
   if (popup) this.addPopupMethods(popup);
   return popup;
 },
