@@ -5,7 +5,7 @@ init: function() {
 
   var icon_enable = document.getElementById('icon_enable');
   if (icon_enable) {
-    icon_enable.checked = this.getBoolPref(this.ICON_ENABLED_PREF, false);
+    icon_enable.checked = this.getBoolPref(this.PREF_ICON_ENABLED, false);
     icon_enable.doCommand();
     var icon_file = document.getElementById('icon_file');
     icon_file.file = this.getIconFile();
@@ -26,7 +26,7 @@ accept: function() {
   var icon_enable = document.getElementById('icon_enable');
   if (icon_enable) {
     var icon_file = document.getElementById('icon_file').file;
-    this.setBoolPref(this.ICON_ENABLED_PREF, icon_enable.checked);
+    this.setBoolPref(this.PREF_ICON_ENABLED, icon_enable.checked);
     if (icon_enable.checked && icon_file && icon_file.exists())
       this.setIconFile(icon_file);
   }
