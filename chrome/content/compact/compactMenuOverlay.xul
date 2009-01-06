@@ -42,6 +42,14 @@
       type="checkbox"
       label="&menubarCmd.label;"
       accesskey="&menubarCmd.accesskey;"
+      oncommand="CompactMenu.onViewToolbarCommand();"
+      checked="true"/>
+
+  <menuitem id="menu_showMenubar"
+      type="checkbox"
+      label="&menubarCmd.label;"
+      accesskey="&menubarCmd.accesskey;"
+      oncommand="CompactMenu.onViewToolbarCommand();"
       checked="true"/>
 
 </overlay>

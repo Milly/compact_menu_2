@@ -11,9 +11,13 @@
     <toolbaritem id="compact-menu" />
   </toolbarpalette>
 
-  <popup id="toolbar-context-menu">
+  <popup id="toolbar-context-menu" onpopupshowing="CompactMenu.onViewToolbarsPopupShowing('ShowMenubar');">
     <menuitem id="ShowMenubar" insertbefore="CustomizeMailToolbar" />
   </popup>
+
+  <menupopup id="view_toolbars_popup" onpopupshowing="CompactMenu.onViewToolbarsPopupShowing('menu_showMenubar');">
+    <menuitem id="menu_showMenubar" insertbefore="menu_showComposeToolbar" />
+  </menupopup>
 
   <window id="msgcomposeWindow">
     <popupset>

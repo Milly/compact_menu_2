@@ -623,8 +623,6 @@ initMainToolbar: function() {
 },
 
 initToolbarContextMenu_Fx: function() {
-  var menubar = this.getMainToolbar();
-
   this.hookFunction('onViewToolbarsPopupShowing', 'type != "menubar"', 'true');
   this.hookFunction('onViewToolbarCommand',
       'document.persist(toolbar.id, "collapsed");',
@@ -632,19 +630,21 @@ initToolbarContextMenu_Fx: function() {
 },
 
 initToolbarContextMenu_Tb: function() {
-  var menubar = this.getMainToolbar();
-  var menu = document.getElementById('ShowMenubar');
-  var context = document.getElementById('toolbar-context-menu');
-
-  this.addEventListener(menu, 'command', function() {
-    menubar.collapsed = !menubar.collapsed;
-  }, false);
-
-  this.addEventListener(context, 'popupshowing', function() {
-    menu.setAttribute('checked', (!menubar.collapsed).toString());
-  }, false);
-
   this.hookFunction('CustomizeMailToolbar', '{', '{ CompactMenu.hideMenuBar();');
+},
+
+onViewToolbarCommand: function() {
+  var menubar = this.getMainToolbar();
+  if (menubar)
+    menubar.collapsed = !menubar.collapsed;
+  this.hideAll();
+},
+
+onViewToolbarsPopupShowing: function(aMenuItemId) {
+  var menubar = this.getMainToolbar();
+  var menuitem = document.getElementById(aMenuItemId);
+  if (menubar && menuitem)
+    menuitem.setAttribute('checked', !menubar.collapsed);
 },
 
 // destroy methods
