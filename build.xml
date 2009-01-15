@@ -10,7 +10,8 @@
 	<property name="build.path" value="build" />
 	<property name="chrome.path" value="chrome" />
 	<property name="defaults.path" value="defaults" />
-	<property name="xpi.file" value="${ant.project.name}-${RDF.Description.em:version}.xpi" />
+	<property name="target.app" value="fx+tb" />
+	<property name="xpi.file" value="${ant.project.name}-${RDF.Description.em:version}-${target.app}.xpi" />
 	<property name="jar.file" value="compact.jar" />
 
 	<!-- defines -->
