@@ -521,13 +521,6 @@ toLocalIconFile: function(file) {
 
 // initialize methods
 
-_eventListeners: [],
-
-addEventListener: function(target, type, listener, useCapture) {
-  target.addEventListener(type, listener, useCapture);
-  this._eventListeners.push([target, type, listener, useCapture]);
-},
-
 hookFunction: function(orgFunc, orgCode, newCode) {
   var orgSource = eval(orgFunc).toSource();
   var newSource = orgSource.replace(orgCode, newCode);
@@ -540,6 +533,7 @@ hookFunction: function(orgFunc, orgCode, newCode) {
 },
 
 init: function() {
+  this.c_dump('init');
   this.initMainToolbar();
   if (window.onViewToolbarsPopupShowing) {
     this.initToolbarContextMenu_Fx();
@@ -547,11 +541,7 @@ init: function() {
     this.initToolbarContextMenu_Tb();
   }
   this.initIcon();
-  this.addEventListener(window, 'unload', this, false);
-  this.addEventListener(window, 'focus', this, false);
-  this.addEventListener(window, 'keydown', this, true);
-  this.addEventListener(window, 'keyup', this, true);
-  this.addEventListener(window, 'keypress', this, true);
+  this.addEvents();
   this.initFirst();
 },
 
@@ -650,14 +640,33 @@ onViewToolbarsPopupShowing: function(aMenuItemId) {
 // destroy methods
 
 destroy: function() {
+  this.removeEvents();
+},
+
+// event methods
+
+_eventListeners: [],
+
+addEventListener: function(target, type, listener, useCapture) {
+  target.addEventListener(type, listener, useCapture);
+  this._eventListeners.push([target, type, listener, useCapture]);
+},
+
+addEvents: function() {
+  this.addEventListener(window, 'unload', this, false);
+  this.addEventListener(window, 'focus', this, false);
+  this.addEventListener(window, 'keydown', this, true);
+  this.addEventListener(window, 'keyup', this, true);
+  this.addEventListener(window, 'keypress', this, true);
+},
+
+removeEvents: function() {
   var listeners = this._eventListeners;
   this._eventListeners = [];
   for each (var l in listeners) {
     l[0].removeEventListener(l[1], l[2], l[3]);
   }
 },
-
-// handle events
 
 handleEvent: function(event) {
   switch (event.type) {
