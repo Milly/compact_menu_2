@@ -9,13 +9,15 @@
 	<xmlproperty file="install.rdf" />
 	<property name="build.path" value="build" />
 	<property name="chrome.path" value="chrome" />
+	<property name="defaults.path" value="defaults" />
 	<property name="xpi.file" value="${ant.project.name}-${RDF.Description.em:version}.xpi" />
 	<property name="jar.file" value="compact.jar" />
 
 	<!-- defines -->
 	<defaultexcludes add="**/.*" />
+	<defaultexcludes add="**/Thumbs.db" />
 
-	<!-- deploy -->	
+	<!-- deploy -->
 	<target name="deploy" depends="xpi">
 		<exec executable="cmd.exe" os="Windows XP">
 			<arg line="/c start ${xpi.file}" />
@@ -23,30 +25,32 @@
 	</target>
 
 	<!-- create xpi -->
-	<target name="xpi" depends="jar">
-		<mkdir dir="${build.path}" />
+	<target name="xpi" depends="build-dir,jar">
 		<copy todir="${build.path}">
 			<fileset dir=".">
 				<include name="install.rdf" />
 				<include name="chrome.manifest" />
 				<include name="${chrome.path}/*.jar" />
-				<include name="defaults/**" />
+				<include name="${defaults.path}/**" />
 			</fileset>
 		</copy>
 		<zip destfile="${xpi.file}" basedir="${build.path}" />
 	</target>
 	
 	<!-- create chrome jar -->
-	<target name="jar">
-		<zip destfile="${chrome.path}/${jar.file}" compress="false">
-			<fileset dir="${chrome.path}">
-				<exclude name="*.jar" />
-				<exclude name="**/.*" />
-				<exclude name="**/Thumbs.db" />
-			</fileset>
+	<target name="jar" depends="build-dir">
+		<zip destfile="${build.path}/${chrome.path}/${jar.file}" compress="false">
+			<fileset dir="${chrome.path}" />
 		</zip>
 	</target>
 
+	<!-- create build dir -->
+	<target name="build-dir">
+		<mkdir dir="${build.path}" />
+		<mkdir dir="${build.path}/${chrome.path}" />
+		<mkdir dir="${build.path}/${defaults.path}" />
+	</target>
+	
 	<!-- clean -->
 	<target name="clean">
 		<delete includeEmptyDirs="true">
