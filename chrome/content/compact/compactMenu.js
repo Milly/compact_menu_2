@@ -264,6 +264,7 @@ getMainWindows: function() {
 },
 
 getMainWindow: function() {
+  if (this.mainWindowInitializing) return window;
   return this.getMainWindows()[0] || null;
 },
 
@@ -534,6 +535,7 @@ hookFunction: function(orgFunc, orgCode, newCode) {
 
 init: function() {
   this.c_dump('init');
+  this.mainWindowInitializing = true;
   this.initMainToolbar();
   if (window.onViewToolbarsPopupShowing) {
     this.initToolbarContextMenu_Fx();
@@ -543,6 +545,7 @@ init: function() {
   this.initIcon();
   this.addEvents();
   this.initFirst();
+  this.mainWindowInitializing = false;
 },
 
 initFirst: function() {
@@ -594,15 +597,14 @@ initMainToolbar: function() {
   }
 
   menubar.__defineGetter__('collapsed', function(){
-    return CompactMenu.isToolbarHidden(this);
+    return 'true' == this.getAttribute('collapsed');
   });
 
-  menubar.__defineSetter__('collapsed', function(){
-    var collapsed = arguments[0];
+  menubar.__defineSetter__('collapsed', function(collapsed){
     var pref = CompactMenu.toToolbarPrefId(this);
     CompactMenu.setBoolPref(pref, collapsed, true);
     if (collapsed) {
-      this.setAttribute('collapsed', true);
+      this.setAttribute('collapsed', 'true');
     } else {
       this.removeAttribute('collapsed');
     }
