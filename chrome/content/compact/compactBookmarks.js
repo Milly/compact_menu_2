@@ -90,10 +90,20 @@ initBookmarksButton: function() {
   var attrs = this.getBookmarksMenu().attributes;
   for (var i = 0; i < attrs.length; ++i) {
     var attr = attrs[i];
+    // copy onXXX (for All)
+    // copy datasources, ref ... (for Fx2)
     if (/^on|^(datasources|ref|flags|template|infer)$/.test(attr.name))
       compactBookmarksButton.setAttribute(attr.name, attr.value);
   }
   this.cloneBookmarksMenu(compactBookmarksButton);
+
+  // reinsert after clone (for Fx2)
+  if (window.BookmarksMenuDNDObserver) {
+    var next = compactBookmarksButton.nextSibling;
+    var parent = compactBookmarksButton.parentNode;
+    parent.removeChild(compactBookmarksButton);
+    parent.insertBefore(compactBookmarksButton, next);
+  }
 
   compactBookmarksButton.initialized = true;
 },
