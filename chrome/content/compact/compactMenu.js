@@ -642,16 +642,30 @@ onViewToolbarsPopupShowing: function(aMenuItemId) {
 // destroy methods
 
 destroy: function() {
-  this.removeEvents();
+  this.c_dump('destroy');
+  this.removeEventListeners();
 },
 
 // event methods
 
 _eventListeners: [],
+get eventListeners function() {
+  if (!this.hasOwnProperty('_eventListeners'))
+    this._eventListeners = [];
+  return this._eventListeners;
+},
 
 addEventListener: function(target, type, listener, useCapture) {
   target.addEventListener(type, listener, useCapture);
-  this._eventListeners.push([target, type, listener, useCapture]);
+  this.eventListeners.push([target, type, listener, useCapture]);
+},
+
+removeEventListeners: function() {
+  var listeners = this.eventListeners;
+  this._eventListeners = [];
+  for each (var l in listeners) {
+    l[0].removeEventListener(l[1], l[2], l[3]);
+  }
 },
 
 addEvents: function() {
@@ -660,14 +674,6 @@ addEvents: function() {
   this.addEventListener(window, 'keydown', this, true);
   this.addEventListener(window, 'keyup', this, true);
   this.addEventListener(window, 'keypress', this, true);
-},
-
-removeEvents: function() {
-  var listeners = this._eventListeners;
-  this._eventListeners = [];
-  for each (var l in listeners) {
-    l[0].removeEventListener(l[1], l[2], l[3]);
-  }
 },
 
 handleEvent: function(event) {
