@@ -1,4 +1,5 @@
 <!ENTITY menu.label "Compact Menu">
+<!ENTITY bookmarks.label "Compact Bookmarks">
 <!ENTITY menuPref.caption "Válassza ki, hogy a menü eszköztár mely menüjei jelenjenek meg:">
 <!ENTITY compactMenu.label "Menü">
 <!ENTITY compactMenu.key "M">

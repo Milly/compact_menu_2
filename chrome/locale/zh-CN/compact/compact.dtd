@@ -1,4 +1,5 @@
 <!ENTITY menu.label "Compact Menu">
+<!ENTITY bookmarks.label "Compact Bookmarks">
 <!ENTITY menuPref.caption "选择要显示在整合菜单/按钮内的项目">
 <!ENTITY compactMenu.label "菜单">
 <!ENTITY compactMenu.key "M">

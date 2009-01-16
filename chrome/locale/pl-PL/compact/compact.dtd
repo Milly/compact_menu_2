@@ -1,4 +1,5 @@
 <!ENTITY menu.label "Menu kompaktowe">
+<!ENTITY bookmarks.label "Compact Bookmarks">
 <!ENTITY menuPref.caption "Zaznacz menu, które będą wyświetlane w menu kompaktowym">
 <!ENTITY compactMenu.label "Menu">
 <!ENTITY compactMenu.key "M">

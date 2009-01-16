@@ -16,7 +16,7 @@
   </script>
 
   <toolbarbutton id="menu-button"
-      type="menu" class="toolbarbutton-1"
+      type="menu" class="toolbarbutton-1 compactbutton"
       label="&menu.label;"
       tooltip="menu-button-tooltip">
     <menupopup id="menu-button-popup"

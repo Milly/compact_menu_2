@@ -1,4 +1,5 @@
 <!ENTITY menu.label "Compact Menu">
+<!ENTITY bookmarks.label "Compact Bookmarks">
 <!ENTITY menuPref.caption "Compact Menu에서 보일 메뉴를 선택">
 <!ENTITY compactMenu.label "메뉴">
 <!ENTITY compactMenu.key "M">

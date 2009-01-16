@@ -1,37 +1,44 @@
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 #menu-button {
+  list-style-image: url("chrome://compact/skin/blue.png");
+}
+
+#compact-bk-button {
+  list-style-image: url("chrome://compact/skin/bookmarks.png");
+}
+
+.compactbutton {
   min-width: 0;
   min-height: 0;
   width: auto;
   height: auto;
-  list-style-image: url("chrome://compact/skin/blue.png");
   -moz-image-region: rect(0px, 16px, 16px, 0px);
 }
 
-#PersonalToolbar #menu-button {
+#PersonalToolbar .compactbutton {
   padding-top: 0;
   padding-bottom: 0;
 }
 
-#menu-button:hover {
+.compactbutton:hover {
   -moz-image-region: rect(16px, 16px, 32px, 0px);
 }
 
-#menu-button[open="true"] {
+.compactbutton[open="true"] {
   -moz-image-region: rect(32px, 16px, 48px, 0px);
 }
 
-#menu-button .toolbarbutton-icon {
+.compactbutton .toolbarbutton-icon {
   margin: 0;
 }
 
-toolbar #menu-button {
+toolbar .compactbutton {
   -moz-box-orient: horizontal;
 }
 
-toolbar:not([mode="text"]) #menu-button .toolbarbutton-text,
-toolbar:not([mode="text"]) #menu-button .toolbarbutton-menu-dropmarker {
+toolbar:not([mode="text"]) .compactbutton .toolbarbutton-text,
+toolbar:not([mode="text"]) .compactbutton .toolbarbutton-menu-dropmarker {
   display: none;
 }
 
