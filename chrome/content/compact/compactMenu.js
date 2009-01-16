@@ -164,6 +164,7 @@ addPopupMethods: function(popup) {
     this.c_dump('add popup.openPopup');
     popup.openPopup = function(anchor, position, x, y, isContextMenu, attributesOverride) {
       if (!anchor) {
+        var document = this.ownerDocument;
         anchor = document.documentElement;
         position = null;
       } else {
@@ -189,6 +190,7 @@ addPopupMethods: function(popup) {
   if (!('openPopupAtScreen' in popup) /* Mozilla < 1.9 */) {
     this.c_dump('add popup.openPopupAtScreen');
     popup.openPopupAtScreen = function(x, y, isContextMenu) {
+      var document = this.ownerDocument;
       document.popupNode = null;
       var popupType = isContextMenu ? 'context' : 'popup';
       this.showPopup(document.documentElement, x, y, popupType, null, null);
