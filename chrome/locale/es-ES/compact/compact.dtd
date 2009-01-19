@@ -1,12 +1,12 @@
-<!ENTITY menu.label "Compact Menu">
-<!ENTITY bookmarks.label "Compact Bookmarks">
-<!ENTITY menuPref.caption "Seleccione los menús a mostrar en Compact Menu">
+<!ENTITY menu.label "Menú compacto">
+<!ENTITY bookmarks.label "Marcadores compactos">
+<!ENTITY menuPref.caption "Seleccione los menús a mostrar en el Menú compacto">
 <!ENTITY compactMenu.label "Menú">
 <!ENTITY compactMenu.key "n">
 <!ENTITY menubarCmd.label "Barra de menú">
 <!ENTITY menubarCmd.accesskey "B">
-<!ENTITY iconPref.caption "Reemplazar icono de Compact Menu">
+<!ENTITY iconPref.caption "Reemplazar icono de Menú compacto">
 <!ENTITY iconPref.accesskey "R">
 <!ENTITY iconFilePicker.label "Examinar...">
 <!ENTITY iconFilePicker.accesskey "E">
-<!ENTITY iconFilePicker.title "Seleccionar icono de Compact Menu">
+<!ENTITY iconFilePicker.title "Seleccionar icono de Menú compacto">

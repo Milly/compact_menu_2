@@ -1,5 +1,6 @@
 <!ENTITY menu.label "簡潔選單">
-<!ENTITY menuPref.caption "請選擇您要收進「簡潔選單」的選單項目">
+<!ENTITY bookmarks.label "簡潔書籤">
+<!ENTITY menuPref.caption "請選擇您要收進「簡潔選單」內的選單項目">
 <!ENTITY compactMenu.label "選單">
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "選單工具列">

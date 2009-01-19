@@ -1,4 +1,5 @@
 <!ENTITY menu.label "Bütünleşik Menü">
+<!ENTITY bookmarks.label "Bütünleşik Yer İmleri">
 <!ENTITY menuPref.caption "Bütünleşik Menü&apos;de görmek istediğiniz menüleri seçin">
 <!ENTITY compactMenu.label "Menü">
 <!ENTITY compactMenu.key "M">
