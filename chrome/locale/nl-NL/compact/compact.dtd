@@ -7,6 +7,6 @@
 <!ENTITY menubarCmd.accesskey "M">
 <!ENTITY iconPref.caption "Pictogram van Compact Menu wijzigen">
 <!ENTITY iconPref.accesskey "P">
-<!ENTITY iconFilePicker.label "Bladeren..">
+<!ENTITY iconFilePicker.label "Bladeren…">
 <!ENTITY iconFilePicker.accesskey "B">
 <!ENTITY iconFilePicker.title "Selecteer pictogram voor Compact Menu">
