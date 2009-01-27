@@ -1,0 +1,21 @@
++-----------------------------------+
+|  'Compact Menu 2' project README  |
++-----------------------------------+
+
+== Summary
+
+This project contains 'Compact Menu 2' add-on for Firefox and Thunderbird.
+
+
+== Web links
+
+Firefox Add-ons: https://addons.mozilla.org/firefox/addon/4550
+
+  
+== Build package
+
+Require 'Apache Ant'.
+
+$ tar zxf compact_menu_2.tar.gz
+$ cd compact_menu_2
+$ ant
