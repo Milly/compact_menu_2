@@ -49,3 +49,10 @@ toolbar:not([mode="text"]) .compactbutton .toolbarbutton-menu-dropmarker {
   padding: 0;
   margin: 0;
 }
+
+toolbar[collapsed="true"]:first-child + toolbar,
+toolbar[collapsed="true"]:first-child + toolbar[collapsed="true"] + toolbar,
+toolbar[collapsed="true"]:first-child + toolbar[collapsed="true"] + toolbar[collapsed="true"] + toolbar,
+toolbar[collapsed="true"]:first-child + toolbar[collapsed="true"] + toolbar[collapsed="true"] + toolbar[collapsed="true"] + toolbar {
+  border-top: 0px !important;
+}
