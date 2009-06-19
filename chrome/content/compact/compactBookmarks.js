@@ -152,6 +152,15 @@ cloneBookmarksMenu: function(parent) {
     var clone_tbFolderMenu = tbFolderMenu.cloneNode(false);
     var clone_tbFolderPopup = tbFolderPopup.cloneNode(false);
     var clone_separator = tbFolderMenu.nextSibling.cloneNode(false);
+
+    var bms = PlacesUtils.bookmarks;
+    if (bms) {
+      if (!clone_tbFolderMenu.label)
+        clone_tbFolderMenu.label = bms.getItemTitle(bms.toolbarFolder);
+      if (!clone_tbFolderPopup.place)
+        clone_tbFolderPopup.place = PlacesUtils.getQueryStringForFolder(bms.toolbarFolder);
+    }
+
     clone_tbFolderMenu.appendChild(clone_tbFolderPopup);
     clone_menupopup.appendChild(clone_tbFolderMenu);
     clone_menupopup.appendChild(clone_separator);
