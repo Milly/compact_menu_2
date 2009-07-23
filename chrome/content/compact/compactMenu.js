@@ -712,6 +712,11 @@ onKeyUp: function(event) {
 
 onKeyPress: function(event) {
   if (!this.isMenuAccessKey(event)) return;
+
+  // avoid Japanese IME switching on Windows
+  if (this._menuKeyPressing && 0xc0 == event.keyCode)
+    this._menuKeyPressing = false;
+
   var popup = this.getMenuPopup();
   if (!popup || 'open' == popup.state) return;
 
