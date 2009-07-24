@@ -673,50 +673,77 @@ removeEventListeners: function() {
 addEvents: function() {
   this.addEventListener(window, 'unload', this, false);
   this.addEventListener(window, 'focus', this, false);
+  this.addEventListener(window, 'blur', this, true);
+  this.addEventListener(window, 'mousedown', this, true);
   this.addEventListener(window, 'keydown', this, true);
   this.addEventListener(window, 'keyup', this, true);
   this.addEventListener(window, 'keypress', this, true);
 },
 
 handleEvent: function(event) {
-  switch (event.type) {
-    case 'load'    : this.init(); break;
-    case 'unload'  : this.destroy(); break;
-    case 'focus'   : this.hideAll(); break;
-    case 'keydown' : this.onKeyDown(event); break;
-    case 'keyup'   : this.onKeyUp(event); break;
-    case 'keypress': this.onKeyPress(event); break;
-  }
+  var handler = this['on' + event.type];
+  if (handler) handler.call(this, event);
 },
 
 _menuKeyPressing: false,
-_menuOpened: false,
+_menuOpenCanceled: false,
 
-onKeyDown: function(event) {
-  var pressing = this.isMenuAccessKey(event, true);
-  if (pressing && !this._menuKeyPressing) {
-    this._menuOpened = ('open' == (this.getMenuPopup() || {}).state);
-  }
-  this._menuKeyPressing = pressing && this.isMenuBarHidden();
+onload: function(event) {
+  this.init();
 },
 
-onKeyUp: function(event) {
+onunload: function(event) {
+  this.destroy();
+},
+
+onfocus: function(event) {
+  this.hideAll();
+  this._menuOpenCanceled = true;
+},
+
+onblur: function(event) {
+  // avoid Alt-Tab (Task switching) on Firefox 3.5
+  // 1. User push and release Alt-Tab
+  // 2. Alt keydown detect, Tab keydown "NOT" detect
+  // 3. Alt keyup detect
+  // 4. window blur detect
+  this._menuOpenCanceled = true;
+},
+
+onmousedown: function(event) {
+  // avoid Download Link
+  this._menuOpenCanceled = true;
+},
+
+onkeydown: function(event) {
+  var pressing = this.isMenuAccessKey(event, true);
+  if (pressing && !this._menuKeyPressing)
+    this._menuOpenCanceled = ('open' == (this.getMenuPopup() || {}).state) || !this.isMenuBarHidden();
+  this._menuKeyPressing = pressing;
+},
+
+onkeyup: function(event) {
   if (this._menuKeyPressing && this.isMenuAccessKey(event, true)) {
     this._menuKeyPressing = false;
     event.stopPropagation();
-    if (!this._menuOpened) {
-      this.openMenuPopup();
+    if (!this._menuOpenCanceled) {
+      setTimeout(function() {
+        if (!CompactMenu._menuOpenCanceled)
+          CompactMenu.openMenuPopup();
+      }, 50);
     }
   }
 },
 
-onKeyPress: function(event) {
-  if (!this.isMenuAccessKey(event)) return;
-
-  // avoid Japanese IME switching on Windows
-  if (this._menuKeyPressing && 0xc0 == event.keyCode)
+onkeypress: function(event) {
+  // avoid Alt-~ (Japanese IME switching), Space or Return (Link command)
+  if (this._menuKeyPressing && (
+      event.altKey && event.keyCode == KeyEvent.DOM_VK_BACK_QUOTE ||
+      event.keyCode == KeyEvent.DOM_VK_SPACE ||
+      event.keyCode == KeyEvent.DOM_VK_RETURN))
     this._menuKeyPressing = false;
 
+  if (!this.isMenuAccessKey(event)) return;
   var popup = this.getMenuPopup();
   if (!popup || 'open' == popup.state) return;
 
