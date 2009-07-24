@@ -698,6 +698,7 @@ onunload: function(event) {
 
 onfocus: function(event) {
   this.hideAll();
+  this._menuKeyPressing = false;
   this._menuOpenCanceled = true;
 },
 
@@ -707,6 +708,7 @@ onblur: function(event) {
   // 2. Alt keydown detect, Tab keydown "NOT" detect
   // 3. Alt keyup detect
   // 4. window blur detect
+  this._menuKeyPressing = false;
   this._menuOpenCanceled = true;
 },
 
