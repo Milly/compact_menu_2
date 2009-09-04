@@ -675,6 +675,7 @@ addEvents: function() {
   this.addEventListener(window, 'focus', this, false);
   this.addEventListener(window, 'blur', this, true);
   this.addEventListener(window, 'mousedown', this, true);
+  this.addEventListener(window, 'DOMMouseScroll', this, true);
   this.addEventListener(window, 'keydown', this, true);
   this.addEventListener(window, 'keyup', this, true);
   this.addEventListener(window, 'keypress', this, true);
@@ -713,6 +714,11 @@ onblur: function(event) {
 },
 
 onmousedown: function(event) {
+  // avoid Download Link
+  this._menuOpenCanceled = true;
+},
+
+onDOMMouseScroll: function(event) {
   // avoid Download Link
   this._menuOpenCanceled = true;
 },
