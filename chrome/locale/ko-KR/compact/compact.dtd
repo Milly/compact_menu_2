@@ -1,12 +1,12 @@
-<!ENTITY menu.label "컴펙트 메뉴">
-<!ENTITY bookmarks.label "컴펙트 북마크">
-<!ENTITY menuPref.caption "컴펙트 메뉴에서 보일 메뉴를 선택">
+<!ENTITY menu.label "컴팩트 메뉴">
+<!ENTITY bookmarks.label "컴팩트 북마크">
+<!ENTITY menuPref.caption "컴팩트 메뉴에서 보일 메뉴를 선택">
 <!ENTITY compactMenu.label "메뉴">
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "메뉴 모음">
 <!ENTITY menubarCmd.accesskey "M">
-<!ENTITY iconPref.caption "컴펙트 메뉴의 아이콘 바꾸기">
+<!ENTITY iconPref.caption "컴팩트 메뉴의 아이콘 바꾸기">
 <!ENTITY iconPref.accesskey "I">
 <!ENTITY iconFilePicker.label "찾아보기...">
 <!ENTITY iconFilePicker.accesskey "B">
-<!ENTITY iconFilePicker.title "컴펙트 메뉴의 아이콘을 선택">
+<!ENTITY iconFilePicker.title "컴팩트 메뉴의 아이콘을 선택">
