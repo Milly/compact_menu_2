@@ -541,11 +541,27 @@ init: function() {
   this.c_dump('init');
   this.mainWindowInitializing = true;
   this.initMainToolbar();
-  if (window.onViewToolbarsPopupShowing) {
-    this.initToolbarContextMenu_FxTb30();
-  } else {
-    this.initToolbarContextMenu_Tb20();
+
+  const FIREFOX_ID = '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}';
+  const THUNDERBIRD_ID = '{3550f703-e582-4d05-9a08-453d09bdfdc6}';
+  var appInfo = Components.classes['@mozilla.org/xre/app-info;1']
+                          .getService(Components.interfaces.nsIXULAppInfo);
+  var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+                                 .getService(Components.interfaces.nsIVersionComparator);
+  if (FIREFOX_ID == appInfo.ID) {
+    if (0 <= versionChecker.compare(appInfo.version, "3.6a")) {
+      this.initToolbarContextMenu_Fx36();
+    } else {
+      this.initToolbarContextMenu_FxTb30();
+    }
+  } else if (THUNDERBIRD_ID == appInfo.ID) {
+    if (0 <= versionChecker.compare(appInfo.version, "3.0a")) {
+      this.initToolbarContextMenu_FxTb30();
+    } else {
+      this.initToolbarContextMenu_Tb20();
+    }
   }
+
   this.initIcon();
   this.addEvents();
   this.initFirst();
@@ -600,22 +616,48 @@ initMainToolbar: function() {
     document.persist(menubar.id, 'collapsed');
   }
 
+  var org_setAttribute = menubar.setAttribute;
+  menubar.setAttribute = function(name, value) {
+    if ('collapsed' == name) {
+      var pref = CompactMenu.toToolbarPrefId(this);
+      CompactMenu.setBoolPref(pref, 'true' == String(value), true);
+      org_setAttribute.call(menubar, name, value);
+      CompactMenu.hideMenuBar();
+    } else {
+      org_setAttribute.call(menubar, name, value);
+    }
+  };
+
+  var org_removeAttribute = menubar.removeAttribute;
+  menubar.removeAttribute = function(name) {
+    if ('collapsed' == name) {
+      var pref = CompactMenu.toToolbarPrefId(this);
+      CompactMenu.setBoolPref(pref, false, true);
+      org_removeAttribute.call(menubar, name);
+      CompactMenu.hideMenuBar();
+    } else {
+      org_removeAttribute.call(menubar, name);
+    }
+  };
+
   menubar.__defineGetter__('collapsed', function(){
     return 'true' == this.getAttribute('collapsed');
   });
 
   menubar.__defineSetter__('collapsed', function(collapsed){
-    var pref = CompactMenu.toToolbarPrefId(this);
-    CompactMenu.setBoolPref(pref, collapsed, true);
-    if (collapsed) {
-      this.setAttribute('collapsed', 'true');
-    } else {
-      this.removeAttribute('collapsed');
-    }
-    CompactMenu.hideMenuBar();
+    this.setAttribute('collapsed', collapsed);
   });
 
   menubar.collapsed = this.isToolbarHidden(menubar);
+},
+
+initToolbarContextMenu_Fx36: function() {
+  this.hookFunction('onViewToolbarsPopupShowing', '"autohide"', '"collapsed"');
+  this.hookFunction('onViewToolbarCommand', '"autohide"', '"collapsed"');
+  this.hookFunction('onViewToolbarCommand',
+      'document.persist(toolbar.id, hidingAttribute);',
+      'if (!/\\btoolbar-menubar2?$/.test(toolbar.id)) { $& }');
+  this.getMainToolbar().setAttribute('autohide', false);
 },
 
 initToolbarContextMenu_FxTb30: function() {
