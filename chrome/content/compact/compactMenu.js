@@ -627,6 +627,16 @@ initToolbarContextMenu_FxTb30: function() {
 
 initToolbarContextMenu_Tb20: function() {
   this.hookFunction('CustomizeMailToolbar', '{', '{ CompactMenu.hideMenuBar();');
+
+  // add menuitem to messengercomposer
+  var menu = document.getElementById('menu_ToolbarsNew');
+  if (menu) {
+    var menupopup = menu.getElementsByTagName('menupopup')[0];
+    menupopup.onpopupshowing = "CompactMenu.onViewToolbarsPopupShowing(event, 'menu_showMenubar');";
+    var menuitem = document.getElementById('ShowMenubar').cloneNode(false);
+    menuitem.id = 'menu_showMenubar';
+    menupopup.insertBefore(menuitem, menupopup.firstChild);
+  }
 },
 
 onViewToolbarCommand: function() {
