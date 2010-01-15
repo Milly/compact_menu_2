@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+
+<?xul-overlay href="chrome://compact/content/compactMenuOverlay.xul"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://compact/locale/compact.dtd" >
+
+<overlay id="compactMessengerBaseOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <menuitem id="ShowMenubar"
+      type="checkbox"
+      label="&menubarCmd.label;"
+      accesskey="&menubarCmd.accesskey;"
+      toolbarindex="0"
+      oncommand="CompactMenu.onViewToolbarCommand();"
+      checked="true"/>
+
+  <menuitem id="menu_showMenubar"
+      type="checkbox"
+      label="&menubarCmd.label;"
+      accesskey="&menubarCmd.accesskey;"
+      toolbarindex="0"
+      oncommand="CompactMenu.onViewToolbarCommand();"
+      checked="true"/>
+
+  <popup id="toolbar-context-menu" onpopupshowing="CompactMenu.onViewToolbarsPopupShowing(event, 'ShowMenubar');">
+    <menuitem id="ShowMenubar" position="1" />
+  </popup>
+
+  <menupopup id="view_toolbars_popup" onpopupshowing="CompactMenu.onViewToolbarsPopupShowing(event, 'menu_showMenubar');">
+    <menuitem id="menu_showMenubar" position="1" />
+  </menupopup>
+
+</overlay>

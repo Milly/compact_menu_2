@@ -23,6 +23,8 @@ MAINWINDOWS: [
 MAINTOOLBOXS: [
     'navigator-toolbox',
     'mail-toolbox',
+    'compose-toolbox',
+    'ab-toolbox',
   ],
 
 MAINTOOLBARS: [
@@ -540,9 +542,9 @@ init: function() {
   this.mainWindowInitializing = true;
   this.initMainToolbar();
   if (window.onViewToolbarsPopupShowing) {
-    this.initToolbarContextMenu_Fx();
+    this.initToolbarContextMenu_FxTb30();
   } else {
-    this.initToolbarContextMenu_Tb();
+    this.initToolbarContextMenu_Tb20();
   }
   this.initIcon();
   this.addEvents();
@@ -616,14 +618,14 @@ initMainToolbar: function() {
   menubar.collapsed = this.isToolbarHidden(menubar);
 },
 
-initToolbarContextMenu_Fx: function() {
+initToolbarContextMenu_FxTb30: function() {
   this.hookFunction('onViewToolbarsPopupShowing', 'type != "menubar"', 'true');
   this.hookFunction('onViewToolbarCommand',
       'document.persist(toolbar.id, "collapsed");',
-      'if ("toolbar-menubar" != toolbar.id) { $& }');
+      'if (!/\btoolbar-menubar2?$/.test(toolbar.id)) { $& }');
 },
 
-initToolbarContextMenu_Tb: function() {
+initToolbarContextMenu_Tb20: function() {
   this.hookFunction('CustomizeMailToolbar', '{', '{ CompactMenu.hideMenuBar();');
 },
 
@@ -634,11 +636,16 @@ onViewToolbarCommand: function() {
   this.hideAll();
 },
 
-onViewToolbarsPopupShowing: function(aMenuItemId) {
-  var menubar = this.getMainToolbar();
-  var menuitem = document.getElementById(aMenuItemId);
-  if (menubar && menuitem)
-    menuitem.setAttribute('checked', !menubar.collapsed);
+onViewToolbarsPopupShowing: function(event, aMenuItemId) {
+  if (window.onViewToolbarsPopupShowing) {
+    var toolbox = this.getMainToolbox();
+    window.onViewToolbarsPopupShowing(event, toolbox.id);
+  } else {
+    var menubar = this.getMainToolbar();
+    var menuitem = document.getElementById(aMenuItemId);
+    if (menubar && menuitem)
+      menuitem.setAttribute('checked', !menubar.collapsed);
+  }
 },
 
 // destroy methods
