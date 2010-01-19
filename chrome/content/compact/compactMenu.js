@@ -2,7 +2,7 @@ var CompactMenu = {
 
 // constants
 
-DEBUG: false,
+DEBUG: true,
 
 PREFROOT_COMPACTMENU:    'compact.menu.',
 PREFBASE_HIDEMENU:       'hidemenu.',
@@ -60,7 +60,12 @@ POPUPS: [
 
 SINGLE_POPUP: 'main-menu-popup',
 
-HIDE_ATTRIBUTE: 'collapsed',
+_HIDE_ATTRIBUTE: null,
+get HIDE_ATTRIBUTE function() {
+  if (!this._HIDE_ATTRIBUTE)
+    this._HIDE_ATTRIBUTE = this.application.isSm ? 'hidden' : 'collapsed';
+  return this._HIDE_ATTRIBUTE;
+},
 
 // debug methods
 
@@ -559,30 +564,39 @@ hookFunction: function(orgFunc, orgCode, newCode) {
   return true;
 },
 
+_application: null,
+get application function() {
+  if (!this._applcation) {
+    var appInfo = Components.classes['@mozilla.org/xre/app-info;1']
+                            .getService(Components.interfaces.nsIXULAppInfo);
+    this._application = {
+      isFx: appInfo.ID == '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}',
+      isTb: appInfo.ID == '{3550f703-e582-4d05-9a08-453d09bdfdc6}',
+      isSm: appInfo.ID == '{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}',
+    };
+  }
+  return this._application;
+},
+
 init: function() {
   this.c_dump('init');
   this.mainWindowInitializing = true;
 
-  const FIREFOX_ID = '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}';
-  const THUNDERBIRD_ID = '{3550f703-e582-4d05-9a08-453d09bdfdc6}';
-  const SEAMONKEY_ID = '{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}';
-  var appInfo = Components.classes['@mozilla.org/xre/app-info;1']
-                          .getService(Components.interfaces.nsIXULAppInfo);
   var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
                                  .getService(Components.interfaces.nsIVersionComparator);
-  if (FIREFOX_ID == appInfo.ID) {
+  if (this.application.isFx) {
     if (0 <= versionChecker.compare(appInfo.version, "3.6a")) {
       this.initToolbarContextMenu_Fx36();
     } else {
       this.initToolbarContextMenu_FxTb30();
     }
-  } else if (THUNDERBIRD_ID == appInfo.ID) {
+  } else if (this.application.isTb) {
     if (0 <= versionChecker.compare(appInfo.version, "3.0a")) {
       this.initToolbarContextMenu_FxTb30();
     } else {
       this.initToolbarContextMenu_Tb20();
     }
-  } else if (SEAMONKEY_ID == appInfo.ID) {
+  } else if (this.application.isSm) {
     this.initToolbarContextMenu_Sm();
   }
 
@@ -671,8 +685,8 @@ initMainToolbar: function() {
     return 'true' == this.getAttribute(attr);
   });
 
-  menubar.__defineSetter__(attr, function(collapsed){
-    this.setAttribute(attr, collapsed);
+  menubar.__defineSetter__(attr, function(value){
+    this.setAttribute(attr, value);
   });
 
   menubar[this.HIDE_ATTRIBUTE] = this.isToolbarHidden(menubar);
@@ -709,7 +723,6 @@ initToolbarContextMenu_Tb20: function() {
 },
 
 initToolbarContextMenu_Sm: function() {
-  this.HIDE_ATTRIBUTE = 'hidden';
   this.hookFunction('goToggleToolbar',
       'document.persist(id, "hidden");',
       'if (!/\\btoolbar-menubar$/.test(id)) { $& }');

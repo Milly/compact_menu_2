@@ -22,7 +22,7 @@ init: function() {
   });
 
   var toolbar = this.getMainToolbar();
-  this._mainToolbarCollapsed = toolbar && toolbar.collapsed
+  this._mainToolbarCollapsed = toolbar && toolbar[this.HIDE_ATTRIBUTE];
 
   this.hookFunction('restoreDefaultSet',
     /toolboxChanged\((?:"reset")?\);|gToolboxChanged = true;/,
@@ -50,7 +50,7 @@ cancel: function() {
   this.c_dump('customizeCancel');
   this._canceled = true;
   var toolbar = this.getMainToolbar();
-  if (toolbar) toolbar.collapsed = this._mainToolbarCollapsed;
+  if (toolbar) toolbar[this.HIDE_ATTRIBUTE] = this._mainToolbarCollapsed;
   this.hideAll();
 },
 
@@ -82,7 +82,7 @@ restoreMainToolbar: function() {
   });
 
   var toolbar = this.getMainToolbar();
-  if (toolbar) toolbar.collapsed = false;
+  if (toolbar) toolbar[this.HIDE_ATTRIBUTE] = false;
   this.hideAll();
 },
 
