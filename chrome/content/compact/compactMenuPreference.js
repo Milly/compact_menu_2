@@ -20,6 +20,14 @@ init: function() {
   this.addEventListener(window, 'dialogaccept', this, true);
 },
 
+resetIcon: function() {
+  this.__proto__.resetIcon.call(this);
+  var icon_file = document.getElementById('icon_file');
+  if (icon_file) {
+    icon_file.image = null;
+  }
+},
+
 accept: function() {
   this.c_dump('prefAccept');
 

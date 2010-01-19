@@ -249,27 +249,44 @@ getMainToolbox: function() {
 
 getMainWindows: function() {
   const windowMediator = Components.classes['@mozilla.org/appshell/window-mediator;1']
-    .getService(Components.interfaces.nsIWindowMediator);
-
-  var types = [].concat(this.MAINWINDOWS);
-  var currentWindowType = document.documentElement.getAttribute('windowtype');
-  var pos = this.MAINWINDOWS.indexOf(currentWindowType);
-  if (0 <= pos) {
-    types.splice(pos, 1);
-    types.unshift(currentWindowType);
-  }
+                                   .getService(Components.interfaces.nsIWindowMediator);
 
   var windows = [];
-  for each (var type in types) {
-    var window = windowMediator.getMostRecentWindow(type);
-    if (window) windows.push(window);
+  var mainWindow = this.getMainWindow();
+  if (mainWindow) windows.push(mainWindow);
+  var en = windowMediator.getEnumerator(null);
+  while (en.hasMoreElements()) {
+    var win = en.getNext();
+    var type = win.document.documentElement.getAttribute('windowtype');
+    if (0 <= this.MAINWINDOWS.indexOf(type) && mainWindow != win) windows.push(win);
   }
+
   return windows;
 },
 
 getMainWindow: function() {
   if (this.mainWindowInitializing) return window;
-  return this.getMainWindows()[0] || null;
+
+  const windowMediator = Components.classes['@mozilla.org/appshell/window-mediator;1']
+                                   .getService(Components.interfaces.nsIWindowMediator);
+
+  var types = [].concat(this.MAINWINDOWS);
+  var i = 0;
+  for (var win = window; win; win = win.opener) {
+    var currentWindowType = win.document.documentElement.getAttribute('windowtype');
+    var pos = types.indexOf(currentWindowType);
+    if (0 <= pos) {
+      types.splice(pos, 1);
+      types.unshift(currentWindowType);
+      break;
+    }
+  }
+
+  for each (var type in types) {
+    var win = windowMediator.getMostRecentWindow(type);
+    if (win) return win;
+  }
+  return null;
 },
 
 getMenuBar: function() {
@@ -468,6 +485,7 @@ loadIcon: function() {
   if (iconURI) {
     var img = new Image();
     img.onload = function() {
+      CompactMenu.c_dump('icon loaded: width='+img.width+', height='+img.height);
       if (img.width && img.height && (16 != img.width || 48 != img.height)) {
         button.style.setProperty('-moz-image-region', 'rect(0px, ' + img.width + 'px, ' + img.height + 'px, 0px)', '');
       }
@@ -476,18 +494,14 @@ loadIcon: function() {
   }
 },
 
-resetIcon: function() {
-  for each (var win in this.getMainWindows()) {
+resetIcon: function(win) {
+  var windows = win ? [win] : this.getMainWindows();
+  for each (var win in windows) {
     var button = win.document.getElementById('menu-button');
     if (button) {
       button.style.removeProperty('list-style-image');
       button.style.removeProperty('-moz-image-region');
     }
-  }
-
-  var icon_file = window.document.getElementById('icon_file');
-  if (icon_file) {
-    icon_file.image = null;
   }
 },
 
@@ -562,7 +576,7 @@ init: function() {
     }
   }
 
-  this.initIcon();
+  this.initIcon(window);
   this.addEvents();
   this.initFirst();
   this.mainWindowInitializing = false;
@@ -601,10 +615,11 @@ initFirst: function() {
   }
 },
 
-initIcon: function() {
-  this.resetIcon();
-  for each (var win in this.getMainWindows()) {
-    win.eval('CompactMenu.loadIcon()');
+initIcon: function(win) {
+  this.resetIcon(win);
+  var windows = win ? [win] : this.getMainWindows();
+  for each (var win in windows) {
+    win.setTimeout("CompactMenu.loadIcon();", 0);
   }
 },
 
