@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://compact/skin/compact.css" type="text/css"?>
+<?xul-overlay href="chrome://compact/content/compactMenuOverlay.xul"?>
+<?xml-stylesheet href="chrome://navigator/skin/" type="text/css"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://compact/locale/compact.dtd" >
+
+<overlay id="compactNavigatorOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript" src="chrome://compact/content/compactMenu.js"/>
+
+  <toolbar id="toolbar-menubar"
+      togglemenuitem="cmd_viewmenubar"
+      toolbarname="&menubarCmd.label;"
+      accesskey="&menubarCmd.accesskey;" />
+
+  <broadcasterset id="navBroadcasters">
+    <broadcaster id="cmd_viewmenubar"
+        oncommand="goToggleToolbar('toolbar-menubar','cmd_viewmenubar');"
+        checked="true"/>
+  </broadcasterset>
+
+  <menupopup id="view_toolbars_popup">
+    <menuitem
+        label="&menubarCmd.label;"
+        accesskey="&menubarCmd.accesskey;"
+        class="menuitem-iconic"
+        type="checkbox"
+        observes="cmd_viewmenubar"
+        position="1"/>
+  </menupopup>
+
+  <toolbarpalette id="BrowserToolbarPalette">
+    <toolbarbutton id="menu-button" />
+    <toolbaritem id="compact-menu" />
+  </toolbarpalette>
+
+  <popupset id="mainPopupSet">
+    <tooltip id="menu-button-tooltip" />
+    <menupopup id="main-menu-popup"/>
+  </popupset>
+
+</overlay>
