@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<?xul-overlay href="chrome://compact/content/compactMenuOverlay.xul"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://compact/locale/compact.dtd" >
+
+<overlay id="compactMessengerOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <toolbar id="mail-toolbar-menubar2"
+      togglemenuitem="menu_showMenubar"
+      toolbarname="&menubarCmd.label;"
+      accesskey="&menubarCmd.accesskey;" />
+
+  <menupopup id="view_toolbars_popup">
+    <menuitem id="menu_showMenubar"
+        type="checkbox"
+        checked="true"
+        label="&menubarCmd.label;"
+        accesskey="&menubarCmd.accesskey;"
+        oncommand="goToggleToolbar('mail-toolbar-menubar2','menu_showMenubar');"
+        position="1"/>
+  </menupopup>
+
+  <toolbarpalette id="MailToolbarPalette">
+    <toolbarbutton id="menu-button" />
+    <toolbaritem id="compact-menu" />
+  </toolbarpalette>
+
+  <window id="messengerWindow">
+    <popupset>
+      <tooltip id="menu-button-tooltip" />
+      <menupopup id="main-menu-popup"/>
+    </popupset>
+  </window>
+
+</overlay>
