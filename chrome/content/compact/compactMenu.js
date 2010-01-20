@@ -43,6 +43,7 @@ NAVITOOLBARS: [
     'mail-bar2',
     'ab-bar2',
     'composeToolbar2',
+    'msgToolbar',
     'calendar-bar',
   ],
 
