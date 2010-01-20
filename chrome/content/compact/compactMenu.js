@@ -586,6 +586,7 @@ get application function() {
       isTb: appInfo.ID == '{3550f703-e582-4d05-9a08-453d09bdfdc6}',
       isSb: appInfo.ID == '{718e30fb-e89b-41dd-9da7-e25a45638b28}',
       isSm: appInfo.ID == '{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}',
+      version: appInfo.version,
     };
   }
   return this._application;
@@ -598,13 +599,13 @@ init: function() {
   var versionChecker = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
                                  .getService(Components.interfaces.nsIVersionComparator);
   if (this.application.isFx) {
-    if (0 <= versionChecker.compare(appInfo.version, "3.6a")) {
+    if (0 <= versionChecker.compare(this.application.version, "3.6a")) {
       this.initToolbarContextMenu_Fx36();
     } else {
       this.initToolbarContextMenu_FxTb30();
     }
   } else if (this.application.isTb) {
-    if (0 <= versionChecker.compare(appInfo.version, "3.0a")) {
+    if (0 <= versionChecker.compare(this.application.version, "3.0a")) {
       this.initToolbarContextMenu_FxTb30();
     } else {
       this.initToolbarContextMenu_Tb20();
