@@ -18,6 +18,7 @@ MAINWINDOWS: [
     'mail:messageWindow',
     'mail:addressbook',
     'msgcompose',
+    'calendarMainWindow',
   ],
 
 MAINTOOLBOXS: [
@@ -25,6 +26,7 @@ MAINTOOLBOXS: [
     'mail-toolbox',
     'compose-toolbox',
     'ab-toolbox',
+    'calendar-toolbox',
   ],
 
 MAINTOOLBARS: [
@@ -32,6 +34,7 @@ MAINTOOLBARS: [
     'mail-toolbar-menubar2',
     'addrbook-toolbar-menubar2',
     'compose-toolbar-menubar2',
+    'main-toolbar',
   ],
 
 NAVITOOLBARS: [
@@ -40,6 +43,7 @@ NAVITOOLBARS: [
     'mail-bar2',
     'ab-bar2',
     'composeToolbar2',
+    'calendar-bar',
   ],
 
 MENUBARS: [
@@ -572,6 +576,7 @@ get application function() {
     this._application = {
       isFx: appInfo.ID == '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}',
       isTb: appInfo.ID == '{3550f703-e582-4d05-9a08-453d09bdfdc6}',
+      isSb: appInfo.ID == '{718e30fb-e89b-41dd-9da7-e25a45638b28}',
       isSm: appInfo.ID == '{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}',
     };
   }
@@ -596,6 +601,8 @@ init: function() {
     } else {
       this.initToolbarContextMenu_Tb20();
     }
+  } else if (this.application.isSb) {
+    this.initToolbarContextMenu_Sb();
   } else if (this.application.isSm) {
     this.initToolbarContextMenu_Sm();
   }
@@ -720,6 +727,13 @@ initToolbarContextMenu_Tb20: function() {
     menuitem.id = 'menu_showMenubar';
     menupopup.insertBefore(menuitem, menupopup.firstChild);
   }
+},
+
+initToolbarContextMenu_Sb: function() {
+  this.hookFunction('sbOnViewToolbarsPopupShowing', 'type != "menubar"', 'true');
+  this.hookFunction('sbOnViewToolbarCommand',
+      'document.persist(toolbar.id, "collapsed");',
+      'if ("main-toolbar" != toolbar.id) { $& }');
 },
 
 initToolbarContextMenu_Sm: function() {

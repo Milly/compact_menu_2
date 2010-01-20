@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<?xul-overlay href="chrome://compact/content/compactMenuOverlay.xul"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://compact/locale/compact.dtd" >
+
+<overlay id="compactCalendarOverlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <toolbar id="main-toolbar"
+      toolbarname="&menubarCmd.label;"
+      accesskey="&menubarCmd.accesskey;" />
+
+  <menupopup id="toolbar-context-menu"
+      onpopupshowing="sbOnViewToolbarsPopupShowing(event);">
+    <menuseparator position="1"/>
+  </menupopup>
+
+  <toolbarpalette id="calendarToolbarPalette">
+    <toolbarbutton id="menu-button" />
+    <toolbaritem id="compact-menu" />
+  </toolbarpalette>
+
+  <window id="calendar-window">
+    <popupset>
+      <tooltip id="menu-button-tooltip" />
+      <menupopup id="main-menu-popup"/>
+    </popupset>
+  </window>
+
+</overlay>
