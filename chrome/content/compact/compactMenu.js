@@ -19,6 +19,7 @@ MAINWINDOWS: [
     'mail:addressbook',
     'msgcompose',
     'calendarMainWindow',
+    'Calendar:EventDialog',
   ],
 
 MAINTOOLBOXS: [
@@ -27,6 +28,7 @@ MAINTOOLBOXS: [
     'compose-toolbox',
     'ab-toolbox',
     'calendar-toolbox',
+    'event-toolbox',
   ],
 
 MAINTOOLBARS: [
@@ -35,6 +37,7 @@ MAINTOOLBARS: [
     'addrbook-toolbar-menubar2',
     'compose-toolbar-menubar2',
     'main-toolbar',
+    'event-menubar',
   ],
 
 NAVITOOLBARS: [
@@ -45,11 +48,13 @@ NAVITOOLBARS: [
     'composeToolbar2',
     'msgToolbar',
     'calendar-bar',
+    'event-toolbar',
   ],
 
 MENUBARS: [
     'main-menubar',
     'mail-menubar',
+    'event-menubar',
   ],
 
 ITEMS: [
@@ -559,14 +564,16 @@ toLocalIconFile: function(file) {
 // initialize methods
 
 hookFunction: function(orgFunc, orgCode, newCode) {
-  var orgSource = eval(orgFunc).toSource();
-  var newSource = orgSource.replace(orgCode, newCode);
-  if (orgSource == newSource) {
-    this.c_dump('hook failed for "' + orgFunc + '" at ' + Error().stack.split(/\n/)[2]);
-    return false;
-  }
-  eval(orgFunc + '=' + newSource);
-  return true;
+  try {
+    var orgSource = eval(orgFunc).toSource();
+    var newSource = orgSource.replace(orgCode, newCode);
+    if (orgSource != newSource) {
+      eval(orgFunc + '=' + newSource);
+      return true;
+    }
+  } catch (e) {}
+  this.c_dump('hook failed for "' + orgFunc + '" at ' + Error().stack.split(/\n/)[2]);
+  return false;
 },
 
 _application: null,
