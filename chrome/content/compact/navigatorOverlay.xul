@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 
-<?xml-stylesheet href="chrome://compact/skin/compact.css" type="text/css"?>
 <?xul-overlay href="chrome://compact/content/compactMenuOverlay.xul"?>
 <?xml-stylesheet href="chrome://navigator/skin/" type="text/css"?>
 
@@ -8,8 +7,6 @@
 
 <overlay id="compactNavigatorOverlay"
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-
-  <script type="application/x-javascript" src="chrome://compact/content/compactMenu.js"/>
 
   <toolbar id="toolbar-menubar"
       togglemenuitem="cmd_viewmenubar"
