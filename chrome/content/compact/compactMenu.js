@@ -725,7 +725,7 @@ initToolbarContextMenu_Tb20: function() {
 initToolbarContextMenu_Sm: function() {
   this.hookFunction('goToggleToolbar',
       'document.persist(id, "hidden");',
-      'if (!/\\btoolbar-menubar$/.test(id)) { $& }');
+      'if (!/\\btoolbar-menubar2?$/.test(id)) { $& }');
 },
 
 onViewToolbarCommand: function() {
