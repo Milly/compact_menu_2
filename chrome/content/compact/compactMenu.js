@@ -10,6 +10,7 @@ PREFBASE_HIDETOOLBAR:    'hidetoolbar.',
 PREF_ICON_ENABLED:       'icon.enabled',
 PREF_ICON_FILE:          'icon.file',
 PREF_ICON_LOCALFILENAME: 'icon.localfilename',
+PREF_ICON_MULTIPLE:      'icon.multiple',
 PREFBASE_INITIALIZED:    'initialized.',
 
 MAINWINDOWS: [
@@ -506,12 +507,12 @@ loadIcon: function() {
   }
 
   if (iconURI) {
+    var iconMultiple = this.getBoolPref(this.PREF_ICON_MULTIPLE, false);
     var img = new Image();
     img.onload = function() {
       CompactMenu.c_dump('icon loaded: width='+img.width+', height='+img.height);
-      if (img.width && img.height && (16 != img.width || 48 != img.height)) {
-        button.style.setProperty('-moz-image-region', 'rect(0px, ' + img.width + 'px, ' + img.height + 'px, 0px)', '');
-      }
+      if (img.width && img.height && (iconEnable || 16 != img.width || 48 != img.height))
+        CompactMenu.setIconStyle(img.width, img.height, iconEnable && iconMultiple);
     };
     img.src = iconURI;
   }
@@ -519,12 +520,48 @@ loadIcon: function() {
 
 resetIcon: function(win) {
   var windows = win ? [win] : this.getMainWindows();
-  for each (var win in windows) {
-    var button = win.document.getElementById('menu-button');
+  for each (var win in windows)
+    win.eval("CompactMenu.clearIconStyle();");
+},
+
+_iconStyle: null,
+setIconStyle: function(width, height, multiple) {
+  if (multiple) {
+    var h1 = Math.ceil(height / 3), h2 = h1 * 2, h3 = h1 * 3;
+    var code = 'data:text/css,@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);'
+             + '#menu-button{-moz-image-region:rect(0px,'+width+'px,'+h1+'px,0px)!important;}'
+             + '#menu-button:hover{-moz-image-region:rect('+h1+'px,'+width+'px,'+h2+'px,0px)!important;}'
+             + '#menu-button[open="true"]{-moz-image-region:rect('+h2+'px,'+width+'px,'+h3+'px,0px)!important;}';
+    var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
+                        .getService(Components.interfaces.nsIStyleSheetService);
+    var ios = Components.classes["@mozilla.org/network/io-service;1"]
+                        .getService(Components.interfaces.nsIIOService);
+    var uri = ios.newURI(code, null, null);
+    if (!sss.sheetRegistered(uri, sss.USER_SHEET))
+      sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
+    this._iconStyle = uri;
+  } else {
+    var button = document.getElementById('menu-button');
     if (button) {
-      button.style.removeProperty('list-style-image');
-      button.style.removeProperty('-moz-image-region');
+      var imageRegion = 'rect(0px,'+width+'px,'+height+'px,0px)';
+      button.style.setProperty('-moz-image-region', imageRegion, '');
     }
+  }
+},
+
+clearIconStyle: function() {
+  var button = document.getElementById('menu-button');
+  if (button) {
+    button.style.removeProperty('list-style-image');
+    button.style.removeProperty('-moz-image-region');
+  }
+
+  var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
+                      .getService(Components.interfaces.nsIStyleSheetService);
+  if (this._iconStyle) {
+    if (sss.sheetRegistered(this._iconStyle, sss.USER_SHEET))
+      sss.unregisterSheet(this._iconStyle, sss.USER_SHEET);
+    this._iconStyle = null;
   }
 },
 

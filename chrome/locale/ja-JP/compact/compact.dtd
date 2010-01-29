@@ -10,3 +10,6 @@
 <!ENTITY iconFilePicker.label "参照...">
 <!ENTITY iconFilePicker.accesskey "B">
 <!ENTITY iconFilePicker.title "Compact Menu のアイコンを選択">
+<!ENTITY iconMultiple.label "複合アイコン">
+<!ENTITY iconMultiple.accesskey "M">
+<!ENTITY iconMultiple.help "イメージに通常・マウスオーバー・押下状態のアイコンが含まれている場合チェックします。">

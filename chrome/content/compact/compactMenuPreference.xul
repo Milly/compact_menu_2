@@ -31,6 +31,10 @@
                 accesskey="&iconFilePicker.accesskey;"
                 oncommand="CompactMenuPreference.openImagePicker('&iconFilePicker.title;', 'icon_file')"/>
       </hbox>
+      <checkbox id="icon_multiple"
+                label="&iconMultiple.label;"
+                accesskey="&iconMultiple.accesskey;"
+                tooltiptext="&iconMultiple.help;"/>
     </groupbox>
   </vbox>
 

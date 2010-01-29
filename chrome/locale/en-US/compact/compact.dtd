@@ -10,3 +10,6 @@
 <!ENTITY iconFilePicker.label "Browse...">
 <!ENTITY iconFilePicker.accesskey "B">
 <!ENTITY iconFilePicker.title "Select icon for Compact Menu">
+<!ENTITY iconMultiple.label "Multiple icons">
+<!ENTITY iconMultiple.accesskey "M">
+<!ENTITY iconMultiple.help "Check this, if the image contains normal, hover and active icons.">

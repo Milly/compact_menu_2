@@ -14,6 +14,8 @@ init: function() {
       if (localIconFile && localIconFile.exists())
         icon_file.image = this.toFileURI(localIconFile).spec;
     }
+    var icon_multiple = document.getElementById('icon_multiple');
+    icon_multiple.checked = this.getBoolPref(this.PREF_ICON_MULTIPLE, false);
   }
 
   this.addEventListener(window, 'unload', this, false);
@@ -37,6 +39,8 @@ accept: function() {
     this.setBoolPref(this.PREF_ICON_ENABLED, icon_enable.checked);
     if (icon_enable.checked && icon_file && icon_file.exists())
       this.setIconFile(icon_file);
+    var icon_multiple = document.getElementById('icon_multiple');
+    this.setBoolPref(this.PREF_ICON_MULTIPLE, icon_multiple.checked);
   }
 
   this.initIcon();
