@@ -13,3 +13,6 @@
 <!ENTITY iconMultiple.label "Multiple icons">
 <!ENTITY iconMultiple.accesskey "M">
 <!ENTITY iconMultiple.help "Check this, if the image contains normal, hover and active icons.">
+<!ENTITY iconMultiple.normal.help "Normal icon (Top)">
+<!ENTITY iconMultiple.hover.help "Hover icon (Middle)">
+<!ENTITY iconMultiple.active.help "Active icon (Bottom)">

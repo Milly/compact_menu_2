@@ -4,7 +4,7 @@
 <?xml-stylesheet href="chrome://browser/skin/preferences/preferences.css"?>
 <?xml-stylesheet href="chrome://messenger/skin/preferences/preferences.css"?>
 <?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
-<?xml-stylesheet href="chrome://compact/skin/compact.css" type="text/css"?>
+<?xml-stylesheet href="chrome://compact/skin/preferences.css" type="text/css"?>
 
 <!DOCTYPE dialog SYSTEM "chrome://compact/locale/compact.dtd" >
 
@@ -34,8 +34,23 @@
       <checkbox id="icon_multiple"
                 label="&iconMultiple.label;"
                 accesskey="&iconMultiple.accesskey;"
-                tooltiptext="&iconMultiple.help;"/>
+                tooltip="multiple-icon-tooltip"/>
     </groupbox>
   </vbox>
 
+  <tooltip id="multiple-icon-tooltip"
+           orient="vertical">
+    <description>&iconMultiple.help;</description>
+    <hbox>
+      <hbox id="multiple-icon-samplebox">
+        <image id="multiple-icon-sample"/>
+        <vbox flex="1">
+          <label value="&iconMultiple.normal.help;"/>
+          <label value="&iconMultiple.hover.help;"/>
+          <label value="&iconMultiple.active.help;"/>
+        </vbox>
+      </hbox>
+      <spacer flex="1"/>
+    </hbox>
+  </tooltip>
 </dialog>

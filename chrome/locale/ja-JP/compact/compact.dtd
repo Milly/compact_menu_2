@@ -13,3 +13,6 @@
 <!ENTITY iconMultiple.label "複合アイコン">
 <!ENTITY iconMultiple.accesskey "M">
 <!ENTITY iconMultiple.help "イメージに通常・マウスオーバー・押下状態のアイコンが含まれている場合チェックします。">
+<!ENTITY iconMultiple.normal.help "通常アイコン (上)">
+<!ENTITY iconMultiple.hover.help "マウスオーバー (中)">
+<!ENTITY iconMultiple.active.help "押下状態 (下)">

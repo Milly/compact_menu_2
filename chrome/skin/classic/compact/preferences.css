@@ -1,0 +1,21 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#multiple-icon-samplebox {
+  margin-left: 1em;
+  padding: 8px;
+  border: 1px solid #888888;
+  -moz-border-radius: 8px;
+  background-color: white;
+}
+
+#multiple-icon-sample {
+  list-style-image: url("chrome://compact/skin/blue.png");
+}
+
+#multiple-icon-samplebox label {
+  margin: 0 0 0 1em;
+  padding: 0;
+  height: 16px;
+  line-height: 16px;
+  vertical-align: middle;
+}
