@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 
+<?xml-stylesheet href="chrome://global/skin/global.css"?>
 <?xml-stylesheet href="chrome://mozapps/content/preferences/preferences.css"?>
 <?xml-stylesheet href="chrome://browser/skin/preferences/preferences.css"?>
 <?xml-stylesheet href="chrome://messenger/skin/preferences/preferences.css"?>
 <?xml-stylesheet href="chrome://communicator/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://calendar/skin/preferences/preferences.css"?>
 <?xml-stylesheet href="chrome://compact/skin/preferences.css" type="text/css"?>
 
 <!DOCTYPE dialog SYSTEM "chrome://compact/locale/compact.dtd" >
