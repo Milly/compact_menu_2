@@ -6,6 +6,14 @@ extension_id=4689
 domain='www.babelzilla.org'
 locale_dir="$(cd $(dirname "$0");pwd)/chrome/locale"
 
+mode=${mode:=skip}
+if [ tar != $mode -a empty != $mode -a skip != $mode ]; then
+    echo "Usage: ${0##*/} [mode]"
+    echo "Options:"
+    echo "	mode	'tar', 'empty' or 'skip'. (default: 'skip')"
+    exit -1
+fi
+
 echo "Login to $domain"
 echo -n 'Login: '
 if [ -z "$BABELZILLA_USER" ]; then
@@ -27,6 +35,6 @@ cookies=$(wget -q -O - --save-headers --no-cache --post-data "$login_data" "$log
 [ -z "$cookies" ] && echo 'Failed' && exit -1
 echo 'OK'
 
-locales_url="http://$domain/index.php?option=com_wts&Itemid=88&type=download${mode:=tar}&extension=$extension_id"
+locales_url="http://$domain/index.php?option=com_wts&Itemid=88&type=download$mode&extension=$extension_id"
 wget -O - --header "Cookie: $cookies" "$locales_url" \
     | tar zxCf "$locale_dir" -
