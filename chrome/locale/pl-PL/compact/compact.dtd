@@ -10,3 +10,9 @@
 <!ENTITY iconFilePicker.label "Przeglądaj">
 <!ENTITY iconFilePicker.accesskey "P">
 <!ENTITY iconFilePicker.title "Wybierz ikonę">
+<!ENTITY iconMultiple.label "Kilka ikon">
+<!ENTITY iconMultiple.accesskey "K">
+<!ENTITY iconMultiple.help "Wybierz tę opcję jeśli obrazek zawiera normalną, aktywną i wskazaną ikonę.">
+<!ENTITY iconMultiple.normal.help "Normalna ikona (górna)">
+<!ENTITY iconMultiple.hover.help "Wskazana ikona (środkowa)">
+<!ENTITY iconMultiple.active.help "Aktywna ikona (dolna)">

@@ -10,3 +10,9 @@
 <!ENTITY iconFilePicker.label "찾아보기...">
 <!ENTITY iconFilePicker.accesskey "B">
 <!ENTITY iconFilePicker.title "컴팩트 메뉴의 아이콘을 선택">
+<!ENTITY iconMultiple.label "변하는 아이콘">
+<!ENTITY iconMultiple.accesskey "M">
+<!ENTITY iconMultiple.help "선택하면 평상시, 커서를 올렸을 때, 눌렀을 때의 아이콘을 포함한 그림을 선택할 수 있습니다.">
+<!ENTITY iconMultiple.normal.help "평상시 (이미지의 윗부분)">
+<!ENTITY iconMultiple.hover.help "커서를 올렸을 때(이미지의 중간)">
+<!ENTITY iconMultiple.active.help "눌렀을 때 (이미지의 아랫부분)">

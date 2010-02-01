@@ -10,3 +10,9 @@
 <!ENTITY iconFilePicker.label "Bladeren…">
 <!ENTITY iconFilePicker.accesskey "B">
 <!ENTITY iconFilePicker.title "Selecteer pictogram voor Compact Menu">
+<!ENTITY iconMultiple.label "Meerdere pictogrammen">
+<!ENTITY iconMultiple.accesskey "M">
+<!ENTITY iconMultiple.help "Vink dit aan als de afbeelding normale, aanwijzings- en actieve pictogrammen bevat.">
+<!ENTITY iconMultiple.normal.help "Normaal pictogram (boven)">
+<!ENTITY iconMultiple.hover.help "Aanwijzingspictogram (midden)">
+<!ENTITY iconMultiple.active.help "Actief pictogram (onder)">

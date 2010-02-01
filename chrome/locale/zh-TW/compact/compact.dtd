@@ -10,3 +10,9 @@
 <!ENTITY iconFilePicker.label "瀏覽...">
 <!ENTITY iconFilePicker.accesskey "B">
 <!ENTITY iconFilePicker.title "選取代表「簡潔選單」的圖示">
+<!ENTITY iconMultiple.label "多重圖示">
+<!ENTITY iconMultiple.accesskey "M">
+<!ENTITY iconMultiple.help "若圖片中具足「平時」、「鼠駐」及「運作」三種圖示時，請勾選此項。">
+<!ENTITY iconMultiple.normal.help "平常時候圖示(上)">
+<!ENTITY iconMultiple.hover.help "滑鼠停駐圖示(中)">
+<!ENTITY iconMultiple.active.help "運作時刻圖示(下)">

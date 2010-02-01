@@ -10,3 +10,9 @@
 <!ENTITY iconFilePicker.label "Gözat..">
 <!ENTITY iconFilePicker.accesskey "G">
 <!ENTITY iconFilePicker.title "Bütünleşik Menü için simge seçin">
+<!ENTITY iconMultiple.label "Birden çok simge">
+<!ENTITY iconMultiple.accesskey "Ç">
+<!ENTITY iconMultiple.help "Eğer resim, normal, bekleme ve aktif simgeleri içeriyorsa işaretleyin.">
+<!ENTITY iconMultiple.normal.help "Normal simge (Üst)">
+<!ENTITY iconMultiple.hover.help "Bekleme simgesi (Orta)">
+<!ENTITY iconMultiple.active.help "Aktif simge (Alt)">

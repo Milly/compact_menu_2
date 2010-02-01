@@ -10,3 +10,9 @@
 <!ENTITY iconFilePicker.label "Navegar...">
 <!ENTITY iconFilePicker.accesskey "N">
 <!ENTITY iconFilePicker.title "Seleccione ícone para o Menu compacto">
+<!ENTITY iconMultiple.label "Múltiplos ícones">
+<!ENTITY iconMultiple.accesskey "M">
+<!ENTITY iconMultiple.help "Verifique se a imagem normal contém ícones normais destacados e activos">
+<!ENTITY iconMultiple.normal.help "Ícone normal (topo)">
+<!ENTITY iconMultiple.hover.help "Ícone destacado (centro)">
+<!ENTITY iconMultiple.active.help "Ícone activo (fundo)">

@@ -7,6 +7,12 @@
 <!ENTITY menubarCmd.accesskey "M">
 <!ENTITY iconPref.caption "Skift Compact Menus ikon">
 <!ENTITY iconPref.accesskey "I">
-<!ENTITY iconFilePicker.label "Gennemse...">
+<!ENTITY iconFilePicker.label "Gennemse…">
 <!ENTITY iconFilePicker.accesskey "G">
 <!ENTITY iconFilePicker.title "Vælg ikon til Compact Menu">
+<!ENTITY iconMultiple.label "Flere ikoner">
+<!ENTITY iconMultiple.accesskey "F">
+<!ENTITY iconMultiple.help "Afkryds denne, hvis billedet indeholder normale, peges på og aktive ikoner">
+<!ENTITY iconMultiple.normal.help "Normalt ikon (Øverst)">
+<!ENTITY iconMultiple.hover.help "Peges på ikon (Midten)">
+<!ENTITY iconMultiple.active.help "Aktivt ikon (Nederst)">

@@ -10,3 +10,9 @@
 <!ENTITY iconFilePicker.label "Обзор…">
 <!ENTITY iconFilePicker.accesskey "б">
 <!ENTITY iconFilePicker.title "Выберите значок для Compact Menu">
+<!ENTITY iconMultiple.label "Составной значок">
+<!ENTITY iconMultiple.accesskey "С">
+<!ENTITY iconMultiple.help "Установите этот флажок, если изображение содержит три значка: обычный, при наведении курсора и при активном меню.">
+<!ENTITY iconMultiple.normal.help "Обычный значок (Верхнее)">
+<!ENTITY iconMultiple.hover.help "Значок при наведении курсора (Среднее)">
+<!ENTITY iconMultiple.active.help "Значок при активном меню (Нижнее)">

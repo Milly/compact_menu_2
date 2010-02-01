@@ -5,8 +5,14 @@
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Barre de menu">
 <!ENTITY menubarCmd.accesskey "M">
-<!ENTITY iconPref.caption "Changer d&apos;icône pour Compact Menu">
-<!ENTITY iconPref.accesskey "i">
+<!ENTITY iconPref.caption "Changer d'icône pour Compact Menu">
+<!ENTITY iconPref.accesskey "I">
 <!ENTITY iconFilePicker.label "Parcourir…">
 <!ENTITY iconFilePicker.accesskey "P">
 <!ENTITY iconFilePicker.title "Choisir une icône pour Compact Menu">
+<!ENTITY iconMultiple.label "Icônes multiples">
+<!ENTITY iconMultiple.accesskey "M">
+<!ENTITY iconMultiple.help "Cochez cette case si l'image est composée des icônes de l'état normal, au survol de la souris et actif.">
+<!ENTITY iconMultiple.normal.help "Icône normale (en haut)">
+<!ENTITY iconMultiple.hover.help "Icône au survol de la souris (au milieu)">
+<!ENTITY iconMultiple.active.help "Icône d'indication d'activité (en bas)">

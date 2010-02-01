@@ -10,3 +10,9 @@
 <!ENTITY iconFilePicker.label "Examinar...">
 <!ENTITY iconFilePicker.accesskey "E">
 <!ENTITY iconFilePicker.title "Seleccionar icono de Menú compacto">
+<!ENTITY iconMultiple.label "Iconos múltiples">
+<!ENTITY iconMultiple.accesskey "m">
+<!ENTITY iconMultiple.help "Seleccionar si la imagen contiene iconos normales, activos y con hover.">
+<!ENTITY iconMultiple.normal.help "Icono normal (arriba)">
+<!ENTITY iconMultiple.hover.help "Icono con hover (medio)">
+<!ENTITY iconMultiple.active.help "Icono activo (fondo)">
