@@ -4,8 +4,11 @@
 mode=$1
 extension_id=4689
 domain='www.babelzilla.org'
-locale_dir="$(cd $(dirname "$0");pwd)/chrome/locale"
+project_dir="$(cd $(dirname "$0");pwd)"
+locale_dir="$project_dir/chrome/locale"
+manifest_file="$project_dir/chrome.manifest"
 
+# show help
 mode=${mode:=skip}
 if [ tar != $mode -a empty != $mode -a skip != $mode ]; then
     echo "Usage: ${0##*/} [mode]"
@@ -14,6 +17,7 @@ if [ tar != $mode -a empty != $mode -a skip != $mode ]; then
     exit -1
 fi
 
+# get user and password
 echo "Login to $domain"
 echo -n 'Login: '
 if [ -z "$BABELZILLA_USER" ]; then
@@ -27,6 +31,7 @@ if [ -z "$BABELZILLA_PASS" ]; then
     echo ''
 fi
 
+# login
 echo -n 'Logging in...'
 login_data="username=$BABELZILLA_USER&passwd=$BABELZILLA_PASS&option=ipblogin&task=login"
 login_url="http://$domain/index.php?option=com_ipblogin&amp;task=login"
@@ -35,6 +40,27 @@ cookies=$(wget -q -O - --save-headers --no-cache --post-data "$login_data" "$log
 [ -z "$cookies" ] && echo 'Failed' && exit -1
 echo 'OK'
 
+# download and extract
 locales_url="http://$domain/index.php?option=com_wts&Itemid=88&type=download$mode&extension=$extension_id"
 wget -O - --header "Cookie: $cookies" "$locales_url" \
     | tar zxCf "$locale_dir" -
+
+# remove empty locale
+if [ $mode == tar ]; then
+    for d in "$locale_dir"/*; do
+        [ en-US == ${d##*/} ] && continue
+        diff -qr "$locale_dir/en-US" "$d" >/dev/null && rm -rf "$d"
+    done
+elif [ $mode == skip ]; then
+    for d in "$locale_dir"/*; do
+        [ 0 == $(find "$d" -type f | xargs wc -c | awk 'END{print $1}') ] && rm -rf "$d"
+    done
+fi
+
+# update manifest
+tmp_file="$TEMP/update-locales.sh.manifest"
+ls "$locale_dir" \
+    | sed 's#\(.*\)#locale\tcompact\t\1\tjar:chrome/compact.jar!/locale/\1/compact/#' \
+    > "$tmp_file"
+sed -i "/^locale\>/d;/^# locales/r $tmp_file" "$manifest_file"
+rm "$tmp_file"

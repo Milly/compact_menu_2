@@ -1,6 +1,7 @@
 # common
 content	compact	jar:chrome/compact.jar!/content/compact/
 skin	compact	classic/1.0	jar:chrome/compact.jar!/skin/classic/compact/
+# locales
 locale	compact	da-DK	jar:chrome/compact.jar!/locale/da-DK/compact/
 locale	compact	de-DE	jar:chrome/compact.jar!/locale/de-DE/compact/
 locale	compact	en-US	jar:chrome/compact.jar!/locale/en-US/compact/
