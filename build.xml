@@ -13,6 +13,7 @@
 	<property name="target.app" value="fx+tb+sb+sm" />
 	<property name="xpi.file" value="${ant.project.name}-${RDF.Description.em:version}-${target.app}.xpi" />
 	<property name="jar.file" value="compact.jar" />
+	<property name="update-locales.mode" value="skip" />
 
 	<!-- defines -->
 	<defaultexcludes add="**/.*" />
@@ -25,6 +26,9 @@
 		</exec>
 	</target>
 
+	<!-- create release xpi -->
+	<target name="release" depends="update-locales-release,xpi" />
+	
 	<!-- create xpi -->
 	<target name="xpi" depends="build-dir,jar">
 		<copy todir="${build.path}">
@@ -61,6 +65,27 @@
 				<include name="${chrome.path}/${jar.file}" />
 			</fileset>
 		</delete>
+	</target>
+
+	<!-- update locales -->
+	<target name="update-locales">
+		<exec executable="sh">
+			<arg line="update-locales.sh ${update-locales.mode}" />
+		</exec>
+	</target>
+	
+	<!-- update locales for release -->
+	<target name="update-locales-release">
+		<antcall target="update-locales">
+			<param name="update-locales.mode" value="tar" />
+		</antcall>
+	</target>
+
+	<!-- update locales for develop -->
+	<target name="update-locales-develop">
+		<antcall target="update-locales">
+			<param name="update-locales.mode" value="skip" />
+		</antcall>
 	</target>
 	
 </project>
