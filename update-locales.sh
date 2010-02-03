@@ -34,16 +34,19 @@ fi
 # login
 echo -n 'Logging in...'
 login_data="username=$BABELZILLA_USER&passwd=$BABELZILLA_PASS&option=ipblogin&task=login"
-login_url="http://$domain/index.php?option=com_ipblogin&amp;task=login"
+login_url="http://$domain/index.php?option=com_ipblogin&task=login"
 cookies=$(wget -q -O - --save-headers --no-cache --post-data "$login_data" "$login_url" \
     | sed -n '/^Set-Cookie: /{s/^Set-Cookie: \(.[^;]*\).*/\1/;H};/<input type="submit".*value="Logout"/{g;s/^\n\+//;s/\n/;/g;p;q}')
 [ -z "$cookies" ] && echo 'Failed' && exit -1
 echo 'OK'
 
 # download and extract
+mv "$locale_dir/en-US" "$locale_dir/en-US.saved"
 locales_url="http://$domain/index.php?option=com_wts&Itemid=88&type=download$mode&extension=$extension_id"
 wget -O - --header "Cookie: $cookies" "$locales_url" \
     | tar zxCf "$locale_dir" -
+rm -rf "$locale_dir/en-US"
+mv "$locale_dir/en-US.saved" "$locale_dir/en-US"
 
 # remove empty locale
 if [ $mode == tar ]; then
