@@ -44,6 +44,7 @@ MAINTOOLBARS: [
 NAVITOOLBARS: [
     'nav-bar',
     'navigation-toolbar',
+    'mail-bar3',
     'mail-bar2',
     'ab-bar2',
     'composeToolbar2',
