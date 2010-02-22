@@ -37,6 +37,9 @@
                 label="&iconMultiple.label;"
                 accesskey="&iconMultiple.accesskey;"
                 tooltip="multiple-icon-tooltip"/>
+      <checkbox id="icon_noborder"
+                label="&iconNoBorder.label;"
+                accesskey="&iconNoBorder.accesskey;"/>
     </groupbox>
   </vbox>
 

@@ -16,6 +16,8 @@ init: function() {
     }
     var icon_multiple = document.getElementById('icon_multiple');
     icon_multiple.checked = this.getBoolPref(this.PREF_ICON_MULTIPLE, false);
+    var icon_noborder = document.getElementById('icon_noborder');
+    icon_noborder.checked = this.getBoolPref(this.PREF_ICON_NOBORDER, false);
   }
 
   this.addEventListener(window, 'unload', this, false);
@@ -41,6 +43,8 @@ accept: function() {
       this.setIconFile(icon_file);
     var icon_multiple = document.getElementById('icon_multiple');
     this.setBoolPref(this.PREF_ICON_MULTIPLE, icon_multiple.checked);
+    var icon_noborder = document.getElementById('icon_noborder');
+    this.setBoolPref(this.PREF_ICON_NOBORDER, icon_noborder.checked);
   }
 
   this.initIcon();

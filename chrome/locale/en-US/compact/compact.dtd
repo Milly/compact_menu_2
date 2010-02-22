@@ -16,3 +16,5 @@
 <!ENTITY iconMultiple.normal.help "Normal icon (Top)">
 <!ENTITY iconMultiple.hover.help "Hover icon (Middle)">
 <!ENTITY iconMultiple.active.help "Active icon (Bottom)">
+<!ENTITY iconNoBorder.label "No border">
+<!ENTITY iconNoBorder.accesskey "N">

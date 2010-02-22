@@ -16,3 +16,5 @@
 <!ENTITY iconMultiple.normal.help "通常アイコン (上)">
 <!ENTITY iconMultiple.hover.help "マウスオーバー (中)">
 <!ENTITY iconMultiple.active.help "押下状態 (下)">
+<!ENTITY iconNoBorder.label "枠を非表示">
+<!ENTITY iconNoBorder.accesskey "N">

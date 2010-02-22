@@ -11,6 +11,7 @@ PREF_ICON_ENABLED:       'icon.enabled',
 PREF_ICON_FILE:          'icon.file',
 PREF_ICON_LOCALFILENAME: 'icon.localfilename',
 PREF_ICON_MULTIPLE:      'icon.multiple',
+PREF_ICON_NOBORDER:      'icon.noborder',
 PREFBASE_INITIALIZED:    'initialized.',
 
 MAINWINDOWS: [
@@ -509,11 +510,12 @@ loadIcon: function() {
 
   if (iconURI) {
     var iconMultiple = this.getBoolPref(this.PREF_ICON_MULTIPLE, false);
+    var iconNoBorder = this.getBoolPref(this.PREF_ICON_NOBORDER, false);
     var img = new Image();
     img.onload = function() {
       CompactMenu.c_dump('icon loaded: width='+img.width+', height='+img.height);
       if (img.width && img.height && (iconEnable || 16 != img.width || 48 != img.height))
-        CompactMenu.setIconStyle(img.width, img.height, iconEnable && iconMultiple);
+        CompactMenu.setIconStyle(img.width, img.height, iconEnable && iconMultiple, iconNoBorder);
     };
     img.src = iconURI;
   }
@@ -526,13 +528,14 @@ resetIcon: function(win) {
 },
 
 _iconStyle: null,
-setIconStyle: function(width, height, multiple) {
+setIconStyle: function(width, height, multiple, noborder) {
   if (multiple) {
     var h1 = Math.ceil(height / 3), h2 = h1 * 2, h3 = h1 * 3;
     var code = 'data:text/css,@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);'
              + '#menu-button{-moz-image-region:rect(0px,'+width+'px,'+h1+'px,0px)!important;}'
              + '#menu-button:hover{-moz-image-region:rect('+h1+'px,'+width+'px,'+h2+'px,0px)!important;}'
              + '#menu-button[open="true"]{-moz-image-region:rect('+h2+'px,'+width+'px,'+h3+'px,0px)!important;}';
+    if (noborder) code += '#menu-button{border:none!important;}';
     var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
                         .getService(Components.interfaces.nsIStyleSheetService);
     var ios = Components.classes["@mozilla.org/network/io-service;1"]
@@ -546,6 +549,7 @@ setIconStyle: function(width, height, multiple) {
     if (button) {
       var imageRegion = 'rect(0px,'+width+'px,'+height+'px,0px)';
       button.style.setProperty('-moz-image-region', imageRegion, '');
+      if (noborder) button.style.setProperty('border', 'none', '');
     }
   }
 },
@@ -555,6 +559,7 @@ clearIconStyle: function() {
   if (button) {
     button.style.removeProperty('list-style-image');
     button.style.removeProperty('-moz-image-region');
+    button.style.removeProperty('border');
   }
 
   var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
