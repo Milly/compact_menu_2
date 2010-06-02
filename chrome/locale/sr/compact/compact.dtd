@@ -1,0 +1,18 @@
+<!ENTITY menu.label "Компактан мени">
+<!ENTITY bookmarks.label "Компактна омиљена места">
+<!ENTITY menuPref.caption "Одаберите меније које желите да видите у Компактном менију">
+<!ENTITY compactMenu.label "Мени">
+<!ENTITY compactMenu.key "М">
+<!ENTITY menubarCmd.label "Трака са менијем">
+<!ENTITY menubarCmd.accesskey "Т">
+<!ENTITY iconPref.caption "Промени икону Компактног менија">
+<!ENTITY iconPref.accesskey "П">
+<!ENTITY iconFilePicker.label "Прегледај...">
+<!ENTITY iconFilePicker.accesskey "П">
+<!ENTITY iconFilePicker.title "Одаберите икону Компактног менија">
+<!ENTITY iconMultiple.label "Више икона">
+<!ENTITY iconMultiple.accesskey "В">
+<!ENTITY iconMultiple.help "Изаберите ово ако слика садржи нормалне, иконе за наношење и активне иконе">
+<!ENTITY iconMultiple.normal.help "Нормална икона (врх)">
+<!ENTITY iconMultiple.hover.help "Икона за наношење (средина)">
+<!ENTITY iconMultiple.active.help "Активна икона (дно)">

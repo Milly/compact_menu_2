@@ -10,3 +10,9 @@
 <!ENTITY iconFilePicker.label "Bläddra...">
 <!ENTITY iconFilePicker.accesskey "B">
 <!ENTITY iconFilePicker.title "Välj ikon för Kompaktmeny-knappen">
+<!ENTITY iconMultiple.label "Flera ikoner">
+<!ENTITY iconMultiple.accesskey "F">
+<!ENTITY iconMultiple.help "Kontrollera om bilden innehåller ikoner för normal, aktiv och musöverföring">
+<!ENTITY iconMultiple.normal.help "Normal ikon (överst)">
+<!ENTITY iconMultiple.hover.help "Musöverföringsikon (mitten)">
+<!ENTITY iconMultiple.active.help "Aktiv ikon (underst)">
