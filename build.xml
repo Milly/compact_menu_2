@@ -29,6 +29,9 @@
 	<!-- create release xpi -->
 	<target name="release" depends="update-locales-release,xpi" />
 	
+	<!-- create develop xpi -->
+	<target name="develop" depends="update-locales-develop,xpi" />
+	
 	<!-- create xpi -->
 	<target name="xpi" depends="build-dir,jar">
 		<copy todir="${build.path}">
