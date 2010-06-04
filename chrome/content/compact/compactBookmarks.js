@@ -165,6 +165,14 @@ cloneBookmarksMenu: function(parent) {
   var clone_menupopup = menupopup.cloneNode(false);
   parent.appendChild(clone_menupopup);
 
+  // fix onpopupshowing (for Fx3.7)
+  if (clone_menupopup.hasAttribute('onpopupshowing')) {
+    var pops = clone_menupopup.getAttribute('onpopupshowing');
+    pops = pops.replace("document.getElementById('bookmarksMenu')",
+                        'this.parentNode');
+    clone_menupopup.setAttribute('onpopupshowing', pops);
+  }
+
   var nodes = menupopup.childNodes;
   for (var i = 0; i < nodes.length; ++i) {
     var node = nodes[i];
