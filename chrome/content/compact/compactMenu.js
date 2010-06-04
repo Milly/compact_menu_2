@@ -73,11 +73,10 @@ POPUPS: [
 
 SINGLE_POPUP: 'main-menu-popup',
 
-_HIDE_ATTRIBUTE: null,
-get HIDE_ATTRIBUTE function() {
-  if (!this._HIDE_ATTRIBUTE)
-    this._HIDE_ATTRIBUTE = this.application.isSm ? 'hidden' : 'collapsed';
-  return this._HIDE_ATTRIBUTE;
+get HIDE_ATTRIBUTE() {
+  delete CompactMenu.HIDE_ATTRIBUTE;
+  return (CompactMenu.HIDE_ATTRIBUTE =
+    this.application.isSm ? 'hidden' : 'collapsed');
 },
 
 // debug methods
@@ -95,9 +94,9 @@ c_dump: function(msg) {
 
 // string methods
 
-_strings: null,
-get strings function() {
-  return this._strings || (this._strings =
+get strings() {
+  delete CompactMenu.strings;
+  return (CompactMenu.strings =
     Components.classes['@mozilla.org/intl/stringbundle;1']
               .getService(Components.interfaces.nsIStringBundleService)
               .createBundle('chrome://compact/locale/global.properties'));
@@ -112,9 +111,9 @@ getString: function(key, replacements) {
 
 // preferences methods
 
-_prefs: null,
-get prefs function() {
-  return this._prefs || (this._prefs =
+get prefs() {
+  delete CompactMenu.prefs;
+  return (CompactMenu.prefs =
     Components.classes['@mozilla.org/preferences-service;1']
               .getService(Components.interfaces.nsIPrefService)
               .getBranch(this.PREFROOT_COMPACTMENU));
@@ -619,20 +618,17 @@ hookFunction: function(orgFunc, orgCode, newCode) {
   return false;
 },
 
-_application: null,
-get application function() {
-  if (!this._applcation) {
-    var appInfo = Components.classes['@mozilla.org/xre/app-info;1']
-                            .getService(Components.interfaces.nsIXULAppInfo);
-    this._application = {
-      isFx: appInfo.ID == '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}',
-      isTb: appInfo.ID == '{3550f703-e582-4d05-9a08-453d09bdfdc6}',
-      isSb: appInfo.ID == '{718e30fb-e89b-41dd-9da7-e25a45638b28}',
-      isSm: appInfo.ID == '{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}',
-      version: appInfo.version,
-    };
-  }
-  return this._application;
+get application() {
+  var appInfo = Components.classes['@mozilla.org/xre/app-info;1']
+                          .getService(Components.interfaces.nsIXULAppInfo);
+  delete CompactMenu.application;
+  return (CompactMenu.application = {
+    isFx: appInfo.ID == '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}',
+    isTb: appInfo.ID == '{3550f703-e582-4d05-9a08-453d09bdfdc6}',
+    isSb: appInfo.ID == '{718e30fb-e89b-41dd-9da7-e25a45638b28}',
+    isSm: appInfo.ID == '{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}',
+    version: appInfo.version,
+  });
 },
 
 init: function() {
@@ -822,8 +818,7 @@ destroy: function() {
 
 // event methods
 
-_eventListeners: [],
-get eventListeners function() {
+get eventListeners() {
   if (!this.hasOwnProperty('_eventListeners'))
     this._eventListeners = [];
   return this._eventListeners;
