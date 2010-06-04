@@ -10,14 +10,40 @@ c_dump: function(msg) {
 
 init: function() {
   this.c_dump('init');
-  if (window.BookmarksMenuDNDObserver) {
+  this.initBookmarksFunctions();
+  this.initBookmarksItems();
+  this.addEventListener(window, 'unload', this, false);
+  this.addEventListener(window, 'focus', this, false);
+},
+
+initBookmarksFunctions: function() {
+  if ('BookmarksMenuDNDObserver' in window) {
     this.initBookmarksFunctions_Fx2();
   } else {
     this.initBookmarksFunctions_Fx3();
   }
-  this.initBookmarksItems();
-  this.addEventListener(window, 'unload', this, false);
-  this.addEventListener(window, 'focus', this, false);
+  if ('FeedHandler' in window && 'updateFeeds' in FeedHandler) {
+    FeedHandler.updateFeeds_without_CompactBookmark = FeedHandler.updateFeeds;
+    FeedHandler.updateFeeds_with_CompactBookmark = FeedHandler.updateFeeds = function() {
+      function find(element, tagName, id) {
+        var tags = element.getElementsByTagName(tagName);
+        for (var i = 0; i < tags.length; ++i)
+          if (id == tags[i].id) return tags[i];
+      }
+      var menus = [
+        document.getElementById('compact-bk-menubar'),
+        document.getElementById('compact-bk-button'),
+        CompactBookmarks.getBookmarksMenu()
+      ];
+      for (var i = 0; i < menus.length; ++i) {
+        if (menus[i]) {
+          this._feedMenuitem = find(menus[i], 'menuitem', 'subscribeToPageMenuitem');
+          this._feedMenupopup = find(menus[i], 'menu', 'subscribeToPageMenupopup');
+          this.updateFeeds_without_CompactBookmark();
+        }
+      }
+    };
+  }
 },
 
 initBookmarksFunctions_Fx2: function() {
@@ -98,7 +124,7 @@ initBookmarksButton: function() {
   this.cloneBookmarksMenu(compactBookmarksButton);
 
   // reinsert after clone (for Fx2)
-  if (window.BookmarksMenuDNDObserver) {
+  if ('BookmarksMenuDNDObserver' in window) {
     var next = compactBookmarksButton.nextSibling;
     var parent = compactBookmarksButton.parentNode;
     parent.removeChild(compactBookmarksButton);
@@ -142,22 +168,24 @@ cloneBookmarksMenu: function(parent) {
   var nodes = menupopup.childNodes;
   for (var i = 0; i < nodes.length; ++i) {
     var node = nodes[i];
-    clone_menupopup.appendChild(node.cloneNode(false));
+    clone_menupopup.appendChild(node.cloneNode(true));
     if ('menuseparator' == node.tagName) break;
   }
 
+  // add bookmarks-toolbar-folder-menu (for Fx3.0 or later)
   var tbFolderMenu = document.getElementById('bookmarksToolbarFolderMenu');
-  if (tbFolderMenu) {
-    var tbFolderPopup = document.getElementById('bookmarksToolbarFolderPopup');
+  var tbFolderPopup = document.getElementById('bookmarksToolbarFolderPopup');
+  if (tbFolderMenu && tbFolderPopup) {
     var clone_tbFolderMenu = tbFolderMenu.cloneNode(false);
     var clone_tbFolderPopup = tbFolderPopup.cloneNode(false);
     var clone_separator = tbFolderMenu.nextSibling.cloneNode(false);
 
-    var bms = PlacesUtils.bookmarks;
-    if (bms) {
+    // set places (for Fx3.0)
+    if ('PlacesUtils' in window && 'bookmarks' in PlacesUtils) {
+      var bms = PlacesUtils.bookmarks;
       if (!clone_tbFolderMenu.label)
         clone_tbFolderMenu.label = bms.getItemTitle(bms.toolbarFolder);
-      if (!clone_tbFolderPopup.place)
+      if (!clone_tbFolderPopup.place && 'getQueryStringForFolder' in PlacesUtils)
         clone_tbFolderPopup.place = PlacesUtils.getQueryStringForFolder(bms.toolbarFolder);
     }
 
