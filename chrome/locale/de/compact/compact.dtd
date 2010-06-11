@@ -1,7 +1,9 @@
 <!ENTITY menu.label "Compact Menu">
-<!ENTITY bookmarks.label "Compact Bookmarks">
-<!ENTITY menuPref.caption "Wähle die Menus die Du im Compact Menu sehen möchtest">
 <!ENTITY compactMenu.label "Menü">
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Menüleiste">
 <!ENTITY menubarCmd.accesskey "M">
+<!ENTITY iconFilePicker.label "Durchsuchen...">
+<!ENTITY iconFilePicker.accesskey "D">
+<!ENTITY iconNoBorder.label "Keinen Rand">
+<!ENTITY iconNoBorder.accesskey "K">

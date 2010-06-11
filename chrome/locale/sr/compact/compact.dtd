@@ -6,7 +6,7 @@
 <!ENTITY menubarCmd.label "Трака са менијем">
 <!ENTITY menubarCmd.accesskey "Т">
 <!ENTITY iconPref.caption "Промени икону Компактног менија">
-<!ENTITY iconPref.accesskey "П">
+<!ENTITY iconPref.accesskey "И">
 <!ENTITY iconFilePicker.label "Прегледај...">
 <!ENTITY iconFilePicker.accesskey "П">
 <!ENTITY iconFilePicker.title "Одаберите икону Компактног менија">
@@ -16,3 +16,5 @@
 <!ENTITY iconMultiple.normal.help "Нормална икона (врх)">
 <!ENTITY iconMultiple.hover.help "Икона за наношење (средина)">
 <!ENTITY iconMultiple.active.help "Активна икона (дно)">
+<!ENTITY iconNoBorder.label "Без оквира">
+<!ENTITY iconNoBorder.accesskey "О">

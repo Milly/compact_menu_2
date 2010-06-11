@@ -16,3 +16,5 @@
 <!ENTITY iconMultiple.normal.help "Normaal pictogram (boven)">
 <!ENTITY iconMultiple.hover.help "Aanwijzingspictogram (midden)">
 <!ENTITY iconMultiple.active.help "Actief pictogram (onder)">
+<!ENTITY iconNoBorder.label "Geen rand">
+<!ENTITY iconNoBorder.accesskey "G">

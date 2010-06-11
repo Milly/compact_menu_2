@@ -16,3 +16,5 @@
 <!ENTITY iconMultiple.normal.help "Normal ikon (överst)">
 <!ENTITY iconMultiple.hover.help "Musöverföringsikon (mitten)">
 <!ENTITY iconMultiple.active.help "Aktiv ikon (underst)">
+<!ENTITY iconNoBorder.label "Utan kantlinje">
+<!ENTITY iconNoBorder.accesskey "K">

@@ -16,3 +16,5 @@
 <!ENTITY iconMultiple.normal.help "Normál ikon (felül)">
 <!ENTITY iconMultiple.hover.help "Lebegő ikon (középső)">
 <!ENTITY iconMultiple.active.help "Aktív ikon (alul)">
+<!ENTITY iconNoBorder.label "Nincs keret">
+<!ENTITY iconNoBorder.accesskey "N">

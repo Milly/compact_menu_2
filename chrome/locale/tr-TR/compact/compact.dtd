@@ -1,18 +1,20 @@
-<!ENTITY menu.label "Bütünleşik Menü">
-<!ENTITY bookmarks.label "Bütünleşik Yer İmleri">
-<!ENTITY menuPref.caption "Bütünleşik Menü'de görmek istediğiniz menüleri seçin">
+<!ENTITY menu.label "Kısa Menü">
+<!ENTITY bookmarks.label "Kısa Yer İmleri">
+<!ENTITY menuPref.caption "Kısa Menü'de görmek istediğiniz menüleri seçin">
 <!ENTITY compactMenu.label "Menü">
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Menü Çubuğu">
 <!ENTITY menubarCmd.accesskey "M">
-<!ENTITY iconPref.caption "Bütünleşik Menü simgesini değiştir">
+<!ENTITY iconPref.caption "Kısa Menü simgesini değiştir">
 <!ENTITY iconPref.accesskey "N">
 <!ENTITY iconFilePicker.label "Gözat..">
 <!ENTITY iconFilePicker.accesskey "G">
-<!ENTITY iconFilePicker.title "Bütünleşik Menü için simge seçin">
+<!ENTITY iconFilePicker.title "Kısa Menü için simge seçin">
 <!ENTITY iconMultiple.label "Birden çok simge">
 <!ENTITY iconMultiple.accesskey "Ç">
 <!ENTITY iconMultiple.help "Eğer resim, normal, bekleme ve aktif simgeleri içeriyorsa işaretleyin.">
 <!ENTITY iconMultiple.normal.help "Normal simge (Üst)">
 <!ENTITY iconMultiple.hover.help "Bekleme simgesi (Orta)">
 <!ENTITY iconMultiple.active.help "Aktif simge (Alt)">
+<!ENTITY iconNoBorder.label "Çerçeve yok">
+<!ENTITY iconNoBorder.accesskey "Y">

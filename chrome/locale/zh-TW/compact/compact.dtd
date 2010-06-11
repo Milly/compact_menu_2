@@ -16,3 +16,5 @@
 <!ENTITY iconMultiple.normal.help "平常時候圖示(上)">
 <!ENTITY iconMultiple.hover.help "滑鼠停駐圖示(中)">
 <!ENTITY iconMultiple.active.help "運作時刻圖示(下)">
+<!ENTITY iconNoBorder.label "不加框線">
+<!ENTITY iconNoBorder.accesskey "N">

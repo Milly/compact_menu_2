@@ -16,3 +16,5 @@
 <!ENTITY iconMultiple.normal.help "Icône normale (en haut)">
 <!ENTITY iconMultiple.hover.help "Icône au survol de la souris (au milieu)">
 <!ENTITY iconMultiple.active.help "Icône d'indication d'activité (en bas)">
+<!ENTITY iconNoBorder.label "Aucune bordure">
+<!ENTITY iconNoBorder.accesskey "A">

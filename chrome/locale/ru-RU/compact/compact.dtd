@@ -16,3 +16,5 @@
 <!ENTITY iconMultiple.normal.help "Обычный значок (Верхнее)">
 <!ENTITY iconMultiple.hover.help "Значок при наведении курсора (Среднее)">
 <!ENTITY iconMultiple.active.help "Значок при активном меню (Нижнее)">
+<!ENTITY iconNoBorder.label "Без рамки">
+<!ENTITY iconNoBorder.accesskey "р">

@@ -16,3 +16,5 @@
 <!ENTITY iconMultiple.normal.help "Ícone normal (topo)">
 <!ENTITY iconMultiple.hover.help "Ícone destacado (centro)">
 <!ENTITY iconMultiple.active.help "Ícone activo (fundo)">
+<!ENTITY iconNoBorder.label "Sem limite">
+<!ENTITY iconNoBorder.accesskey "S">
