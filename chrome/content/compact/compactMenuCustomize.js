@@ -14,6 +14,12 @@ init: function() {
     }
   }
 
+  if (!this.getCurrentMenuContainer()) {
+    var box = document.getElementById('compact-box');
+    box.style.setProperty('display', 'none', '');
+    return;
+  }
+
   this.mapMenus(function(menu, index) {
     var id = menu.id || index;
     var eid = this.toMenuElementId(id);

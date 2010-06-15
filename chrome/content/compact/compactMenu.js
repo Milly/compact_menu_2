@@ -359,11 +359,13 @@ hidePopup: function() {
 
 hideMenuBar: function() {
   var menubar = this.getMenuBar();
-  this.menuIt(menubar);
-  if (this.getMenuItem() || this.getMainToolbar()[this.HIDE_ATTRIBUTE]) {
-    menubar.setAttribute('hidden', 'true');
-  } else {
-    menubar.removeAttribute('hidden');
+  if (menubar) {
+    this.menuIt(menubar);
+    if (this.getMenuItem() || (this.getMainToolbar() || {})[this.HIDE_ATTRIBUTE]) {
+      menubar.setAttribute('hidden', 'true');
+    } else {
+      menubar.removeAttribute('hidden');
+    }
   }
 },
 
