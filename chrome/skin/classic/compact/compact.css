@@ -56,3 +56,7 @@ toolbar[collapsed="true"]:first-child + toolbar[collapsed="true"] + toolbar[coll
 toolbar[collapsed="true"]:first-child + toolbar[collapsed="true"] + toolbar[collapsed="true"] + toolbar[collapsed="true"] + toolbar {
   border-top: 0px !important;
 }
+
+#compact-visible-menu-items {
+  display: block;
+}

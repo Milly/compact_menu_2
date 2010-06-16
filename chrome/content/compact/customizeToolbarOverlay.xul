@@ -11,12 +11,10 @@
   <script type="application/x-javascript" src="chrome://compact/content/compactMenuCustomize.js"/>
 
   <vbox id="main-box">
-    <vbox id="compact-box" insertafter="palette-box">
-      <groupbox id="compact-visible_menus" align="start" pack="start" orient="vertical">
-        <caption label="&menuPref.caption;"/>
-        <hbox/>
-      </groupbox>
-    </vbox>
+    <groupbox id="compact-visible-menus" insertafter="palette-box">
+      <caption label="&menuPref.caption;"/>
+      <hbox id="compact-visible-menu-items"/>
+    </groupbox>
   </vbox>
 
 </overlay>

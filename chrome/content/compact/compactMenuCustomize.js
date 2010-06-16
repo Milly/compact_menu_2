@@ -61,19 +61,14 @@ cancel: function() {
 },
 
 addVisibleMenuCheckbox: function(menu, id, checked) {
-  var container = document.getElementById('compact-visible_menus');
+  var container = document.getElementById('compact-visible-menu-items');
   var item = document.getElementById(id) || document.createElement('checkbox');
   item.setAttribute('id', id);
   item.setAttribute('type', 'checkbox');
   item.setAttribute('label', menu.getAttribute('label'));
   item.setAttribute('accesskey', menu.getAttribute('accesskey'));
   item.setAttribute('checked', checked);
-  var row = container.lastChild;
-  if (4 <= row.childNodes.length) {
-    row = document.createElement(row.nodeName);
-    container.appendChild(row);
-  }
-  row.appendChild(item);
+  container.appendChild(item);
   return item;
 },
 
