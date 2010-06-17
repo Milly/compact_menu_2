@@ -1,7 +1,11 @@
 var CompactMenuCustomize = { __proto__: CompactMenu,
 
+// state vars {{{1
+
 _mainToolbarCollapsed: null,
 _canceled: false,
+
+// dialog control methods {{{1
 
 init: function() {
   this.c_dump('customizeInit');
@@ -87,7 +91,7 @@ restoreMainToolbar: function() {
   this.hideAll();
 },
 
-// handle events
+// handle events {{{1
 
 handleEvent: function(event) {
   switch (event.type) {
@@ -103,6 +107,8 @@ handleEvent: function(event) {
       break;
   }
 }
+
+// }}}1
 
 } // CompactMenuCustomize
 CompactMenuCustomize.addEventListener(window, 'load', CompactMenuCustomize, false);

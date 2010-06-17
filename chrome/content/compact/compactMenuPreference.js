@@ -1,5 +1,7 @@
 var CompactMenuPreference = { __proto__: CompactMenu,
 
+// dialog control methods {{{1
+
 init: function() {
   this.c_dump('prefInit');
 
@@ -74,7 +76,7 @@ openImagePicker: function(title, filefield) {
   }
 },
 
-// handle events
+// handle events {{{1
 
 handleEvent: function(event) {
   switch (event.type) {
@@ -83,6 +85,8 @@ handleEvent: function(event) {
     case 'dialogaccept': this.accept(); break;
   }
 }
+
+// }}}1
 
 } // CompactMenuPreference
 CompactMenuPreference.addEventListener(window, 'load', CompactMenuPreference, false);

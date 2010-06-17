@@ -1,12 +1,12 @@
 var CompactBookmarks = { __proto__: CompactMenu,
 
-// debug methods
+// debug methods {{{1
 
 c_dump: function(msg) {
   this.__proto__.c_dump.call(this, 'CompactBookmarks :: ' + msg);
 },
 
-// initialize methods
+// initialize methods {{{1
 
 init: function() {
   this.c_dump('init');
@@ -134,7 +134,7 @@ initBookmarksButton: function() {
   compactBookmarksButton.initialized = true;
 },
 
-// element manipulate methods
+// element manipulate methods {{{1
 
 getBookmarksMenu: function() {
   var fx2Menu = document.getElementById('bookmarks-menu');
@@ -203,7 +203,7 @@ cloneBookmarksMenu: function(parent) {
   }
 },
 
-// event methods
+// event methods {{{1
 
 handleEvent: function(event) {
   switch (event.type) {
@@ -212,6 +212,8 @@ handleEvent: function(event) {
     case 'focus' : this.initBookmarksItems(); break;
   }
 }
+
+// }}}1
 
 } // CompactBookmarks
 CompactBookmarks.addEventListener(window, 'load', CompactBookmarks, false);

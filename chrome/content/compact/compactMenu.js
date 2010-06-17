@@ -1,6 +1,6 @@
 var CompactMenu = {
 
-// constants
+// constants {{{1
 
 DEBUG: false,
 
@@ -79,7 +79,7 @@ get HIDE_ATTRIBUTE() {
     this.application.isSm ? 'hidden' : 'collapsed');
 },
 
-// debug methods
+// debug methods {{{1
 
 c_dump: function(msg) {
   if (this.DEBUG) {
@@ -92,7 +92,7 @@ c_dump: function(msg) {
   }
 },
 
-// string methods
+// string methods {{{1
 
 get strings() {
   delete CompactMenu.strings;
@@ -109,7 +109,7 @@ getString: function(key, replacements) {
     return this.strings.formatStringFromName(key, replacements, replacements.length);
 },
 
-// preferences methods
+// preferences methods {{{1
 
 get prefs() {
   delete CompactMenu.prefs;
@@ -178,7 +178,7 @@ toPrefId: function(element_or_id, prefBase) {
   return prefBase + windowId + '.' + id;
 },
 
-// element manipulate methods
+// element manipulate methods {{{1
 
 addPopupMethods: function(popup) {
   if (!('openPopup' in popup) /* Mozilla < 1.9 */) {
@@ -443,7 +443,7 @@ setMenuTooltip: function(tooltip, node) {
   return false;
 },
 
-// keybord methods
+// keybord methods {{{1
 
 dispatchKeyEvent: function(item, keyCode, charCode) {
   var event = document.createEvent('KeyboardEvent');
@@ -465,7 +465,7 @@ isMenuAccessKey: function(event, checkKeyCode) {
   return false;
 },
 
-// icon methods
+// icon methods {{{1
 
 getIconFile: function() {
   try {
@@ -605,7 +605,7 @@ toLocalIconFile: function(file) {
   return localFile;
 },
 
-// initialize methods
+// initialize methods {{{1
 
 hookFunction: function(orgFunc, orgCode, newCode) {
   try {
@@ -811,14 +811,14 @@ onViewToolbarsPopupShowing: function(event, aMenuItemId) {
   }
 },
 
-// destroy methods
+// destroy methods {{{1
 
 destroy: function() {
   this.c_dump('destroy');
   this.removeEventListeners();
 },
 
-// event methods
+// event methods {{{1
 
 get eventListeners() {
   if (!this.hasOwnProperty('_eventListeners'))
@@ -959,5 +959,7 @@ onkeypress: function(event) {
     });
   } catch (e if 'break' == e) {}
 }
+
+// }}}1
 
 } // CompactMenu
