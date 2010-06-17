@@ -19,7 +19,7 @@ init: function() {
   }
 
   if (!this.getCurrentMenuContainer()) {
-    var box = document.getElementById('compact-box');
+    var box = document.getElementById('compact-visible-menus');
     box.style.setProperty('display', 'none', '');
     return;
   }
