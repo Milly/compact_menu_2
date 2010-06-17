@@ -667,14 +667,17 @@ init: function() {
 initFirst: function() {
   var navbar = this.getNavigationToolbar();
   var initializedPref = this.toInitializedPrefId(navbar);
-  if (!this.getBoolPref(initializedPref)) {
-    if (!this.getMenuItem()) {
+  if (this.getBoolPref(initializedPref)) return;
+  this.setBoolPref(initializedPref, true);
+
+  window.setTimeout(function() {
+    if (!CompactMenu.getMenuItem()) {
       const PromptService = Components.classes['@mozilla.org/embedcomp/prompt-service;1']
                                       .getService(Components.interfaces.nsIPromptService);
       var res = PromptService.confirmEx(
-        null,
-        this.getString('initialize.confirm.title'),
-        this.getString('initialize.confirm.description'),
+        window,
+        CompactMenu.getString('initialize.confirm.title'),
+        CompactMenu.getString('initialize.confirm.description'),
         (PromptService.BUTTON_TITLE_YES * PromptService.BUTTON_POS_0) +
         (PromptService.BUTTON_TITLE_NO  * PromptService.BUTTON_POS_1),
         null, null, null, null, {}
@@ -684,17 +687,16 @@ initFirst: function() {
         var newset = ['menu-button'].concat(buttons).join(',');
         navbar.currentSet = newset;
         navbar.setAttribute('currentset', newset);
-        navbar[this.HIDE_ATTRIBUTE] = false;
+        navbar[CompactMenu.HIDE_ATTRIBUTE] = false;
         document.persist(navbar.id, 'currentset');
-        var menubar = this.getMainToolbar();
-        menubar[this.HIDE_ATTRIBUTE] = true;
-        if ('BrowserToolboxCustomizeDone' in window)
-          window.setTimeout('BrowserToolboxCustomizeDone(true);', 0);
+        var menubar = CompactMenu.getMainToolbar();
+        menubar[CompactMenu.HIDE_ATTRIBUTE] = true;
+        var toolbox = CompactMenu.getMainToolbox();
+        if ('customizeDone' in toolbox)
+          toolbox.customizeDone(true);
       }
     }
-
-    this.setBoolPref(initializedPref, true);
-  }
+  }, 1000);
 },
 
 initIcon: function(win) {
