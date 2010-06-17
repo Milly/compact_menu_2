@@ -841,7 +841,7 @@ removeEventListeners: function() {
 
 addEvents: function() {
   this.addEventListener(window, 'unload', this, false);
-  this.addEventListener(window, 'focus', this, false);
+  this.addEventListener(window, 'focus', this, true);
   this.addEventListener(window, 'blur', this, true);
   this.addEventListener(window, 'mousedown', this, true);
   this.addEventListener(window, 'DOMMouseScroll', this, true);

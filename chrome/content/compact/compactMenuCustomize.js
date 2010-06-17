@@ -24,6 +24,8 @@ init: function() {
     return;
   }
 
+  this.hideAll();
+
   this.mapMenus(function(menu, index) {
     var id = menu.id || index;
     var eid = this.toMenuElementId(id);

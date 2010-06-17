@@ -13,7 +13,7 @@ init: function() {
   this.initBookmarksFunctions();
   this.initBookmarksItems();
   this.addEventListener(window, 'unload', this, false);
-  this.addEventListener(window, 'focus', this, false);
+  this.addEventListener(window, 'focus', this, true);
 },
 
 initBookmarksFunctions: function() {
