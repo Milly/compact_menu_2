@@ -81,13 +81,17 @@ get HIDE_ATTRIBUTE() {
 
 // debug methods {{{1
 
+get console() {
+  delete CompactMenu.consoleService;
+  return (CompactMenu.consoleService =
+    Components.classes["@mozilla.org/consoleservice;1"]
+              .getService(Components.interfaces.nsIConsoleService));
+},
+
 c_dump: function(msg) {
   if (this.DEBUG) {
     msg = 'Compact Menu :: ' + msg;
-    this._consoleService = this._consoleService
-      || Components.classes["@mozilla.org/consoleservice;1"]
-        .getService(Components.interfaces.nsIConsoleService);
-    this._consoleService.logStringMessage(msg);
+    this.console.logStringMessage(msg);
     dump(msg);
   }
 },
