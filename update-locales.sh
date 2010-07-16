@@ -61,7 +61,7 @@ elif [ $mode == skip ]; then
 fi
 
 # update manifest
-tmp_file="$TEMP/update-locales.sh.manifest"
+tmp_file="${TEMP=.}/update-locales.sh.manifest"
 ls "$locale_dir" \
     | sed 's#\(.*\)#locale\tcompact\t\1\tjar:chrome/compact.jar!/locale/\1/compact/#' \
     > "$tmp_file"
