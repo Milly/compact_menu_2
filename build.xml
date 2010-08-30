@@ -20,20 +20,20 @@
 	<defaultexcludes add="**/Thumbs.db" />
 
 	<!-- deploy -->
-	<target name="deploy" depends="xpi">
+	<target name="deploy" depends="xpi" description="Make xpi file and install.">
 		<exec executable="cmd.exe" os="Windows XP">
 			<arg line="/c start ${xpi.file}" />
 		</exec>
 	</target>
 
 	<!-- create release xpi -->
-	<target name="release" depends="update-locales-release,xpi" />
+	<target name="release" depends="update-locales-release,xpi" description="Make release xpi file." />
 	
 	<!-- create develop xpi -->
-	<target name="develop" depends="update-locales-develop,xpi" />
+	<target name="develop" depends="update-locales-develop,xpi" description="Make develop xpi file." />
 	
 	<!-- create xpi -->
-	<target name="xpi" depends="build-dir,jar">
+	<target name="xpi" depends="build-dir,jar" description="Make xpi file.">
 		<copy todir="${build.path}">
 			<fileset dir=".">
 				<include name="install.rdf" />
@@ -60,7 +60,7 @@
 	</target>
 	
 	<!-- clean -->
-	<target name="clean">
+	<target name="clean" description="Delete all build files.">
 		<delete includeEmptyDirs="true">
 			<fileset dir=".">
 				<include name="*.xpi" />
