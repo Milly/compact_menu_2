@@ -16,3 +16,5 @@
 <!ENTITY iconMultiple.normal.help "평상시 (이미지의 윗부분)">
 <!ENTITY iconMultiple.hover.help "커서를 올렸을 때(이미지의 중간)">
 <!ENTITY iconMultiple.active.help "눌렀을 때 (이미지의 아랫부분)">
+<!ENTITY iconNoBorder.label "테두리 없음">
+<!ENTITY iconNoBorder.accesskey "N">
