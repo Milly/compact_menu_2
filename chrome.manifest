@@ -12,7 +12,7 @@ locale	compact	it-IT	jar:chrome/compact.jar!/locale/it-IT/compact/
 locale	compact	ja-JP	jar:chrome/compact.jar!/locale/ja-JP/compact/
 locale	compact	ko-KR	jar:chrome/compact.jar!/locale/ko-KR/compact/
 locale	compact	nl	jar:chrome/compact.jar!/locale/nl/compact/
-locale	compact	pl-PL	jar:chrome/compact.jar!/locale/pl-PL/compact/
+locale	compact	pl	jar:chrome/compact.jar!/locale/pl/compact/
 locale	compact	pt-BR	jar:chrome/compact.jar!/locale/pt-BR/compact/
 locale	compact	pt-PT	jar:chrome/compact.jar!/locale/pt-PT/compact/
 locale	compact	ru-RU	jar:chrome/compact.jar!/locale/ru-RU/compact/
