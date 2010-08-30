@@ -72,7 +72,7 @@
 
 	<!-- update locales -->
 	<target name="update-locales">
-		<exec executable="sh">
+		<exec executable="sh" failonerror="true">
 			<arg line="update-locales.sh ${update-locales.mode}" />
 		</exec>
 	</target>
