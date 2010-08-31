@@ -11,7 +11,7 @@ This project contains 'Compact Menu 2' add-on for Firefox, Thunderbird, Sunbird 
 
 Firefox Add-ons: https://addons.mozilla.org/firefox/addon/4550
 
-  
+
 == Build package
 
 Require 'Apache Ant'.
@@ -19,3 +19,11 @@ Require 'Apache Ant'.
 $ tar zxf compact_menu_2.tar.gz
 $ cd compact_menu_2
 $ ant
+
+== Import locales from Babelzilla
+
+Require account of babelzilla.org.
+
+$ export BABELZILLA_USER=user
+$ export BABELZILLA_PASS=pass
+$ ./update-locales.sh
