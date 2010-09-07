@@ -17,11 +17,7 @@ init: function() {
 },
 
 initBookmarksFunctions: function() {
-  if ('BookmarksMenuDNDObserver' in window) {
-    this.initBookmarksFunctions_Fx2();
-  } else {
-    this.initBookmarksFunctions_Fx3();
-  }
+	this.initBookmarksFunctions_Fx3();
   if ('FeedHandler' in window && 'updateFeeds' in FeedHandler) {
     FeedHandler.updateFeeds_without_CompactBookmark = FeedHandler.updateFeeds;
     FeedHandler.updateFeeds_with_CompactBookmark = FeedHandler.updateFeeds = function() {
@@ -44,40 +40,6 @@ initBookmarksFunctions: function() {
       }
     };
   }
-},
-
-initBookmarksFunctions_Fx2: function() {
-  var BookmarksMenuDNDObserver_mObservers = BookmarksMenuDNDObserver.__lookupGetter__('mObservers');
-  BookmarksMenuDNDObserver.__defineGetter__('mObservers', function() {
-    var observers = [].concat(BookmarksMenuDNDObserver_mObservers.call(this));
-    var items = ['compact-bk-menubar', 'compact-bk-button'];
-    for each (var item in items) {
-      var parent = document.getElementById(item);
-      var popup = parent && parent.getElementsByTagName('menupopup')[0];
-      if (popup) observers.push(popup);
-    }
-    return observers;
-  });
-
-  this.hookFunction('BookmarksMenuDNDObserver.onDragStart',
-      'target\.id == "bookmarks-menu"',
-      'target.id == "compact-bk-button" || $&');
-  this.hookFunction('BookmarksMenuDNDObserver.canDrop',
-      'target\.id == "bookmarks-menu"',
-      'target.id == "compact-bk-button" || $&');
-  this.hookFunction('BookmarksMenuDNDObserver.onDragCloseTarget',
-      'this\.mObservers\[i\]\.parentNode.id == "bookmarks-menu"',
-      'this.mObservers[i].parentNode.id == "compact-bk-button" || $&');
-
-  this.hookFunction('BookmarksMenu.getBTSelection',
-      'case "bookmarks-menu":',
-      'case "compact-bk-button":$&');
-  this.hookFunction('BookmarksMenu.getBTTarget',
-      'case "bookmarks-menu":',
-      'case "compact-bk-button":$&');
-  this.hookFunction('BookmarksMenu.getBTContainer',
-      'case "bookmarks-menu":',
-      'case "compact-bk-button":$&');
 },
 
 initBookmarksFunctions_Fx3: function() {
@@ -117,19 +79,10 @@ initBookmarksButton: function() {
   for (var i = 0; i < attrs.length; ++i) {
     var attr = attrs[i];
     // copy onXXX (for All)
-    // copy datasources, ref ... (for Fx2)
-    if (/^on|^(datasources|ref|flags|template|infer)$/.test(attr.name))
+    if (/^on/.test(attr.name))
       compactBookmarksButton.setAttribute(attr.name, attr.value);
   }
   this.cloneBookmarksMenu(compactBookmarksButton);
-
-  // reinsert after clone (for Fx2)
-  if ('BookmarksMenuDNDObserver' in window) {
-    var next = compactBookmarksButton.nextSibling;
-    var parent = compactBookmarksButton.parentNode;
-    parent.removeChild(compactBookmarksButton);
-    parent.insertBefore(compactBookmarksButton, next);
-  }
 
   compactBookmarksButton.initialized = true;
 },
@@ -137,9 +90,7 @@ initBookmarksButton: function() {
 // element manipulate methods {{{1
 
 getBookmarksMenu: function() {
-  var fx2Menu = document.getElementById('bookmarks-menu');
-  var fx3Menu = document.getElementById('bookmarksMenu');
-  return fx2Menu ? fx2Menu : fx3Menu;
+  return document.getElementById('bookmarksMenu');
 },
 
 getBookmarksMenuPopup: function() {

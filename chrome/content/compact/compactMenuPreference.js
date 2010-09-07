@@ -26,8 +26,8 @@ init: function() {
   this.addEventListener(window, 'dialogaccept', this, true);
 },
 
-resetIcon: function() {
-  this.__proto__.resetIcon.call(this);
+resetAllWindowIcons: function() {
+  this.__proto__.resetAllWindowIcons.call(this);
   var icon_file = document.getElementById('icon_file');
   if (icon_file) {
     icon_file.image = null;
@@ -48,8 +48,6 @@ accept: function() {
     var icon_noborder = document.getElementById('icon_noborder');
     this.setBoolPref(this.PREF_ICON_NOBORDER, icon_noborder.checked);
   }
-
-  this.initIcon();
 },
 
 disableGroup: function(group, disabled) {
