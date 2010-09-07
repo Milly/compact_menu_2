@@ -82,8 +82,8 @@ get HIDE_ATTRIBUTE() {
 // debug methods {{{1
 
 get console() {
-  delete CompactMenu.consoleService;
-  return (CompactMenu.consoleService =
+  delete CompactMenu.console;
+  return (CompactMenu.console =
     Components.classes["@mozilla.org/consoleservice;1"]
               .getService(Components.interfaces.nsIConsoleService));
 },
@@ -146,9 +146,9 @@ isMenuBarHidden: function() {
 
 setBoolPref: function(pref, value, clearOnFalse) {
   if (this.prefs.prefHasUserValue(pref))
-    CompactMenu.prefs.clearUserPref(pref);
+    this.prefs.clearUserPref(pref);
   if (value || !clearOnFalse)
-    CompactMenu.prefs.setBoolPref(pref, !!value);
+    this.prefs.setBoolPref(pref, !!value);
 },
 
 toMenuElementId: function(id) {
@@ -186,12 +186,11 @@ _prefObserver: null,
 
 registerPrefObserver: function() {
   if (this._prefObserver) return;
-  var self = this;
   this._prefObserver = {
-    observe: function(branch, topic, name){
-      if (topic == 'nsPref:changed' && 'onPrefChanged' in self)
-        self.onPrefChanged(name);
-    }
+    observe: this.bind(function(branch, topic, name){
+      if (topic == 'nsPref:changed' && 'onPrefChanged' in this)
+        this.onPrefChanged(name);
+    })
   };
   this.prefs.QueryInterface(Components.interfaces.nsIPrefBranch2);
   this.prefs.addObserver('', this._prefObserver, false);
@@ -209,8 +208,7 @@ onPrefChanged: function(name) {
     case this.PREF_ICON_LOCALFILENAME:
     case this.PREF_ICON_MULTIPLE:
     case this.PREF_ICON_NOBORDER:
-      var self = this;
-      this.delayBundleCall('change_icon', 20, function() { self.initIcon(); });
+      this.delayBundleCall('change_icon', 20, this.bind(this.initIcon));
       break;
   }
 },
@@ -496,11 +494,11 @@ loadIcon: function() {
     var iconMultiple = this.getBoolPref(this.PREF_ICON_MULTIPLE, false);
     var iconNoBorder = this.getBoolPref(this.PREF_ICON_NOBORDER, false);
     var img = new Image();
-    img.onload = function() {
-      CompactMenu.c_dump('icon loaded: width='+img.width+', height='+img.height);
+    img.onload = this.bind(function() {
+      this.c_dump('icon loaded: width='+img.width+', height='+img.height);
       if (img.width && img.height && (iconEnable || 16 != img.width || 48 != img.height))
-        CompactMenu.setIconStyle(img.width, img.height, iconEnable && iconMultiple, iconNoBorder);
-    };
+        this.setIconStyle(img.width, img.height, iconEnable && iconMultiple, iconNoBorder);
+    });
     img.src = iconURI;
   }
 },
@@ -653,14 +651,14 @@ initFirst: function() {
   if (this.getBoolPref(initializedPref)) return;
   this.setBoolPref(initializedPref, true);
 
-  window.setTimeout(function() {
-    if (!CompactMenu.getMenuItem()) {
+  window.setTimeout(this.bind(function() {
+    if (!this.getMenuItem()) {
       const PromptService = Components.classes['@mozilla.org/embedcomp/prompt-service;1']
                                       .getService(Components.interfaces.nsIPromptService);
       var res = PromptService.confirmEx(
         window,
-        CompactMenu.getString('initialize.confirm.title'),
-        CompactMenu.getString('initialize.confirm.description'),
+        this.getString('initialize.confirm.title'),
+        this.getString('initialize.confirm.description'),
         (PromptService.BUTTON_TITLE_YES * PromptService.BUTTON_POS_0) +
         (PromptService.BUTTON_TITLE_NO  * PromptService.BUTTON_POS_1),
         null, null, null, null, {}
@@ -670,16 +668,16 @@ initFirst: function() {
         var newset = ['menu-button'].concat(buttons).join(',');
         navbar.currentSet = newset;
         navbar.setAttribute('currentset', newset);
-        navbar[CompactMenu.HIDE_ATTRIBUTE] = false;
+        navbar[this.HIDE_ATTRIBUTE] = false;
         document.persist(navbar.id, 'currentset');
-        var menubar = CompactMenu.getMainToolbar();
-        menubar[CompactMenu.HIDE_ATTRIBUTE] = true;
-        var toolbox = CompactMenu.getMainToolbox();
+        var menubar = this.getMainToolbar();
+        menubar[this.HIDE_ATTRIBUTE] = true;
+        var toolbox = this.getMainToolbox();
         if ('customizeDone' in toolbox)
           toolbox.customizeDone(true);
       }
     }
-  }, 1000);
+  }), 1000);
 },
 
 initIcon: function() {
@@ -835,6 +833,11 @@ delayBundleCall: function(id, delay, func) {
   }, delay);
 },
 
+bind: function(func) {
+  var obj = this;
+  return function() { return func.apply(obj, arguments); };
+},
+
 _menuKeyPressing: false,
 _menuOpenCanceled: false,
 
@@ -884,10 +887,10 @@ onkeyup: function(event) {
     this._menuKeyPressing = false;
     event.stopPropagation();
     if (!this._menuOpenCanceled) {
-      setTimeout(function() {
-        if (!CompactMenu._menuOpenCanceled)
-          CompactMenu.openMenuPopup();
-      }, 50);
+      setTimeout(this.bind(function() {
+        if (!this._menuOpenCanceled)
+          this.openMenuPopup();
+      }), 50);
     }
   }
 },
@@ -928,11 +931,11 @@ onkeypress: function(event) {
     this.mapMenus(function(menu) {
       if (matchAccesskey(menu)) {
         event.stopPropagation();
-        var self = this;
-        popup.addEventListener('popupshown', function shown(event) {
+        var shown = this.bind(function(event) {
           popup.removeEventListener('popupshown', shown, false);
-          self.dispatchKeyEvent(popup, 0, c.charCodeAt(0));
-        }, false);
+          this.dispatchKeyEvent(popup, 0, c.charCodeAt(0));
+        });
+        popup.addEventListener('popupshown', shown, false);
         this.openMenuPopup();
         throw 'break';
       }
