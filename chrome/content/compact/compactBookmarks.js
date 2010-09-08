@@ -17,10 +17,24 @@ init: function() {
 },
 
 initBookmarksFunctions: function() {
-	this.initBookmarksFunctions_Fx3();
-  if ('FeedHandler' in window && 'updateFeeds' in FeedHandler) {
-    FeedHandler.updateFeeds_without_CompactBookmark = FeedHandler.updateFeeds;
-    FeedHandler.updateFeeds_with_CompactBookmark = FeedHandler.updateFeeds = function() {
+  if ('BookmarksMenuDropHandler' in window) {
+    this.hookFunction([BookmarksMenuDropHandler, 'getSupportedFlavours'],
+                      this.bind(this.getSupportedFlavours));
+  }
+
+  if ('PlacesMenuDNDController' in window) {
+    this.hookFunction([PlacesMenuDNDController, '_openBookmarksMenu'], function(event) {
+      this._openBookmarksMenu_without_CompactMenu.apply(this, arguments);
+      if (event.target.id == "compact-bk-button") {
+        event.target.lastChild.setAttribute("autoopened", "true");
+        event.target.lastChild.showPopup(event.target.lastChild);
+      }
+    });
+  }
+
+  if ('FeedHandler' in window) {
+    this.hookFunction([FeedHandler, 'updateFeeds'], function() {
+      CompactBookmarks.c_dump('FeedHandler.updateFeeds(): called');
       function find(element, tagName, id) {
         var tags = element.getElementsByTagName(tagName);
         for (var i = 0; i < tags.length; ++i)
@@ -35,23 +49,11 @@ initBookmarksFunctions: function() {
         if (menus[i]) {
           this._feedMenuitem = find(menus[i], 'menuitem', 'subscribeToPageMenuitem');
           this._feedMenupopup = find(menus[i], 'menu', 'subscribeToPageMenupopup');
-          this.updateFeeds_without_CompactBookmark();
+          this.updateFeeds_without_CompactMenu();
         }
       }
-    };
+    });
   }
-},
-
-initBookmarksFunctions_Fx3: function() {
-  this.hookFunction([BookmarksMenuDropHandler, 'getSupportedFlavours'],
-                    this.bind(this.getSupportedFlavours));
-  this.hookFunction([PlacesMenuDNDController, '_openBookmarksMenu'], function(event) {
-    this._openBookmarksMenu_without_CompactMenu.apply(this, arguments);
-    if (event.target.id == "compact-bk-button") {
-      event.target.lastChild.setAttribute("autoopened", "true");
-      event.target.lastChild.showPopup(event.target.lastChild);
-    }
-  });
 },
 
 initBookmarksItems: function() {
