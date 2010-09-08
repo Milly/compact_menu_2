@@ -36,9 +36,11 @@ init: function() {
   var toolbar = this.getMainToolbar();
   this._mainToolbarCollapsed = toolbar && toolbar[this.HIDE_ATTRIBUTE];
 
-  this.hookFunction('restoreDefaultSet',
-    /toolboxChanged\((?:"reset")?\);|gToolboxChanged = true;/,
-    'CompactMenuCustomize.restoreMainToolbar(); $&');
+  this.hookFunction('restoreDefaultSet', function() {
+    CompactMenuCustomize.restoreMainToolbar();
+    restoreDefaultSet_without_CompactMenu.apply(this, arguments);
+    CompactMenuCustomize.hideAll();
+  });
 
   this.addEventListener(window, 'unload', this, false);
   this.addEventListener(window, 'dialogcancel', this, true);

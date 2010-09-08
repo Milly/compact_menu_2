@@ -588,16 +588,17 @@ toLocalIconFile: function(file) {
 
 // initialize methods {{{1
 
-hookFunction: function(orgFunc, orgCode, newCode) {
-  try {
-    var orgSource = eval(orgFunc).toSource();
-    var newSource = orgSource.replace(orgCode, newCode);
-    if (orgSource != newSource) {
-      eval(orgFunc + '=' + newSource);
-      return true;
-    }
-  } catch (e) {}
-  this.c_dump('hook failed for "' + orgFunc + '" at ' + Error().stack.split(/\n/)[2]);
+hookFunction: function(target, newFunc) {
+  var object = window, name = target;
+  if (target instanceof Array)
+    object = target[0], name = target[1];
+  var orgFunc = object[name];
+  if ('function' == typeof orgFunc) {
+    object[name + '_without_CompactMenu'] = orgFunc;
+    object[name + '_with_CompactMenu'] = object[name] = newFunc;
+    return true;
+  }
+  this.c_dump('hook failed for "' + name + '" at ' + Error().stack.split(/\n/)[2]);
   return false;
 },
 
@@ -687,75 +688,63 @@ initIcon: function() {
 
 initMainToolbar: function() {
   var menubar = this.getMainToolbar();
-  var attr = this.HIDE_ATTRIBUTE;
 
-  if ('true' == menubar.getAttribute(attr)) {
-    menubar.removeAttribute(attr);
-    document.persist(menubar.id, attr);
+  if ('true' == menubar.getAttribute(this.HIDE_ATTRIBUTE)) {
+    menubar.removeAttribute(this.HIDE_ATTRIBUTE);
+    document.persist(menubar.id, this.HIDE_ATTRIBUTE);
   }
 
-  var org_setAttribute = menubar.setAttribute;
-  menubar.setAttribute = function(name, value) {
-    if (attr == name) {
-      var pref = CompactMenu.toToolbarPrefId(this);
-      CompactMenu.setBoolPref(pref, 'true' == String(value), true);
-      org_setAttribute.call(menubar, name, value);
-      CompactMenu.hideMenuBar();
-    } else {
-      org_setAttribute.call(menubar, name, value);
-    }
-  };
-
-  var org_removeAttribute = menubar.removeAttribute;
-  menubar.removeAttribute = function(name) {
-    if (attr == name) {
-      var pref = CompactMenu.toToolbarPrefId(this);
-      CompactMenu.setBoolPref(pref, false, true);
-      org_removeAttribute.call(menubar, name);
-      CompactMenu.hideMenuBar();
-    } else {
-      org_removeAttribute.call(menubar, name);
-    }
-  };
-
-  menubar.__defineGetter__(attr, function(){
-    return 'true' == this.getAttribute(attr);
+  this.hookFunction([document, 'persist'], function(id, attr) {
+    if (CompactMenu.HIDE_ATTRIBUTE == attr)
+      for each (var menubar_id in CompactMenu.MAINTOOLBARS)
+        if (menubar_id == id) return;
+    this.persist_without_CompactMenu.apply(this, arguments);
   });
 
-  menubar.__defineSetter__(attr, function(value){
-    this.setAttribute(attr, value);
-  });
+  this.addEventListener(menubar, 'DOMAttrModified', this.bind(function(event) {
+    if (this.HIDE_ATTRIBUTE == event.attrName) {
+      var pref = this.toToolbarPrefId(event.target);
+      this.setBoolPref(pref, 'true' == String(event.newValue), true);
+      this.hideMenuBar();
+    }
+  }), false);
 
   menubar[this.HIDE_ATTRIBUTE] = this.isToolbarHidden(menubar);
 },
 
 initToolbarContextMenu_Fx36: function() {
-  this.hookFunction('onViewToolbarsPopupShowing', '"autohide"', '"collapsed"');
-  this.hookFunction('onViewToolbarCommand', '"autohide"', '"collapsed"');
-  this.hookFunction('onViewToolbarCommand',
-      'document.persist(toolbar.id, hidingAttribute);',
-      'if (!/\\btoolbar-menubar2?$/.test(toolbar.id)) { $& }');
+  this.initToolbarContextMenu_FxTb30();
+  this.hookFunction('onViewToolbarCommand', function() {
+    var menubar = CompactMenu.getMainToolbar();
+    var type = menubar.getAttribute('type');
+    menubar.removeAttribute('type');
+    onViewToolbarCommand_without_CompactMenu.apply(this, arguments);
+    menubar.setAttribute('type', type);
+  });
   this.getMainToolbar().setAttribute('autohide', false);
 },
 
 initToolbarContextMenu_FxTb30: function() {
-  this.hookFunction('onViewToolbarsPopupShowing', 'type != "menubar"', 'true');
-  this.hookFunction('onViewToolbarCommand',
-      'document.persist(toolbar.id, "collapsed");',
-      'if (!/\\btoolbar-menubar2?$/.test(toolbar.id)) { $& }');
+  this.hookFunction('onViewToolbarsPopupShowing', function() {
+    var menubar = CompactMenu.getMainToolbar();
+    var type = menubar.getAttribute('type');
+    menubar.removeAttribute('type');
+    onViewToolbarsPopupShowing_without_CompactMenu.apply(this, arguments);
+    menubar.setAttribute('type', type);
+  });
 },
 
 initToolbarContextMenu_Sb: function() {
-  this.hookFunction('sbOnViewToolbarsPopupShowing', 'type != "menubar"', 'true');
-  this.hookFunction('sbOnViewToolbarCommand',
-      'document.persist(toolbar.id, "collapsed");',
-      'if ("main-toolbar" != toolbar.id) { $& }');
+  this.hookFunction('sbOnViewToolbarsPopupShowing', function() {
+    var menubar = CompactMenu.getMainToolbar();
+    var type = menubar.getAttribute('type');
+    menubar.removeAttribute('type');
+    sbOnViewToolbarsPopupShowing_without_CompactMenu.apply(this, arguments);
+    menubar.setAttribute('type', type);
+  });
 },
 
 initToolbarContextMenu_Sm: function() {
-  this.hookFunction('goToggleToolbar',
-      'document.persist(id, "hidden");',
-      'if (!/\\btoolbar-menubar2?$/.test(id)) { $& }');
 },
 
 onViewToolbarCommand: function() {

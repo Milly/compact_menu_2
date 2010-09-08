@@ -43,12 +43,15 @@ initBookmarksFunctions: function() {
 },
 
 initBookmarksFunctions_Fx3: function() {
-  this.hookFunction('BookmarksMenuDropHandler.getSupportedFlavours',
-      /{.*}/m,
-      '{ return CompactBookmarks.getSupportedFlavours(); }');
-  this.hookFunction('PlacesMenuDNDController._openBookmarksMenu',
-      'event\.target\.id == "bookmarksMenu"',
-      'event.target.id == "compact-bk-button" || $&');
+  this.hookFunction([BookmarksMenuDropHandler, 'getSupportedFlavours'],
+                    this.bind(this.getSupportedFlavours));
+  this.hookFunction([PlacesMenuDNDController, '_openBookmarksMenu'], function(event) {
+    this._openBookmarksMenu_without_CompactMenu.apply(this, arguments);
+    if (event.target.id == "compact-bk-button") {
+      event.target.lastChild.setAttribute("autoopened", "true");
+      event.target.lastChild.showPopup(event.target.lastChild);
+    }
+  });
 },
 
 initBookmarksItems: function() {
