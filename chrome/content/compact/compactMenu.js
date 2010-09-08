@@ -589,15 +589,18 @@ toLocalIconFile: function(file) {
 // initialize methods {{{1
 
 hookFunction: function(target, newFunc) {
-  var object = window, name = target;
-  if (target instanceof Array)
-    object = target[0], name = target[1];
-  var orgFunc = object[name];
-  if ('function' == typeof orgFunc) {
-    object[name + '_without_CompactMenu'] = orgFunc;
-    object[name + '_with_CompactMenu'] = object[name] = newFunc;
-    return true;
-  }
+  try {
+    var object = window, name = target;
+    if (target instanceof Array)
+      object = target[0], name = target[1];
+    var orgFunc = object[name];
+    if ('function' == typeof orgFunc) {
+      object[name + '_without_CompactMenu'] = orgFunc;
+      object[name + '_with_CompactMenu'] = object[name] = newFunc;
+      this.c_dump('hooked "' + name + '"');
+      return true;
+    }
+  } catch (e) {}
   this.c_dump('hook failed for "' + name + '" at ' + Error().stack.split(/\n/)[2]);
   return false;
 },
