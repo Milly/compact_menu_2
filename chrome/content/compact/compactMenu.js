@@ -655,7 +655,7 @@ initFirst: function() {
   if (this.getBoolPref(initializedPref)) return;
   this.setBoolPref(initializedPref, true);
 
-  window.setTimeout(this.bind(function() {
+  this.delayBundleCall('first_init_popup', 1000, this.bind(function() {
     if (!this.getMenuItem()) {
       const PromptService = Components.classes['@mozilla.org/embedcomp/prompt-service;1']
                                       .getService(Components.interfaces.nsIPromptService);
@@ -681,7 +681,7 @@ initFirst: function() {
           toolbox.customizeDone(true);
       }
     }
-  }), 1000);
+  }));
 },
 
 initIcon: function() {
@@ -818,11 +818,13 @@ _delayBundleTimers: {},
 
 delayBundleCall: function(id, delay, func) {
   var timers = this._delayBundleTimers;
-  if (id in timers) clearTimeout(timers[id]);
-  timers[id] = setTimeout(function() {
-    delete timers[id];
-    func();
-  }, delay);
+  if (id in timers) {
+    timers[id].cancel();
+  } else {
+    timers[id] = Components.classes["@mozilla.org/timer;1"]
+                           .createInstance(Components.interfaces.nsITimer);
+  }
+  timers[id].init({ observe: func }, delay, Components.interfaces.nsITimer.TYPE_ONE_SHOT);
 },
 
 bind: function(func) {
@@ -879,10 +881,10 @@ onkeyup: function(event) {
     this._menuKeyPressing = false;
     event.stopPropagation();
     if (!this._menuOpenCanceled) {
-      setTimeout(this.bind(function() {
+      this.delayBundleCall('open_menupopup', 50, this.bind(function() {
         if (!this._menuOpenCanceled)
           this.openMenuPopup();
-      }), 50);
+      }));
     }
   }
 },
