@@ -203,12 +203,18 @@ unregisterPrefObserver: function() {
 },
 
 onPrefChanged: function(name) {
+  this.c_dump('onPrefChanged : ' + name);
   switch (name) {
     case this.PREF_ICON_ENABLED:
     case this.PREF_ICON_LOCALFILENAME:
     case this.PREF_ICON_MULTIPLE:
     case this.PREF_ICON_NOBORDER:
       this.delayBundleCall('change_icon', 20, this.bind(this.initIcon));
+      break;
+    default:
+      if (0 == name.indexOf(this.PREFBASE_HIDETOOLBAR) ||
+          0 == name.indexOf(this.PREFBASE_HIDEMENU))
+        this.delayBundleCall('change_hide', 20, this.bind(this.hideAll));
       break;
   }
 },
@@ -321,7 +327,7 @@ getNavigationToolbar: function() {
   return this.getElementByIds(this.NAVITOOLBARS);
 },
 
-hideItems: function() {
+showHideItems: function() {
   this.mapMenus(function(menu, index) {
     var id = menu.id || index;
     menu.hidden = this.isMenuHidden(id);
@@ -338,7 +344,7 @@ hidePopup: function() {
   }
 },
 
-hideMenuBar: function() {
+showHideMenuBar: function() {
   var menubar = this.getMenuBar();
   if (menubar) {
     this.menuIt(menubar);
@@ -350,10 +356,17 @@ hideMenuBar: function() {
   }
 },
 
+showHideToolbar: function() {
+  var menubar = this.getMainToolbar();
+  if (menubar)
+    menubar[this.HIDE_ATTRIBUTE] = this.isToolbarHidden(menubar);
+},
+
 hideAll: function() {
-  this.hideItems();
   this.hidePopup();
-  this.hideMenuBar();
+  this.showHideItems();
+  this.showHideMenuBar();
+  this.showHideToolbar();
 },
 
 isRTL: function() {
@@ -761,7 +774,6 @@ initMainToolbar: function() {
     if (this.HIDE_ATTRIBUTE == event.attrName) {
       var pref = this.toToolbarPrefId(event.target);
       this.setBoolPref(pref, 'true' == String(event.newValue), true);
-      this.hideMenuBar();
     }
   }), false);
 
