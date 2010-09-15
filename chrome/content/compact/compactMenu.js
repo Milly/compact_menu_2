@@ -789,7 +789,9 @@ initToolbarContextMenu_Fx36: function() {
     onViewToolbarCommand_without_CompactMenu.apply(this, arguments);
     menubar.setAttribute('type', type);
   });
-  this.getMainToolbar().setAttribute('autohide', false);
+  var menubar = this.getMainToolbar();
+  menubar.setAttribute('autohide', false);
+  document.persist(menubar, 'autohide');
 },
 
 initToolbarContextMenu_FxTb30: function() {
