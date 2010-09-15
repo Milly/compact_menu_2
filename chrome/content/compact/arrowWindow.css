@@ -1,0 +1,30 @@
+#compactArrowPanel {
+  -moz-appearance: none !important;
+  -moz-binding: url(chrome://compact/content/animateWindow.xml#animatePanel) !important;
+  background: transparent;
+  border: none;
+}
+
+#compactArrowPanel [anonid="container"] {
+  background: transparent;
+  opacity: 0;
+}
+
+#compactArrowImageContainer {
+  margin: 0 0 0 10px;
+}
+
+#compactArrowMessageContainer {
+  margin: 40px 0 20px 20px;
+  border: 0.2em solid #448800;
+  -moz-border-radius: 0.5em;
+  background-color: #66bb11;
+  background-image: -moz-linear-gradient(top, #88dd55, #55aa00);
+  padding: 0.5em 0.5em 0.5em 25px;
+  color: #ffffff;
+}
+
+#compactArrowPanel description {
+  font-weight: bold;
+  font-size: 120%;
+}

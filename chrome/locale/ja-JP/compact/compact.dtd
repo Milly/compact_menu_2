@@ -18,3 +18,4 @@
 <!ENTITY iconMultiple.active.help "押下状態 (下)">
 <!ENTITY iconNoBorder.label "枠を非表示">
 <!ENTITY iconNoBorder.accesskey "N">
+<!ENTITY compactMenuButtonAdded.message "Compact Menu ボタンが追加されました">

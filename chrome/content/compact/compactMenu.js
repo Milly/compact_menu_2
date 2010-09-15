@@ -187,7 +187,7 @@ _prefObserver: null,
 registerPrefObserver: function() {
   if (this._prefObserver) return;
   this._prefObserver = {
-    observe: this.bind(function(branch, topic, name){
+    observe: this.bind(function(branch, topic, name) {
       if (topic == 'nsPref:changed' && 'onPrefChanged' in this)
         this.onPrefChanged(name);
     })
@@ -608,6 +608,8 @@ hookFunction: function(target, newFunc) {
 get application() {
   var appInfo = Components.classes['@mozilla.org/xre/app-info;1']
                           .getService(Components.interfaces.nsIXULAppInfo);
+  var verComp = Components.classes["@mozilla.org/xpcom/version-comparator;1"]
+                          .getService(Components.interfaces.nsIVersionComparator)
   delete CompactMenu.application;
   return (CompactMenu.application = {
     isFx: appInfo.ID == '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}',
@@ -615,10 +617,12 @@ get application() {
     isSb: appInfo.ID == '{718e30fb-e89b-41dd-9da7-e25a45638b28}',
     isSm: appInfo.ID == '{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}',
     version: appInfo.version,
+    platformVersion: appInfo.platformVersion,
     compare: function(version) {
-      return Components.classes["@mozilla.org/xpcom/version-comparator;1"]
-                       .getService(Components.interfaces.nsIVersionComparator)
-                       .compare(this.version, version);
+      return verComp.compare(this.version, version);
+    },
+    platformCompare: function(version) {
+      return verComp.compare(this.platformVersion, version);
     }
   });
 },
@@ -654,34 +658,87 @@ initFirst: function() {
   var initializedPref = this.toInitializedPrefId(navbar);
   if (this.getBoolPref(initializedPref)) return;
   this.setBoolPref(initializedPref, true);
+  if (this.getMenuItem()) return;
 
-  this.delayBundleCall('first_init_popup', 1000, this.bind(function() {
-    if (!this.getMenuItem()) {
-      const PromptService = Components.classes['@mozilla.org/embedcomp/prompt-service;1']
-                                      .getService(Components.interfaces.nsIPromptService);
-      var res = PromptService.confirmEx(
-        window,
-        this.getString('initialize.confirm.title'),
-        this.getString('initialize.confirm.description'),
-        (PromptService.BUTTON_TITLE_YES * PromptService.BUTTON_POS_0) +
-        (PromptService.BUTTON_TITLE_NO  * PromptService.BUTTON_POS_1),
-        null, null, null, null, {}
-      );
-      if (0 == res) {
-        var buttons = navbar.currentSet.split(',');
-        var newset = ['menu-button'].concat(buttons).join(',');
-        navbar.currentSet = newset;
-        navbar.setAttribute('currentset', newset);
-        navbar[this.HIDE_ATTRIBUTE] = false;
-        document.persist(navbar.id, 'currentset');
-        var menubar = this.getMainToolbar();
-        menubar[this.HIDE_ATTRIBUTE] = true;
-        var toolbox = this.getMainToolbox();
-        if ('customizeDone' in toolbox)
-          toolbox.customizeDone(true);
+  var buttons = navbar.currentSet.split(',');
+  var newset = ['menu-button'].concat(buttons).join(',');
+  navbar.currentSet = newset;
+  navbar.setAttribute('currentset', newset);
+  navbar[this.HIDE_ATTRIBUTE] = false;
+  document.persist(navbar.id, 'currentset');
+
+  var menubar = this.getMainToolbar();
+  menubar[this.HIDE_ATTRIBUTE] = true;
+
+//   var toolbox = this.getMainToolbox();
+//   if ('customizeDone' in toolbox)
+//     toolbox.customizeDone(true);
+
+  this.delayBundleCall('init_first_popup', 1000, this.bind(this.showArrowWindow));
+},
+
+showArrowWindow: function() {
+  var menubar = this.getMainToolbar();
+  var observer = {
+    menubar: menubar,
+    menubarHidden: this.isToolbarHidden(menubar),
+    get panel() document.getElementById('compactArrowPanel'),
+    // animation broken, if Gecko 1.9.1 or earlier
+    movable: 0 <= this.application.platformCompare("1.9.2a"),
+
+    initPopup: function() {
+      var self = this;
+
+      this.panel.addEventListener('popupshown', function() {
+        if (self.movable)
+          this.moveTo(0, 40, true, 0, function() this.moveTo(0, -40, true, 500));
+        this.fade(1, 300, function() this.wait(10000, function() this.hidePopup()));
+      }, false);
+
+      this.panel.addEventListener('popuphiding', function fadeHiding(event) {
+        event.preventDefault();
+        if (!this._hiding) {
+          this._hiding = true;
+          if (self.movable)
+            this.moveTo(0, 40, true, 500);
+          this.fade(-1, 200, function() {
+            this.removeEventListener('popuphiding', fadeHiding, false);
+            this.hidePopup()
+          });
+        }
+        return false;
+      }, false);
+
+      this.panel.addEventListener('popuphidden', function() {
+        var parent = this.parentNode;
+        parent.removeChild(this);
+        if (!parent.id && !parent.hasChildNodes())
+          parent.parentNode.removeChild(parent);
+      }, false);
+    },
+
+    openPopup: function() {
+      var menuitem = CompactMenu.getMenuItem();
+      if (menuitem)
+        this.panel.openPopup(menuitem, 'after_start', 0, 0, false, false);
+    },
+
+    observe: function() {
+      // menubar shown when overlay loaded
+      this.menubar[CompactMenu.HIDE_ATTRIBUTE] = this.menubarHidden;
+
+      if (this.panel) {
+        this.initPopup();
+        this.openPopup();
       }
     }
-  }));
+  };
+
+  if (observer.panel) {
+    observer.openPopup();
+  } else {
+    document.loadOverlay('chrome://compact/content/arrowWindow.xul', observer);
+  }
 },
 
 initIcon: function() {

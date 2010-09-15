@@ -18,3 +18,4 @@
 <!ENTITY iconMultiple.active.help "Active icon (Bottom)">
 <!ENTITY iconNoBorder.label "No border">
 <!ENTITY iconNoBorder.accesskey "N">
+<!ENTITY compactMenuButtonAdded.message "Compact Menu button has been added">

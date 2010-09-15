@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<bindings id="animateWindowBindings"
+          xmlns="http://www.mozilla.org/xbl"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+          xmlns:xbl="http://www.mozilla.org/xbl">
+
+  <binding id="animatePanel"
+           extends="chrome://global/content/bindings/popup.xml#panel">
+    <content>
+      <xul:vbox flex="1" anonid="container">
+        <children/>
+      </xul:vbox>
+    </content>
+
+    <implementation implements="nsIDOMXULPopupElement, nsIAccessibleProvider">
+      <field name="ANIMATE_TYPE_ALL"  readonly="true">-1</field>
+      <field name="ANIMATE_TYPE_WAIT" readonly="true">0</field>
+      <field name="ANIMATE_TYPE_FADE" readonly="true">1</field>
+      <field name="ANIMATE_TYPE_MOVE" readonly="true">2</field>
+
+      <property name="interval">
+        <getter><![CDATA[
+          return this._animateInterval;
+        ]]></getter>
+        <setter><![CDATA[
+          this._animateInterval = Math.max(1, val) || 10;
+          if (this._animateTimer)
+            this._animateTimer.delay = this._animateInterval;
+          return val;
+        ]]></setter>
+      </property>
+
+      <constructor><![CDATA[
+        this._container = document.getAnonymousElementByAttribute(this, 'anonid', 'container');
+        this._animateTimer = null;
+        this._animateInterval = 10;
+        this._animateRunning = false;
+        this._animateOptions = [];
+        this.addEventListener('DOMNodeRemoved', {
+          panel : this,
+          handleEvent : function() this.panel._animateStop()
+        }, false);
+      ]]></constructor>
+
+      <destructor><![CDATA[
+        this._animateStop();
+      ]]></destructor>
+
+      <method name="wait">
+        <parameter name="aDelay" />
+        <parameter name="aObserver" />
+        <body><![CDATA[
+          this._animateBegin(this.ANIMATE_TYPE_WAIT, {
+            delay : Math.max(0, aDelay),
+            animate : function() this.diff <= this.delay,
+            finishObserver : aObserver
+          });
+          return this;
+        ]]></body>
+      </method>
+
+      <method name="fade">
+        <parameter name="aOpacity" />
+        <parameter name="aDelay" />
+        <parameter name="aObserver" />
+        <body><![CDATA[
+          this._animateBegin(this.ANIMATE_TYPE_FADE, {
+            delay     : Math.max(1, Number(aDelay)) || 1000,
+            from_op   : Number(window.getComputedStyle(this._container, '').opacity),
+            to_op     : Math.max(0, Math.min(1, aOpacity)) || 0,
+            container : this._container,
+            begin : function() {
+              this.container.style.opacity = this.from_op;
+              this.step_op = this.to_op - this.from_op;
+            },
+            animate : function() {
+              var opacity = this.from_op + this.step_op * this.diff / this.delay;
+              if ((0 < this.step_op) ^ (opacity <= this.to_op)) opacity = this.to_op;
+              this.container.style.opacity = opacity;
+              return opacity != this.to_op;
+            },
+            finishObserver : aObserver
+          });
+          return this;
+        ]]></body>
+      </method>
+
+      <method name="moveTo">
+        <parameter name="aLeft" />
+        <parameter name="aTop" />
+        <parameter name="aIsRelative" />
+        <parameter name="aDelay" />
+        <parameter name="aObserver" />
+        <body><![CDATA[
+          this._animateBegin(this.ANIMATE_TYPE_MOVE, {
+            from_x   : this.popupBoxObject.screenX || 0,
+            from_y   : this.popupBoxObject.screenY || 0,
+            to_x     : Number(aLeft) || 0,
+            to_y     : Number(aTop) || 0,
+            relative : aIsRelative,
+            delay    : Math.max(0, aDelay),
+            panel    : this,
+            begin : function() {
+              if (aIsRelative) {
+                this.to_x += this.from_x;
+                this.to_y += this.from_y;
+              }
+              if (!this.delay) {
+                this.panel.popupBoxObject.moveTo(this.to_x, this.to_y);
+                return false;
+              }
+              this.step_x = this.to_x - this.from_x;
+              this.step_y = this.to_y - this.from_y;
+            },
+            animate : function() {
+              var x = this.from_x + this.step_x * this.diff / this.delay;
+              var y = this.from_y + this.step_y * this.diff / this.delay;
+              if ((0 < this.step_x) ^ (x <= this.to_x)) x = this.to_x;
+              if ((0 < this.step_y) ^ (y <= this.to_y)) y = this.to_y;
+              this.panel.popupBoxObject.moveTo(x, y);
+              return x != this.to_x || y != this.to_y;
+            },
+            finishObserver : aObserver
+          });
+          return this;
+        ]]></body>
+      </method>
+
+      <method name="_animateBegin">
+        <parameter name="aType" />
+        <parameter name="aOptions" />
+        <body><![CDATA[
+          this._animateOptions[aType] = aOptions;
+          aOptions.time = (new Date()).getTime();
+          aOptions.__defineGetter__('diff', function() (new Date()).getTime() - this.time);
+          if (aOptions.begin && false === aOptions.begin())
+            aOptions.finished = true;
+          this._animateStart();
+        ]]></body>
+      </method>
+
+      <method name="_animateFinish">
+        <parameter name="aType" />
+        <body><![CDATA[
+          var options = this._animateOptions;
+          var panel = this;
+          function finish(i) {
+            var opt = options[i];
+            options[i] = null;
+            if (opt && opt.finishObserver) {
+              if ('function' == typeof opt.finishObserver) {
+                opt.finishObserver.call(panel);
+              } else if ('function' == typeof opt.finishObserver.observe) {
+                opt.finishObserver.observe();
+              }
+            }
+          }
+
+          if (this.ANIMATE_TYPE_ALL == aType) {
+            for (var i = options.length; 0 <= --i;)
+              finish(i);
+            this._animateOptions = [];
+          } else {
+            finish(aType);
+            for (var i = options.length; 0 <= --i;)
+              if (options[i]) return;
+          }
+          this._animateStop();
+        ]]></body>
+      </method>
+
+      <method name="_animateStart">
+        <body><![CDATA[
+          if (this._animateRunning) return;
+
+          var hasOpt, options = this._animateOptions;
+          for (var i = options.length; 0 <= --i && !(hasOpt = options[i]););
+          if (!hasOpt) return;
+
+          const Cc = Components.classes;
+          const Ci = Components.interfaces;
+          if (!this._animateTimer)
+            this._animateTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+          this._animateTimer.initWithCallback(this._animateTimerCallback,
+                                              this.interval,
+                                              Ci.nsITimer.TYPE_REPEATING_SLACK);
+          this._animateRunning = true;
+        ]]></body>
+      </method>
+
+      <method name="_animateStop">
+        <body><![CDATA[
+          if (this._animateTimer)
+            this._animateTimer.cancel();
+          this._animateRunning = false;
+        ]]></body>
+      </method>
+
+      <property name="_animateTimerCallback">
+        <getter><![CDATA[
+          var callback = {
+            panel : this,
+            notify : function() {
+              try {
+                var options = this.panel._animateOptions;
+                for (var i = options.length; 0 <= --i;) {
+                  var opt = options[i];
+                  if (opt) {
+                    if (opt.finished) {
+                      this.panel._animateFinish(i);
+                    } else if (false === opt.animate()) {
+                      opt.finished = true;
+                    }
+                  }
+                }
+              } catch (e) {
+                this.panel._animateTimer.cancel();
+                throw e;
+              }
+            }
+          };
+
+          this.__defineGetter__('_animateTimerCallback', function() callback);
+          return callback;
+        ]]></getter>
+      </property>
+    </implementation>
+  </binding>
+
+</bindings>
