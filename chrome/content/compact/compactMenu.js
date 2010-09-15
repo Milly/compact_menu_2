@@ -670,10 +670,6 @@ initFirst: function() {
   var menubar = this.getMainToolbar();
   menubar[this.HIDE_ATTRIBUTE] = true;
 
-//   var toolbox = this.getMainToolbox();
-//   if ('customizeDone' in toolbox)
-//     toolbox.customizeDone(true);
-
   this.delayBundleCall('init_first_popup', 1000, this.bind(this.showArrowWindow));
 },
 
