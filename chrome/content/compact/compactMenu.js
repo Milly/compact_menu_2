@@ -538,7 +538,7 @@ setIconStyle: function(iconURI, width, height, multiple, noborder, fixsize) {
                         .getService(Components.interfaces.nsIIOService);
 
   var code = 'data:text/css,@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);'
-           + '#menu-button{list-style-image:url('+iconURI+')!important;}';
+           + '#menu-button{list-style-image:url('+encodeURIComponent(iconURI)+')!important;}';
   if (multiple) {
     var h1 = Math.ceil(height / 3), h2 = h1 * 2, h3 = h1 * 3;
     code += '#menu-button{-moz-image-region:rect(0px,'+width+'px,'+h1+'px,0px)!important;}'
