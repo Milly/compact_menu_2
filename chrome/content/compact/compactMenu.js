@@ -12,6 +12,7 @@ PREF_ICON_FILE:          'icon.file',
 PREF_ICON_LOCALFILENAME: 'icon.localfilename',
 PREF_ICON_MULTIPLE:      'icon.multiple',
 PREF_ICON_NOBORDER:      'icon.noborder',
+PREF_ICON_FIXSIZE:       'icon.fixsize',
 PREFBASE_INITIALIZED:    'initialized.',
 
 MAINWINDOWS: [
@@ -145,10 +146,11 @@ isMenuBarHidden: function() {
 },
 
 setBoolPref: function(pref, value, clearOnFalse) {
-  if (this.prefs.prefHasUserValue(pref))
-    this.prefs.clearUserPref(pref);
-  if (value || !clearOnFalse)
+  if (value || !clearOnFalse) {
     this.prefs.setBoolPref(pref, !!value);
+  } else if (this.prefs.prefHasUserValue(pref)) {
+      this.prefs.clearUserPref(pref);
+  }
 },
 
 toMenuElementId: function(id) {
@@ -209,6 +211,7 @@ onPrefChanged: function(name) {
     case this.PREF_ICON_LOCALFILENAME:
     case this.PREF_ICON_MULTIPLE:
     case this.PREF_ICON_NOBORDER:
+    case this.PREF_ICON_FIXSIZE:
       this.delayBundleCall('change_icon', 20, this.bind(this.initIcon));
       break;
     default:
@@ -484,6 +487,7 @@ getProfileDir: function() {
 },
 
 loadIcon: function() {
+  this.clearIconStyle();
   var button = document.getElementById('menu-button');
   if (!button) return;
 
@@ -493,8 +497,6 @@ loadIcon: function() {
     if (icon && icon.exists()) {
       this.c_dump('change icon: ' +  icon.path);
       var iconURI = this.toFileURI(icon).spec;
-      var listStyleImage = 'url(' + iconURI + ')';
-      button.style.setProperty('list-style-image', listStyleImage, '');
     }
   }
 
@@ -506,11 +508,15 @@ loadIcon: function() {
   if (iconURI) {
     var iconMultiple = this.getBoolPref(this.PREF_ICON_MULTIPLE, false);
     var iconNoBorder = this.getBoolPref(this.PREF_ICON_NOBORDER, false);
+    var iconFixSize  = this.getBoolPref(this.PREF_ICON_FIXSIZE,  false);
     var img = new Image();
     img.onload = this.bind(function() {
       this.c_dump('icon loaded: width='+img.width+', height='+img.height);
       if (img.width && img.height && (iconEnable || 16 != img.width || 48 != img.height))
-        this.setIconStyle(img.width, img.height, iconEnable && iconMultiple, iconNoBorder);
+        this.setIconStyle(iconURI, img.width, img.height,
+                          iconEnable && iconMultiple,
+                          iconEnable && iconNoBorder,
+                          iconEnable && iconFixSize);
     });
     img.src = iconURI;
   }
@@ -523,47 +529,44 @@ resetAllWindowIcons: function() {
 },
 
 _iconStyle: null,
-setIconStyle: function(width, height, multiple, noborder) {
+setIconStyle: function(iconURI, width, height, multiple, noborder, fixsize) {
+  this.c_dump('setIconStyle : width = ' + width + ', height = ' + height + ', multiple = ' + multiple + ', noborder = ' + noborder + ', fixsize = ' + fixsize);
+  this.clearIconStyle();
+  const SSS = Components.classes["@mozilla.org/content/style-sheet-service;1"]
+                        .getService(Components.interfaces.nsIStyleSheetService);
+  const IOS = Components.classes["@mozilla.org/network/io-service;1"]
+                        .getService(Components.interfaces.nsIIOService);
+
+  var code = 'data:text/css,@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);'
+           + '#menu-button{list-style-image:url('+iconURI+')!important;}';
   if (multiple) {
     var h1 = Math.ceil(height / 3), h2 = h1 * 2, h3 = h1 * 3;
-    var code = 'data:text/css,@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);'
-             + '#menu-button{-moz-image-region:rect(0px,'+width+'px,'+h1+'px,0px)!important;}'
-             + '#menu-button:hover{-moz-image-region:rect('+h1+'px,'+width+'px,'+h2+'px,0px)!important;}'
-             + '#menu-button[open="true"]{-moz-image-region:rect('+h2+'px,'+width+'px,'+h3+'px,0px)!important;}';
-    if (noborder) code += '#menu-button{border:none!important;}';
-    var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
-                        .getService(Components.interfaces.nsIStyleSheetService);
-    var ios = Components.classes["@mozilla.org/network/io-service;1"]
-                        .getService(Components.interfaces.nsIIOService);
-    var uri = ios.newURI(code, null, null);
-    if (!sss.sheetRegistered(uri, sss.USER_SHEET))
-      sss.loadAndRegisterSheet(uri, sss.USER_SHEET);
-    this._iconStyle = uri;
+    code += '#menu-button{-moz-image-region:rect(0px,'+width+'px,'+h1+'px,0px)!important;}'
+          + '#menu-button:hover{-moz-image-region:rect('+h1+'px,'+width+'px,'+h2+'px,0px)!important;}'
+          + '#menu-button[open="true"]{-moz-image-region:rect('+h2+'px,'+width+'px,'+h3+'px,0px)!important;}';
   } else {
-    var button = document.getElementById('menu-button');
-    if (button) {
-      var imageRegion = 'rect(0px,'+width+'px,'+height+'px,0px)';
-      button.style.setProperty('-moz-image-region', imageRegion, '');
-      if (noborder) button.style.setProperty('border', 'none', '');
-    }
+    code += '#menu-button{-moz-image-region:rect(0px,'+width+'px,'+height+'px,0px)!important;}';
   }
+  if (noborder)
+    code += '#menu-button{border:none!important;}';
+  if (fixsize) {
+    code += '#menu-button>.toolbarbutton-icon{width:16px!important;height:16px!important;}';
+  } else {
+    code += '#menu-button>.toolbarbutton-icon{width:auto!important;height:auto!important;}';
+  }
+
+  this._iconStyle = IOS.newURI(code, null, null);
+  if (!SSS.sheetRegistered(this._iconStyle, SSS.USER_SHEET))
+    SSS.loadAndRegisterSheet(this._iconStyle, SSS.USER_SHEET);
 },
 
 clearIconStyle: function() {
-  var button = document.getElementById('menu-button');
-  if (button) {
-    button.style.removeProperty('list-style-image');
-    button.style.removeProperty('-moz-image-region');
-    button.style.removeProperty('border');
-  }
-
-  var sss = Components.classes["@mozilla.org/content/style-sheet-service;1"]
-                      .getService(Components.interfaces.nsIStyleSheetService);
-  if (this._iconStyle) {
-    if (sss.sheetRegistered(this._iconStyle, sss.USER_SHEET))
-      sss.unregisterSheet(this._iconStyle, sss.USER_SHEET);
-    this._iconStyle = null;
-  }
+  if (!this._iconStyle) return;
+  const SSS = Components.classes["@mozilla.org/content/style-sheet-service;1"]
+                        .getService(Components.interfaces.nsIStyleSheetService);
+  if (SSS.sheetRegistered(this._iconStyle, SSS.USER_SHEET))
+    SSS.unregisterSheet(this._iconStyle, SSS.USER_SHEET);
+  this._iconStyle = null;
 },
 
 setIconFile: function(file) {
@@ -751,7 +754,6 @@ showArrowWindow: function() {
 },
 
 initIcon: function() {
-  this.clearIconStyle();
   this.loadIcon();
 },
 

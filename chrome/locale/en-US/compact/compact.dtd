@@ -18,4 +18,6 @@
 <!ENTITY iconMultiple.active.help "Active icon (Bottom)">
 <!ENTITY iconNoBorder.label "No border">
 <!ENTITY iconNoBorder.accesskey "N">
+<!ENTITY iconFixSize.label "Fixed icon size">
+<!ENTITY iconFixSize.accesskey "F">
 <!ENTITY compactMenuButtonAdded.message "Compact Menu button has been added">

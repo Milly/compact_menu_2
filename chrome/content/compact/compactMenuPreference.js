@@ -5,22 +5,18 @@ var CompactMenuPreference = { __proto__: CompactMenu,
 init: function() {
   this.c_dump('prefInit');
 
-  var icon_enable = document.getElementById('icon_enable');
-  if (icon_enable) {
-    icon_enable.checked = this.getBoolPref(this.PREF_ICON_ENABLED, false);
-    icon_enable.doCommand();
-    var icon_file = document.getElementById('icon_file');
-    icon_file.file = this.getIconFile();
-    if (icon_file.file) {
-      var localIconFile = this.getLocalIconFile();
-      if (localIconFile && localIconFile.exists())
-        icon_file.image = this.toFileURI(localIconFile).spec;
-    }
-    var icon_multiple = document.getElementById('icon_multiple');
-    icon_multiple.checked = this.getBoolPref(this.PREF_ICON_MULTIPLE, false);
-    var icon_noborder = document.getElementById('icon_noborder');
-    icon_noborder.checked = this.getBoolPref(this.PREF_ICON_NOBORDER, false);
+  var icon_enable = this.getBoolPrefToElement(this.PREF_ICON_ENABLED, 'icon_enable', false);
+  icon_enable.doCommand();
+  var icon_file = document.getElementById('icon_file');
+  icon_file.file = this.getIconFile();
+  if (icon_file.file) {
+    var localIconFile = this.getLocalIconFile();
+    if (localIconFile && localIconFile.exists())
+      icon_file.image = this.toFileURI(localIconFile).spec;
   }
+  this.getBoolPrefToElement(this.PREF_ICON_MULTIPLE, 'icon_multiple', false);
+  this.getBoolPrefToElement(this.PREF_ICON_NOBORDER, 'icon_noborder', false);
+  this.getBoolPrefToElement(this.PREF_ICON_FIXSIZE, 'icon_fixsize', false);
 
   this.addEventListener(window, 'unload', this, false);
   this.addEventListener(window, 'dialogaccept', this, true);
@@ -37,17 +33,13 @@ resetAllWindowIcons: function() {
 accept: function() {
   this.c_dump('prefAccept');
 
-  var icon_enable = document.getElementById('icon_enable');
-  if (icon_enable) {
-    var icon_file = document.getElementById('icon_file').file;
-    this.setBoolPref(this.PREF_ICON_ENABLED, icon_enable.checked);
-    if (icon_enable.checked && icon_file && icon_file.exists())
-      this.setIconFile(icon_file);
-    var icon_multiple = document.getElementById('icon_multiple');
-    this.setBoolPref(this.PREF_ICON_MULTIPLE, icon_multiple.checked);
-    var icon_noborder = document.getElementById('icon_noborder');
-    this.setBoolPref(this.PREF_ICON_NOBORDER, icon_noborder.checked);
-  }
+  var icon_enable = this.setBoolPrefFromElement(this.PREF_ICON_ENABLED, 'icon_enable');
+  var icon_file = document.getElementById('icon_file').file;
+  if (icon_enable.checked && icon_file && icon_file.exists())
+    this.setIconFile(icon_file);
+  this.setBoolPrefFromElement(this.PREF_ICON_MULTIPLE, 'icon_multiple');
+  this.setBoolPrefFromElement(this.PREF_ICON_NOBORDER, 'icon_noborder');
+  this.setBoolPrefFromElement(this.PREF_ICON_FIXSIZE, 'icon_fixsize');
 },
 
 disableGroup: function(group, disabled) {
@@ -72,6 +64,20 @@ openImagePicker: function(title, filefield) {
     filefield.file = fp.file;
     filefield.image = fp.fileURL.spec;
   }
+},
+
+// preferences methods {{{1
+
+getBoolPrefToElement: function(pref, id, defaultValue) {
+  var element = document.getElementById(id);
+  element.checked = this.getBoolPref(pref, defaultValue);
+  return element;
+},
+
+setBoolPrefFromElement: function(pref, id) {
+  var element = document.getElementById(id);
+  this.setBoolPref(pref, element.checked);
+  return element;
 },
 
 // handle events {{{1

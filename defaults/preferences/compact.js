@@ -3,3 +3,5 @@ pref("compact.menu.icon.enabled", false);
 pref("compact.menu.icon.file", "");
 pref("compact.menu.icon.localfilename", "");
 pref("compact.menu.icon.multiple", false);
+pref("compact.menu.icon.noborder", false);
+pref("compact.menu.icon.fixsize", false);

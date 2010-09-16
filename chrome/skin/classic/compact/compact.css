@@ -31,6 +31,8 @@
 
 .compactbutton .toolbarbutton-icon {
   margin: 0;
+  width: auto;
+  height: auto;
 }
 
 toolbar .compactbutton {
