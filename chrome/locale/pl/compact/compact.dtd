@@ -1,14 +1,14 @@
 <!ENTITY menu.label "Menu kompaktowe">
 <!ENTITY bookmarks.label "Zakładki kompaktowe">
-<!ENTITY menuPref.caption "Zaznacz menu, które będą wyświetlane w skompaktowanym menu">
+<!ENTITY menuPref.caption "Zaznacz menu, które będą wyświetlane w menu kompaktowym">
 <!ENTITY compactMenu.label "Menu">
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Pasek menu">
-<!ENTITY menubarCmd.accesskey "M">
+<!ENTITY menubarCmd.accesskey "P">
 <!ENTITY iconPref.caption "Dodaj/zmień ikonę rozszerzenia">
 <!ENTITY iconPref.accesskey "D">
 <!ENTITY iconFilePicker.label "Przeglądaj…">
-<!ENTITY iconFilePicker.accesskey "P">
+<!ENTITY iconFilePicker.accesskey "R">
 <!ENTITY iconFilePicker.title "Wybierz ikonę">
 <!ENTITY iconMultiple.label "Kilka ikon">
 <!ENTITY iconMultiple.accesskey "K">
@@ -18,3 +18,6 @@
 <!ENTITY iconMultiple.active.help "Aktywna ikona (dolna)">
 <!ENTITY iconNoBorder.label "Bez obramowania">
 <!ENTITY iconNoBorder.accesskey "B">
+<!ENTITY iconFixSize.label "Stały rozmiar ikon">
+<!ENTITY iconFixSize.accesskey "S">
+<!ENTITY compactMenuButtonAdded.message "Przycisk Menu kompaktowe został dodany">
