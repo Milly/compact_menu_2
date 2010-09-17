@@ -7,11 +7,12 @@ _canceled: false,
 
 // dialog control methods {{{1
 
-init: function() {
+init: function CMC_init() {
   this.c_dump('customizeInit');
 
   if (window.gToolbox) {
-    var windowtype = gToolbox.ownerDocument.documentElement.getAttribute('windowtype');
+    var windowtype = gToolbox.ownerDocument.documentElement
+                                           .getAttribute('windowtype');
     if (windowtype) {
       this.c_dump('detect window : ' + windowtype);
       this.MAINWINDOWS = [windowtype];
@@ -36,7 +37,7 @@ init: function() {
   var toolbar = this.getMainToolbar();
   this._mainToolbarCollapsed = toolbar && toolbar[this.HIDE_ATTRIBUTE];
 
-  this.hookFunction('restoreDefaultSet', function() {
+  this.hookFunction('restoreDefaultSet', function CMC_restoreDefaultSet() {
     CompactMenuCustomize.restoreMainToolbar();
     restoreDefaultSet_without_CompactMenu.apply(this, arguments);
     CompactMenuCustomize.hideAll();
@@ -46,7 +47,7 @@ init: function() {
   this.addEventListener(window, 'dialogcancel', this, true);
 },
 
-accept: function() {
+accept: function CMC_accept() {
   this.c_dump('customizeAccept');
 
   this.mapMenus(function(menu, index) {
@@ -60,7 +61,7 @@ accept: function() {
   this.hideAll();
 },
 
-cancel: function() {
+cancel: function CMC_cancel() {
   this.c_dump('customizeCancel');
   this._canceled = true;
   var toolbar = this.getMainToolbar();
@@ -68,7 +69,7 @@ cancel: function() {
   this.hideAll();
 },
 
-addVisibleMenuCheckbox: function(menu, id, checked) {
+addVisibleMenuCheckbox: function CMC_addVisibleMenuCheckbox(menu, id, checked) {
   var container = document.getElementById('compact-visible-menu-items');
   var item = document.getElementById(id) || document.createElement('checkbox');
   item.setAttribute('id', id);
@@ -80,7 +81,7 @@ addVisibleMenuCheckbox: function(menu, id, checked) {
   return item;
 },
 
-restoreMainToolbar: function() {
+restoreMainToolbar: function CMC_restoreMainToolbar() {
   this.c_dump('restoreMainToolbar');
 
   this.mapMenus(function(menu, index) {
@@ -97,7 +98,7 @@ restoreMainToolbar: function() {
 
 // handle events {{{1
 
-handleEvent: function(event) {
+handleEvent: function CMC_handleEvent(event) {
   switch (event.type) {
     case 'load':
       this.init();

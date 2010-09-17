@@ -2,13 +2,13 @@ var CompactBookmarks = { __proto__: CompactMenu,
 
 // debug methods {{{1
 
-c_dump: function(msg) {
+c_dump: function CB_c_dump(msg) {
   this.__proto__.c_dump.call(this, 'CompactBookmarks :: ' + msg);
 },
 
 // initialize methods {{{1
 
-init: function() {
+init: function CB_init() {
   this.c_dump('init');
   this.initBookmarksFunctions();
   this.initBookmarksItems();
@@ -16,14 +16,15 @@ init: function() {
   this.addEventListener(window, 'focus', this, true);
 },
 
-initBookmarksFunctions: function() {
+initBookmarksFunctions: function CB_initBookmarksFunctions() {
   if ('BookmarksMenuDropHandler' in window) {
     this.hookFunction([BookmarksMenuDropHandler, 'getSupportedFlavours'],
                       this.bind(this.getSupportedFlavours));
   }
 
   if ('PlacesMenuDNDController' in window) {
-    this.hookFunction([PlacesMenuDNDController, '_openBookmarksMenu'], function(event) {
+    this.hookFunction([PlacesMenuDNDController, '_openBookmarksMenu'],
+                      function CB__openBookmarksMenu(event) {
       this._openBookmarksMenu_without_CompactMenu.apply(this, arguments);
       if (event.target.id == "compact-bk-button") {
         event.target.lastChild.setAttribute("autoopened", "true");
@@ -33,7 +34,8 @@ initBookmarksFunctions: function() {
   }
 
   if ('FeedHandler' in window) {
-    this.hookFunction([FeedHandler, 'updateFeeds'], function() {
+    this.hookFunction([FeedHandler, 'updateFeeds'],
+                      function CB_updateFeeds() {
       CompactBookmarks.c_dump('FeedHandler.updateFeeds(): called');
       function find(element, tagName, id) {
         var tags = element.getElementsByTagName(tagName);
@@ -56,12 +58,12 @@ initBookmarksFunctions: function() {
   }
 },
 
-initBookmarksItems: function() {
+initBookmarksItems: function CB_initBookmarksItems() {
   this.initBookmarksMenubar();
   this.initBookmarksButton();
 },
 
-initBookmarksMenubar: function() {
+initBookmarksMenubar: function CB_initBookmarksMenubar() {
   var compactBookmarksMenubar = document.getElementById('compact-bk-menubar');
   if (!compactBookmarksMenubar || compactBookmarksMenubar.initialized) return;
   this.c_dump('initBookmarksMenubar');
@@ -75,7 +77,7 @@ initBookmarksMenubar: function() {
   compactBookmarksMenubar.initialized = true;
 },
 
-initBookmarksButton: function() {
+initBookmarksButton: function CB_initBookmarksButton() {
   var compactBookmarksButton = document.getElementById('compact-bk-button');
   if (!compactBookmarksButton || compactBookmarksButton.initialized) return;
   this.c_dump('initBookmarksButton');
@@ -94,27 +96,27 @@ initBookmarksButton: function() {
 
 // element manipulate methods {{{1
 
-getBookmarksMenu: function() {
+getBookmarksMenu: function CB_getBookmarksMenu() {
   return document.getElementById('bookmarksMenu');
 },
 
-getBookmarksMenuPopup: function() {
+getBookmarksMenuPopup: function CB_getBookmarksMenuPopup() {
   return this.getBookmarksMenu().getElementsByTagName('menupopup')[0];
 },
 
-getSupportedFlavours: function() {
+getSupportedFlavours: function CB_getSupportedFlavours() {
   var bookmarksMenuPopupId = this.getBookmarksMenuPopup().id;
   var menupopups = document.getElementsByTagName('menupopup');
   for (var i = 0; i < menupopups.length; ++i) {
     var menupopup = menupopups[i];
-    if (menupopup.id == bookmarksMenuPopupId && menupopup.getSupportedFlavours) {
+    if (menupopup.id == bookmarksMenuPopupId &&
+        menupopup.getSupportedFlavours)
       return menupopup.getSupportedFlavours();
-    }
   }
   return [];
 },
 
-cloneBookmarksMenu: function(parent) {
+cloneBookmarksMenu: function CB_cloneBookmarksMenu(parent) {
   if (!parent || parent.firstChild) return;
 
   var menupopup = this.getBookmarksMenuPopup();
@@ -161,7 +163,7 @@ cloneBookmarksMenu: function(parent) {
 
 // event methods {{{1
 
-handleEvent: function(event) {
+handleEvent: function CB_handleEvent(event) {
   switch (event.type) {
     case 'load'  : this.init(); break;
     case 'unload': this.destroy(); break;

@@ -2,7 +2,7 @@ var CompactMenuPreference = { __proto__: CompactMenu,
 
 // dialog control methods {{{1
 
-init: function() {
+init: function CMP_init() {
   this.c_dump('prefInit');
 
   var icon_enable = this.getBoolPrefToElement(this.PREF_ICON_ENABLED, 'icon_enable', false);
@@ -22,7 +22,7 @@ init: function() {
   this.addEventListener(window, 'dialogaccept', this, true);
 },
 
-resetAllWindowIcons: function() {
+resetAllWindowIcons: function CMP_resetAllWindowIcons() {
   this.__proto__.resetAllWindowIcons.call(this);
   var icon_file = document.getElementById('icon_file');
   if (icon_file) {
@@ -30,7 +30,7 @@ resetAllWindowIcons: function() {
   }
 },
 
-accept: function() {
+accept: function CMP_accept() {
   this.c_dump('prefAccept');
 
   var icon_enable = this.setBoolPrefFromElement(this.PREF_ICON_ENABLED, 'icon_enable');
@@ -42,7 +42,7 @@ accept: function() {
   this.setBoolPrefFromElement(this.PREF_ICON_FIXSIZE, 'icon_fixsize');
 },
 
-disableGroup: function(group, disabled) {
+disableGroup: function CMP_disableGroup(group, disabled) {
   if ('string' == typeof group)
     group = document.getElementById(group);
   var elements = group.getElementsByTagName('*');
@@ -53,9 +53,10 @@ disableGroup: function(group, disabled) {
   }
 },
 
-openImagePicker: function(title, filefield) {
+openImagePicker: function CMP_openImagePicker(title, filefield) {
   var nsIFilePicker = Components.interfaces.nsIFilePicker;
-  var fp = Components.classes["@mozilla.org/filepicker;1"].createInstance(nsIFilePicker);
+  var fp = Components.classes["@mozilla.org/filepicker;1"]
+                     .createInstance(nsIFilePicker);
   fp.init(window, title, nsIFilePicker.modeOpen);
   fp.appendFilters(nsIFilePicker.filterImages);
   fp.appendFilters(nsIFilePicker.filterAll);
@@ -68,13 +69,13 @@ openImagePicker: function(title, filefield) {
 
 // preferences methods {{{1
 
-getBoolPrefToElement: function(pref, id, defaultValue) {
+getBoolPrefToElement: function CMP_getBoolPrefToElement(pref, id, defaultValue) {
   var element = document.getElementById(id);
   element.checked = this.getBoolPref(pref, defaultValue);
   return element;
 },
 
-setBoolPrefFromElement: function(pref, id) {
+setBoolPrefFromElement: function CMP_setBoolPrefFromElement(pref, id) {
   var element = document.getElementById(id);
   this.setBoolPref(pref, element.checked);
   return element;
@@ -82,7 +83,7 @@ setBoolPrefFromElement: function(pref, id) {
 
 // handle events {{{1
 
-handleEvent: function(event) {
+handleEvent: function CMP_handleEvent(event) {
   switch (event.type) {
     case 'load'        : this.init(); break;
     case 'unload'      : this.destroy(); break;
