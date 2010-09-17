@@ -18,3 +18,6 @@
 <!ENTITY iconMultiple.active.help "Ícone activo (fundo)">
 <!ENTITY iconNoBorder.label "Sem limite">
 <!ENTITY iconNoBorder.accesskey "S">
+<!ENTITY iconFixSize.label "Tamanho fixo do ícone">
+<!ENTITY iconFixSize.accesskey "f">
+<!ENTITY compactMenuButtonAdded.message "O botão do Compact Menu foi adicionado">

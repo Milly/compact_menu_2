@@ -18,3 +18,6 @@
 <!ENTITY iconMultiple.active.help "運作時刻圖示(下)">
 <!ENTITY iconNoBorder.label "不加框線">
 <!ENTITY iconNoBorder.accesskey "N">
+<!ENTITY iconFixSize.label "圖示固定大小">
+<!ENTITY iconFixSize.accesskey "F">
+<!ENTITY compactMenuButtonAdded.message "簡潔選單按鈕新增完成">

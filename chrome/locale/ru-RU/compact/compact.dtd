@@ -18,3 +18,6 @@
 <!ENTITY iconMultiple.active.help "Значок при активном меню (Нижнее)">
 <!ENTITY iconNoBorder.label "Без рамки">
 <!ENTITY iconNoBorder.accesskey "р">
+<!ENTITY iconFixSize.label "Фиксированный размер значка">
+<!ENTITY iconFixSize.accesskey "Ф">
+<!ENTITY compactMenuButtonAdded.message "Кнопка Compact Menu была добавлена">

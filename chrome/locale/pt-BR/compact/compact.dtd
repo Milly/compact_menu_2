@@ -1,5 +1,5 @@
 <!ENTITY menu.label "Compact Menu">
-<!ENTITY bookmarks.label "Compact Bookmarks">
+<!ENTITY bookmarks.label "Compact Marcadores">
 <!ENTITY menuPref.caption "Selecione os menús que você deseja ver no Compact Menu">
 <!ENTITY compactMenu.label "Menú">
 <!ENTITY compactMenu.key "M">
@@ -10,3 +10,14 @@
 <!ENTITY iconFilePicker.label "Pesquisar...">
 <!ENTITY iconFilePicker.accesskey "B">
 <!ENTITY iconFilePicker.title "Selecione um ícone para o Compact Menu">
+<!ENTITY iconMultiple.label "Múltiplos ícones">
+<!ENTITY iconMultiple.accesskey "M">
+<!ENTITY iconMultiple.help "Verificar isto, se a imagem contém ícones normais, de foco e ícones ativos.">
+<!ENTITY iconMultiple.normal.help "Ícone normal (Superior)">
+<!ENTITY iconMultiple.hover.help "Ícone de foco (Meio)">
+<!ENTITY iconMultiple.active.help "Ícone ativo (Inferior)">
+<!ENTITY iconNoBorder.label "Sem bordas">
+<!ENTITY iconNoBorder.accesskey "N">
+<!ENTITY iconFixSize.label "Tamanho do ícone fixo">
+<!ENTITY iconFixSize.accesskey "F">
+<!ENTITY compactMenuButtonAdded.message "O botão Compact Menu foi adicionado">

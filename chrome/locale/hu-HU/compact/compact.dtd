@@ -18,3 +18,6 @@
 <!ENTITY iconMultiple.active.help "Aktív ikon (alul)">
 <!ENTITY iconNoBorder.label "Nincs keret">
 <!ENTITY iconNoBorder.accesskey "N">
+<!ENTITY iconFixSize.label "Rögzített ikonméret">
+<!ENTITY iconFixSize.accesskey "R">
+<!ENTITY compactMenuButtonAdded.message "A Compact Menu gomb hozzáadva">
