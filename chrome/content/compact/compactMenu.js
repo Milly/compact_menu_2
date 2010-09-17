@@ -482,8 +482,8 @@ getLocalIconFile: function() {
 
 getProfileDir: function() {
   return Components.classes["@mozilla.org/file/directory_service;1"]
-    .getService(Components.interfaces.nsIProperties)
-    .get("ProfD", Components.interfaces.nsIFile);
+                   .getService(Components.interfaces.nsIProperties)
+                   .get("ProfD", Components.interfaces.nsIFile);
 },
 
 loadIcon: function() {
@@ -582,8 +582,8 @@ setIconFile: function(file) {
 
 toFileURI: function(file) {
   return Components.classes['@mozilla.org/network/io-service;1']
-    .getService(Components.interfaces.nsIIOService)
-    .newFileURI(file);
+                   .getService(Components.interfaces.nsIIOService)
+                   .newFileURI(file);
 },
 
 toLocalFile: function(file) {
