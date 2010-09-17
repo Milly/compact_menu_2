@@ -691,15 +691,23 @@ initFirst: function CM_initFirst() {
   this.setBoolPref(initializedPref, true);
   if (this.getMenuItem()) return;
 
-  var buttons = navbar.currentSet.split(',');
-  var newset = ['menu-button'].concat(buttons).join(',');
-  navbar.currentSet = newset;
-  navbar.setAttribute('currentset', newset);
+  if ('insertItem' in navbar) {
+    navbar.insertItem('menu-button', navbar.firstChild, null, false);
+  } else {
+    var buttons = navbar.currentSet.split(',');
+    var newset = ['menu-button'].concat(buttons).join(',');
+    navbar.currentSet = newset;
+  }
+  navbar.setAttribute('currentset', navbar.currentSet);
   navbar[this.HIDE_ATTRIBUTE] = false;
   document.persist(navbar.id, 'currentset');
 
   var menubar = this.getMainToolbar();
   menubar[this.HIDE_ATTRIBUTE] = true;
+
+  var toolbox = this.getMainToolbox();
+  if ('customizeDone' in toolbox)
+    toolbox.customizeDone(true);
 
   this.delayBundleCall('init_first_popup', 1000,
                        this.bind(this.showArrowWindow));
