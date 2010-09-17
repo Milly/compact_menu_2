@@ -42,49 +42,50 @@ accept: function CMP_accept() {
   this.setBoolPrefFromElement(this.PREF_ICON_FIXSIZE, 'icon_fixsize');
 },
 
-disableGroup: function CMP_disableGroup(group, disabled) {
-  if ('string' == typeof group)
-    group = document.getElementById(group);
-  var elements = group.getElementsByTagName('*');
+disableGroup: function CMP_disableGroup(aGroup, aDisabled) {
+  if ('string' == typeof aGroup)
+    aGroup = document.getElementById(aGroup);
+  var elements = aGroup.getElementsByTagName('*');
   for (var i = elements.length; 0 <= --i;) {
     var element = elements[i];
     if ('disabled' in element && 'caption' != element.parentNode.nodeName)
-      element.disabled = disabled;
+      element.disabled = aDisabled;
   }
 },
 
-openImagePicker: function CMP_openImagePicker(title, filefield) {
+openImagePicker: function CMP_openImagePicker(aTitle, aFileField) {
   var nsIFilePicker = Components.interfaces.nsIFilePicker;
   var fp = Components.classes["@mozilla.org/filepicker;1"]
                      .createInstance(nsIFilePicker);
-  fp.init(window, title, nsIFilePicker.modeOpen);
+  fp.init(window, aTitle, nsIFilePicker.modeOpen);
   fp.appendFilters(nsIFilePicker.filterImages);
   fp.appendFilters(nsIFilePicker.filterAll);
   if (nsIFilePicker.returnOK == fp.show()) {
-    filefield = document.getElementById(filefield);
-    filefield.file = fp.file;
-    filefield.image = fp.fileURL.spec;
+    if ('string' == typeof aFileField)
+      aFileField = document.getElementById(aFileField);
+    aFileField.file = fp.file;
+    aFileField.image = fp.fileURL.spec;
   }
 },
 
 // preferences methods {{{1
 
-getBoolPrefToElement: function CMP_getBoolPrefToElement(pref, id, defaultValue) {
-  var element = document.getElementById(id);
-  element.checked = this.getBoolPref(pref, defaultValue);
+getBoolPrefToElement: function CMP_getBoolPrefToElement(aName, aId, aDefaultValue) {
+  var element = document.getElementById(aId);
+  element.checked = this.getBoolPref(aName, aDefaultValue);
   return element;
 },
 
-setBoolPrefFromElement: function CMP_setBoolPrefFromElement(pref, id) {
-  var element = document.getElementById(id);
-  this.setBoolPref(pref, element.checked);
+setBoolPrefFromElement: function CMP_setBoolPrefFromElement(aName, aId) {
+  var element = document.getElementById(aId);
+  this.setBoolPref(aName, element.checked);
   return element;
 },
 
 // handle events {{{1
 
-handleEvent: function CMP_handleEvent(event) {
-  switch (event.type) {
+handleEvent: function CMP_handleEvent(aEvent) {
+  switch (aEvent.type) {
     case 'load'        : this.init(); break;
     case 'unload'      : this.destroy(); break;
     case 'dialogaccept': this.accept(); break;

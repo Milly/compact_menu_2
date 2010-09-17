@@ -2,8 +2,8 @@ var CompactBookmarks = { __proto__: CompactMenu,
 
 // debug methods {{{1
 
-c_dump: function CB_c_dump(msg) {
-  this.__proto__.c_dump.call(this, 'CompactBookmarks :: ' + msg);
+c_dump: function CB_c_dump(aMsg) {
+  this.__proto__.c_dump.call(this, 'CompactBookmarks :: ' + aMsg);
 },
 
 // initialize methods {{{1
@@ -24,11 +24,11 @@ initBookmarksFunctions: function CB_initBookmarksFunctions() {
 
   if ('PlacesMenuDNDController' in window) {
     this.hookFunction([PlacesMenuDNDController, '_openBookmarksMenu'],
-                      function CB__openBookmarksMenu(event) {
+                      function CB__openBookmarksMenu(aEvent) {
       this._openBookmarksMenu_without_CompactMenu.apply(this, arguments);
-      if (event.target.id == "compact-bk-button") {
-        event.target.lastChild.setAttribute("autoopened", "true");
-        event.target.lastChild.showPopup(event.target.lastChild);
+      if (aEvent.target.id == "compact-bk-button") {
+        aEvent.target.lastChild.setAttribute("autoopened", "true");
+        aEvent.target.lastChild.showPopup(aEvent.target.lastChild);
       }
     });
   }
@@ -37,10 +37,10 @@ initBookmarksFunctions: function CB_initBookmarksFunctions() {
     this.hookFunction([FeedHandler, 'updateFeeds'],
                       function CB_updateFeeds() {
       CompactBookmarks.c_dump('FeedHandler.updateFeeds(): called');
-      function find(element, tagName, id) {
-        var tags = element.getElementsByTagName(tagName);
+      function find(aElement, aTagName, aId) {
+        var tags = aElement.getElementsByTagName(aTagName);
         for (var i = 0; i < tags.length; ++i)
-          if (id == tags[i].id) return tags[i];
+          if (aId == tags[i].id) return tags[i];
       }
       var menus = [
         document.getElementById('compact-bk-menubar'),
@@ -116,12 +116,12 @@ getSupportedFlavours: function CB_getSupportedFlavours() {
   return [];
 },
 
-cloneBookmarksMenu: function CB_cloneBookmarksMenu(parent) {
-  if (!parent || parent.firstChild) return;
+cloneBookmarksMenu: function CB_cloneBookmarksMenu(aParent) {
+  if (!aParent || aParent.firstChild) return;
 
   var menupopup = this.getBookmarksMenuPopup();
   var clone_menupopup = menupopup.cloneNode(false);
-  parent.appendChild(clone_menupopup);
+  aParent.appendChild(clone_menupopup);
 
   // fix onpopupshowing (for Fx3.7)
   if (clone_menupopup.hasAttribute('onpopupshowing')) {
@@ -163,8 +163,8 @@ cloneBookmarksMenu: function CB_cloneBookmarksMenu(parent) {
 
 // event methods {{{1
 
-handleEvent: function CB_handleEvent(event) {
-  switch (event.type) {
+handleEvent: function CB_handleEvent(aEvent) {
+  switch (aEvent.type) {
     case 'load'  : this.init(); break;
     case 'unload': this.destroy(); break;
     case 'focus' : this.initBookmarksItems(); break;

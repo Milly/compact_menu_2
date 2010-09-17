@@ -27,11 +27,11 @@ init: function CMC_init() {
 
   this.hideAll();
 
-  this.mapMenus(function(menu, index) {
-    var id = menu.id || index;
+  this.mapMenus(function(aMenu, aIndex) {
+    var id = aMenu.id || aIndex;
     var eid = this.toMenuElementId(id);
     var visible = !this.isMenuHidden(id);
-    this.addVisibleMenuCheckbox(menu, eid, visible);
+    this.addVisibleMenuCheckbox(aMenu, eid, visible);
   });
 
   var toolbar = this.getMainToolbar();
@@ -50,8 +50,8 @@ init: function CMC_init() {
 accept: function CMC_accept() {
   this.c_dump('customizeAccept');
 
-  this.mapMenus(function(menu, index) {
-    var id = menu.id || index;
+  this.mapMenus(function(aMenu, aIndex) {
+    var id = aMenu.id || aIndex;
     var pref = this.toMenuPrefId(id);
     var eid = this.toMenuElementId(id);
     var item = document.getElementById(eid);
@@ -69,14 +69,14 @@ cancel: function CMC_cancel() {
   this.hideAll();
 },
 
-addVisibleMenuCheckbox: function CMC_addVisibleMenuCheckbox(menu, id, checked) {
+addVisibleMenuCheckbox: function CMC_addVisibleMenuCheckbox(aMenu, aId, aChecked) {
   var container = document.getElementById('compact-visible-menu-items');
-  var item = document.getElementById(id) || document.createElement('checkbox');
-  item.setAttribute('id', id);
+  var item = document.getElementById(aId) || document.createElement('checkbox');
+  item.setAttribute('id', aId);
   item.setAttribute('type', 'checkbox');
-  item.setAttribute('label', menu.getAttribute('label'));
-  item.setAttribute('accesskey', menu.getAttribute('accesskey'));
-  item.setAttribute('checked', checked);
+  item.setAttribute('label', aMenu.getAttribute('label'));
+  item.setAttribute('accesskey', aMenu.getAttribute('accesskey'));
+  item.setAttribute('checked', aChecked);
   container.appendChild(item);
   return item;
 },
@@ -84,8 +84,8 @@ addVisibleMenuCheckbox: function CMC_addVisibleMenuCheckbox(menu, id, checked) {
 restoreMainToolbar: function CMC_restoreMainToolbar() {
   this.c_dump('restoreMainToolbar');
 
-  this.mapMenus(function(menu, index) {
-    var id = menu.id || index;
+  this.mapMenus(function(aMenu, aIndex) {
+    var id = aMenu.id || aIndex;
     var eid = this.toMenuElementId(id);
     var item = document.getElementById(eid);
     item.checked = true;
@@ -98,8 +98,8 @@ restoreMainToolbar: function CMC_restoreMainToolbar() {
 
 // handle events {{{1
 
-handleEvent: function CMC_handleEvent(event) {
-  switch (event.type) {
+handleEvent: function CMC_handleEvent(aEvent) {
+  switch (aEvent.type) {
     case 'load':
       this.init();
       break;

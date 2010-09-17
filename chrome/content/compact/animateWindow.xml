@@ -177,13 +177,13 @@
           for (var i = options.length; 0 <= --i && !(hasOpt = options[i]););
           if (!hasOpt) return;
 
-          const Cc = Components.classes;
-          const Ci = Components.interfaces;
+          const nsITimer = Components.interfaces.nsITimer;
           if (!this._animateTimer)
-            this._animateTimer = Cc["@mozilla.org/timer;1"].createInstance(Ci.nsITimer);
+            this._animateTimer = Components.classes["@mozilla.org/timer;1"]
+                                           .createInstance(nsITimer);
           this._animateTimer.initWithCallback(this._animateTimerCallback,
                                               this.interval,
-                                              Ci.nsITimer.TYPE_REPEATING_SLACK);
+                                              nsITimer.TYPE_REPEATING_SLACK);
           this._animateRunning = true;
         ]]></body>
       </method>
