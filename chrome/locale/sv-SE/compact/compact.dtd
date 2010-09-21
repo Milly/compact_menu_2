@@ -18,3 +18,6 @@
 <!ENTITY iconMultiple.active.help "Aktiv ikon (underst)">
 <!ENTITY iconNoBorder.label "Utan kantlinje">
 <!ENTITY iconNoBorder.accesskey "K">
+<!ENTITY iconFixSize.label "Fast ikonstorlek">
+<!ENTITY iconFixSize.accesskey "F">
+<!ENTITY compactMenuButtonAdded.message "Kompaktmeny-knappen har lagts till">
