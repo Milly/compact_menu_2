@@ -5,7 +5,7 @@
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Barre de menu">
 <!ENTITY menubarCmd.accesskey "M">
-<!ENTITY iconPref.caption "Changer d'icône pour Compact Menu">
+<!ENTITY iconPref.caption "Changer l'icône de Compact Menu">
 <!ENTITY iconPref.accesskey "I">
 <!ENTITY iconFilePicker.label "Parcourir…">
 <!ENTITY iconFilePicker.accesskey "P">
