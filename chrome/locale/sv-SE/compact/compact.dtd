@@ -1,15 +1,15 @@
 <!ENTITY menu.label "Kompaktmeny">
 <!ENTITY bookmarks.label "Kompakta bokmärken">
-<!ENTITY menuPref.caption "Välj de menyer du vill visa i Kompaktmenyn:">
+<!ENTITY menuPref.caption "Välj de menyer du vill visa i &quot;kompaktmenyn&quot;:">
 <!ENTITY compactMenu.label "Meny">
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Menyfältet">
 <!ENTITY menubarCmd.accesskey "M">
-<!ENTITY iconPref.caption "Ändra ikonen för Kompaktmeny-knappen">
+<!ENTITY iconPref.caption "Ändra ikonen för kompaktmeny-knappen">
 <!ENTITY iconPref.accesskey "I">
 <!ENTITY iconFilePicker.label "Bläddra...">
 <!ENTITY iconFilePicker.accesskey "B">
-<!ENTITY iconFilePicker.title "Välj ikon för Kompaktmeny-knappen">
+<!ENTITY iconFilePicker.title "Välj ikon för kompaktmeny-knappen">
 <!ENTITY iconMultiple.label "Flera ikoner">
 <!ENTITY iconMultiple.accesskey "F">
 <!ENTITY iconMultiple.help "Kontrollera om bilden innehåller ikoner för normal, aktiv och musöverföring">
@@ -19,5 +19,5 @@
 <!ENTITY iconNoBorder.label "Utan kantlinje">
 <!ENTITY iconNoBorder.accesskey "K">
 <!ENTITY iconFixSize.label "Fast ikonstorlek">
-<!ENTITY iconFixSize.accesskey "F">
+<!ENTITY iconFixSize.accesskey "A">
 <!ENTITY compactMenuButtonAdded.message "Kompaktmeny-knappen har lagts till">

@@ -10,3 +10,14 @@
 <!ENTITY iconFilePicker.label "Вибір...">
 <!ENTITY iconFilePicker.accesskey "В">
 <!ENTITY iconFilePicker.title "Виберіть піктограму для Compact Menu">
+<!ENTITY iconMultiple.label "Відображати стан піктограми">
+<!ENTITY iconMultiple.accesskey "і">
+<!ENTITY iconMultiple.help "Встановіть цей прапорець, якщо зображення містить звичайну, виділену та активну піктограми.">
+<!ENTITY iconMultiple.normal.help "Звичайна піктограма (Верхнє)">
+<!ENTITY iconMultiple.hover.help "Виділена піктограма (Середнє)">
+<!ENTITY iconMultiple.active.help "Активна піктограма (Нижнє)">
+<!ENTITY iconNoBorder.label "Без рамки">
+<!ENTITY iconNoBorder.accesskey "Б">
+<!ENTITY iconFixSize.label "Фіксований розмір піктограми">
+<!ENTITY iconFixSize.accesskey "Ф">
+<!ENTITY compactMenuButtonAdded.message "Кнопка Compact Menu була додана">
