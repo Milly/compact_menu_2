@@ -4,7 +4,7 @@
 mode=$1
 extension_id=4689
 domain='www.babelzilla.org'
-project_dir="$(cd $(dirname "$0");pwd)"
+project_dir="$(cd $(dirname "$0");pwd)/src"
 locale_dir="$project_dir/chrome/locale"
 manifest_file="$project_dir/chrome.manifest"
 
@@ -63,7 +63,7 @@ fi
 # update manifest
 tmp_file="${TEMP=.}/update-locales.sh.manifest"
 ls "$locale_dir" \
-    | sed 's#\(.*\)#locale\tcompact\t\1\tjar:chrome/compact.jar!/locale/\1/compact/#' \
+    | sed 's#\(.*\)#locale\tcompact\t\1\tjar:compact.jar!/locale/\1/compact/#' \
     > "$tmp_file"
 sed -i "/^locale\>/d;/^# locales/r $tmp_file" "$manifest_file"
 rm "$tmp_file"

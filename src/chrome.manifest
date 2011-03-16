@@ -1,27 +1,28 @@
 # common
-content	compact	jar:chrome/compact.jar!/content/compact/
-skin	compact	classic/1.0	jar:chrome/compact.jar!/skin/classic/compact/
+content	compact	jar:compact.jar!/content/compact/
+skin	compact	classic/1.0	jar:compact.jar!/skin/classic/compact/
 # locales
-locale	compact	da-DK	jar:chrome/compact.jar!/locale/da-DK/compact/
-locale	compact	de	jar:chrome/compact.jar!/locale/de/compact/
-locale	compact	en-US	jar:chrome/compact.jar!/locale/en-US/compact/
-locale	compact	es-ES	jar:chrome/compact.jar!/locale/es-ES/compact/
-locale	compact	fr	jar:chrome/compact.jar!/locale/fr/compact/
-locale	compact	hu-HU	jar:chrome/compact.jar!/locale/hu-HU/compact/
-locale	compact	it-IT	jar:chrome/compact.jar!/locale/it-IT/compact/
-locale	compact	ja-JP	jar:chrome/compact.jar!/locale/ja-JP/compact/
-locale	compact	ko-KR	jar:chrome/compact.jar!/locale/ko-KR/compact/
-locale	compact	nl	jar:chrome/compact.jar!/locale/nl/compact/
-locale	compact	pl	jar:chrome/compact.jar!/locale/pl/compact/
-locale	compact	pt-BR	jar:chrome/compact.jar!/locale/pt-BR/compact/
-locale	compact	pt-PT	jar:chrome/compact.jar!/locale/pt-PT/compact/
-locale	compact	ru-RU	jar:chrome/compact.jar!/locale/ru-RU/compact/
-locale	compact	sr	jar:chrome/compact.jar!/locale/sr/compact/
-locale	compact	sv-SE	jar:chrome/compact.jar!/locale/sv-SE/compact/
-locale	compact	tr-TR	jar:chrome/compact.jar!/locale/tr-TR/compact/
-locale	compact	uk-UA	jar:chrome/compact.jar!/locale/uk-UA/compact/
-locale	compact	zh-CN	jar:chrome/compact.jar!/locale/zh-CN/compact/
-locale	compact	zh-TW	jar:chrome/compact.jar!/locale/zh-TW/compact/
+locale	compact	da	jar:compact.jar!/locale/da/compact/
+locale	compact	de	jar:compact.jar!/locale/de/compact/
+locale	compact	en-US	jar:compact.jar!/locale/en-US/compact/
+locale	compact	es	jar:compact.jar!/locale/es/compact/
+locale	compact	es-ES	jar:compact.jar!/locale/es-ES/compact/
+locale	compact	fr	jar:compact.jar!/locale/fr/compact/
+locale	compact	hu-HU	jar:compact.jar!/locale/hu-HU/compact/
+locale	compact	it-IT	jar:compact.jar!/locale/it-IT/compact/
+locale	compact	ja-JP	jar:compact.jar!/locale/ja-JP/compact/
+locale	compact	ko-KR	jar:compact.jar!/locale/ko-KR/compact/
+locale	compact	nl	jar:compact.jar!/locale/nl/compact/
+locale	compact	pl	jar:compact.jar!/locale/pl/compact/
+locale	compact	pt-BR	jar:compact.jar!/locale/pt-BR/compact/
+locale	compact	pt-PT	jar:compact.jar!/locale/pt-PT/compact/
+locale	compact	ru-RU	jar:compact.jar!/locale/ru-RU/compact/
+locale	compact	sr	jar:compact.jar!/locale/sr/compact/
+locale	compact	sv-SE	jar:compact.jar!/locale/sv-SE/compact/
+locale	compact	tr-TR	jar:compact.jar!/locale/tr-TR/compact/
+locale	compact	uk-UA	jar:compact.jar!/locale/uk-UA/compact/
+locale	compact	zh-CN	jar:compact.jar!/locale/zh-CN/compact/
+locale	compact	zh-TW	jar:compact.jar!/locale/zh-TW/compact/
 
 # Common
 overlay	chrome://global/content/customizeToolbar.xul	chrome://compact/content/customizeToolbarOverlay.xul

@@ -6,7 +6,8 @@
 	</description>
 
 	<!-- properties -->
-	<xmlproperty file="install.rdf" />
+	<property name="src.path" value="src" />
+  <xmlproperty file="${src.path}/install.rdf" />
 	<property name="build.path" value="build" />
 	<property name="chrome.path" value="chrome" />
 	<property name="defaults.path" value="defaults" />
@@ -18,6 +19,8 @@
 	<!-- defines -->
 	<defaultexcludes add="**/.*" />
 	<defaultexcludes add="**/Thumbs.db" />
+	<defaultexcludes add="**/*.bak" />
+	<defaultexcludes add="**/*.orig" />
 
 	<!-- deploy -->
 	<target name="deploy" depends="xpi" description="Make xpi file and install.">
@@ -33,40 +36,34 @@
 	<target name="develop" depends="update-locales-develop,xpi" description="Make develop xpi file." />
 	
 	<!-- create xpi -->
-	<target name="xpi" depends="build-dir,jar" description="Make xpi file.">
-		<copy todir="${build.path}">
-			<fileset dir=".">
+	<target name="xpi" depends="jar" description="Make xpi file.">
+		<zip destfile="${xpi.file}">
+			<fileset dir="${src.path}">
 				<include name="install.rdf" />
 				<include name="chrome.manifest" />
-				<include name="${chrome.path}/*.jar" />
 				<include name="${defaults.path}/**" />
 			</fileset>
-		</copy>
-		<zip destfile="${xpi.file}" basedir="${build.path}" />
+			<fileset dir="${build.path}" includes="*.jar" />
+		</zip>
 	</target>
 	
 	<!-- create chrome jar -->
 	<target name="jar" depends="build-dir">
-		<zip destfile="${build.path}/${chrome.path}/${jar.file}" compress="false">
-			<fileset dir="${chrome.path}" />
+		<zip destfile="${build.path}/${jar.file}" compress="false">
+			<fileset dir="${src.path}/${chrome.path}" />
 		</zip>
 	</target>
 
 	<!-- create build dir -->
 	<target name="build-dir">
 		<mkdir dir="${build.path}" />
-		<mkdir dir="${build.path}/${chrome.path}" />
-		<mkdir dir="${build.path}/${defaults.path}" />
 	</target>
 	
 	<!-- clean -->
 	<target name="clean" description="Delete all build files.">
 		<delete includeEmptyDirs="true">
-			<fileset dir=".">
-				<include name="*.xpi" />
-				<include name="${build.path}/**" />
-				<include name="${chrome.path}/${jar.file}" />
-			</fileset>
+			<fileset dir="." includes="*.xpi" />
+			<fileset dir="${build.path}" />
 		</delete>
 	</target>
 
