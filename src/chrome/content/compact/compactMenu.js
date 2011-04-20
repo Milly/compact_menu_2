@@ -55,6 +55,10 @@ NAVITOOLBARS: [
     'event-toolbar',
   ],
 
+TABTOOLBARS: [
+    'TabsToolbar',
+  ],
+
 MENUBARS: [
     'main-menubar',
     'mail-menubar',
@@ -331,6 +335,10 @@ getMenuPopup: function CM_getMenuPopup() {
 
 getNavigationToolbar: function CM_getNavigationToolbar() {
   return this.getElementByIds(this.NAVITOOLBARS);
+},
+
+getTabsToolbar: function CM_getTabsToolbar() {
+  return this.getElementByIds(this.TABTOOLBARS);
 },
 
 showHideItems: function CM_showHideItems() {
@@ -687,6 +695,9 @@ init: function CM_init() {
 
 initFirst: function CM_initFirst() {
   var navbar = this.getNavigationToolbar();
+  var tabbar = this.getTabsToolbar();
+  if (tabbar && tabbar.getAttribute('tabsontop') == 'true')
+    navbar = tabbar;
   var initializedPref = this.toInitializedPrefId(navbar);
   if (this.getBoolPref(initializedPref)) return;
   this.setBoolPref(initializedPref, true);
