@@ -1,12 +1,23 @@
-<!ENTITY menu.label "Compact Menu">
-<!ENTITY bookmarks.label "Compact Bookmarks">
-<!ENTITY menuPref.caption "选择要显示在整合菜单/按钮内的项目">
+<!ENTITY menu.label "简洁菜单">
+<!ENTITY bookmarks.label "简洁书签">
+<!ENTITY menuPref.caption "选择要显示在简洁菜单/按钮内的项目">
 <!ENTITY compactMenu.label "菜单">
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "菜单栏">
 <!ENTITY menubarCmd.accesskey "M">
-<!ENTITY iconPref.caption "更改 Compact Menu 图标">
+<!ENTITY iconPref.caption "更改简洁菜单图标">
 <!ENTITY iconPref.accesskey "I">
-<!ENTITY iconFilePicker.label "浏览">
+<!ENTITY iconFilePicker.label "浏览....">
 <!ENTITY iconFilePicker.accesskey "B">
-<!ENTITY iconFilePicker.title "选择 Compact Menu 的新图标">
+<!ENTITY iconFilePicker.title "选择简洁菜单的图标">
+<!ENTITY iconMultiple.label "复合图标">
+<!ENTITY iconMultiple.accesskey "M">
+<!ENTITY iconMultiple.help "如果图像包含正常、悬停以及激活图标，选中此框。">
+<!ENTITY iconMultiple.normal.help "正常图标（顶）">
+<!ENTITY iconMultiple.hover.help "悬停图标（中）">
+<!ENTITY iconMultiple.active.help "激活图标（底）">
+<!ENTITY iconNoBorder.label "无边框">
+<!ENTITY iconNoBorder.accesskey "N">
+<!ENTITY iconFixSize.label "固定图标尺寸">
+<!ENTITY iconFixSize.accesskey "F">
+<!ENTITY compactMenuButtonAdded.message "简洁菜单的按钮已添加">
