@@ -25,58 +25,56 @@ init: function CMC_init() {
     return;
   }
 
-  this.hideAll();
-
   this.mapMenus(function(aMenu, aIndex) {
     var id = aMenu.id || aIndex;
-    var eid = this.toMenuElementId(id);
-    var visible = !this.isMenuHidden(id);
-    this.addVisibleMenuCheckbox(aMenu, eid, visible);
+    this['_menuHidden_' + id] = this.isMenuHidden(id);
+    this.addVisibleMenuCheckbox(aMenu, id);
   });
 
   var toolbar = this.getMainToolbar();
+  if (toolbar) toolbar.setAttribute('customizing', true);
   this._mainToolbarCollapsed = toolbar && toolbar[this.HIDE_ATTRIBUTE];
+  this.hideAll();
 
   this.hookFunction('restoreDefaultSet', function CMC_restoreDefaultSet() {
     CompactMenuCustomize.restoreMainToolbar();
     restoreDefaultSet_without_CompactMenu.apply(this, arguments);
-    CompactMenuCustomize.hideAll();
   });
 
   this.addEventListener(window, 'unload', this, false);
+  this.addEventListener(window, 'dialogaccept', this, true);
   this.addEventListener(window, 'dialogcancel', this, true);
 },
 
 accept: function CMC_accept() {
   this.c_dump('customizeAccept');
-
-  this.mapMenus(function(aMenu, aIndex) {
-    var id = aMenu.id || aIndex;
-    var pref = this.toMenuPrefId(id);
-    var eid = this.toMenuElementId(id);
-    var item = document.getElementById(eid);
-    this.setBoolPref(pref, !item.checked, true);
-  });
-
-  this.hideAll();
 },
 
 cancel: function CMC_cancel() {
   this.c_dump('customizeCancel');
   this._canceled = true;
+
+  this.mapMenus(function(aMenu, aIndex) {
+    var id = aMenu.id || aIndex;
+    var pref = this.toMenuPrefId(id);
+    this.setBoolPref(pref, this['_menuHidden_' + id], true);
+  });
+
   var toolbar = this.getMainToolbar();
   if (toolbar) toolbar[this.HIDE_ATTRIBUTE] = this._mainToolbarCollapsed;
-  this.hideAll();
 },
 
-addVisibleMenuCheckbox: function CMC_addVisibleMenuCheckbox(aMenu, aId, aChecked) {
+addVisibleMenuCheckbox: function CMC_addVisibleMenuCheckbox(aMenu, aMenuId) {
+  var eid = this.toMenuElementId(aMenuId);
   var container = document.getElementById('compact-visible-menu-items');
-  var item = document.getElementById(aId) || document.createElement('checkbox');
-  item.setAttribute('id', aId);
+  var item = document.getElementById(eid) || document.createElement('checkbox');
+  item.setAttribute('id', eid);
+  item.setAttribute('menuid', aMenuId);
   item.setAttribute('type', 'checkbox');
   item.setAttribute('label', aMenu.getAttribute('label'));
   item.setAttribute('accesskey', aMenu.getAttribute('accesskey'));
-  item.setAttribute('checked', aChecked);
+  item.setAttribute('checked', !this.isMenuHidden(aMenuId));
+  this.addEventListener(item, 'CheckboxStateChange', this, false);
   container.appendChild(item);
   return item;
 },
@@ -93,25 +91,39 @@ restoreMainToolbar: function CMC_restoreMainToolbar() {
 
   var toolbar = this.getMainToolbar();
   if (toolbar) toolbar[this.HIDE_ATTRIBUTE] = false;
+},
+
+// event methods {{{1
+
+ondialogaccept: function CMC_ondialogaccept(aEvent) {
+  this.accept();
+},
+
+ondialogcancel: function CMC_ondialogcancel(aEvent) {
+  this.cancel();
+},
+
+onunload: function CMC_onunload(aEvent) {
+  if (!this._canceled) this.accept();
+  this.destroy();
+  var toolbar = this.getMainToolbar();
+  if (toolbar) toolbar.removeAttribute('customizing');
   this.hideAll();
 },
 
-// handle events {{{1
+onCheckboxStateChange: function CMC_onCheckboxStateChange(aEvent) {
+  var element = aEvent.originalTarget;
+  var menuid = element.getAttribute('menuid');
+  var pref = this.toMenuPrefId(menuid);
+  this.setBoolPref(pref, !element.checked, true);
+},
 
-handleEvent: function CMC_handleEvent(aEvent) {
-  switch (aEvent.type) {
-    case 'load':
-      this.init();
-      break;
-    case 'dialogcancel':
-      this.cancel();
-      break;
-    case 'unload':
-      if (!this._canceled) this.accept();
-      this.destroy();
-      break;
-  }
-}
+onfocus: false,
+onmousedown: false,
+onDOMMouseScroll: false,
+onkeydown: false,
+onkeyup: false,
+onkeypress: false
 
 // }}}1
 
