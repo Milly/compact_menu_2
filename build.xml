@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Shift_JIS"?>
+<?xml version="1.0" encoding="utf-8"?>
 <project name="compact_menu_2" default="xpi" basedir=".">
 
 	<description>
@@ -6,86 +6,107 @@
 	</description>
 
 	<!-- properties -->
-	<property name="src.path" value="src" />
-  <xmlproperty file="${src.path}/install.rdf" />
-	<property name="build.path" value="build" />
-	<property name="chrome.path" value="chrome" />
-	<property name="defaults.path" value="defaults" />
-	<property name="target.app" value="fx+tb+sb+sm" />
-	<property name="xpi.file" value="${ant.project.name}-${RDF.Description.em:version}-${target.app}.xpi" />
-	<property name="jar.file" value="compact.jar" />
-	<property name="update-locales.mode" value="skip" />
 
-	<!-- defines -->
+	<property name="src.dir" value="src" />
+	<property name="dest.dir" value="." />
+	<property name="build.dir" value="build" />
+	<property name="target.app" value="fx+tb+sb+sm" />
+	<xmlproperty file="${src.dir}/install.rdf" />
+
+	<!-- resources -->
+
 	<defaultexcludes add="**/.*" />
 	<defaultexcludes add="**/Thumbs.db" />
 	<defaultexcludes add="**/*.bak" />
 	<defaultexcludes add="**/*.orig" />
 
-	<!-- deploy -->
-	<target name="deploy" depends="xpi" description="Make xpi file and install.">
-		<exec executable="cmd.exe" os="Windows XP">
-			<arg line="/c start ${xpi.file}" />
-		</exec>
-	</target>
+	<property name="binary.files" value="**/*.png" />
 
-	<!-- create release xpi -->
-	<target name="release" depends="update-locales-release,xpi" description="Make release xpi file." />
-	
-	<!-- create develop xpi -->
-	<target name="develop" depends="update-locales-develop,xpi" description="Make develop xpi file." />
-	
-	<!-- create xpi -->
-	<target name="xpi" depends="jar" description="Make xpi file.">
-		<zip destfile="${xpi.file}">
-			<fileset dir="${src.path}">
-				<include name="install.rdf" />
-				<include name="chrome.manifest" />
-				<include name="${defaults.path}/**" />
-			</fileset>
-			<fileset dir="${build.path}" includes="*.jar" />
-		</zip>
-	</target>
-	
-	<!-- create chrome jar -->
-	<target name="jar" depends="build-dir">
-		<zip destfile="${build.path}/${jar.file}" compress="false">
-			<fileset dir="${src.path}/${chrome.path}" />
-		</zip>
-	</target>
+	<property name="xpi.file" value="${ant.project.name}-${RDF.Description.em:version}-${target.app}.xpi" />
+	<property name="xpi.path" value="${dest.dir}/${xpi.file}" />
+	<property name="jar.file" value="compact.jar" />
+	<property name="jar.path" value="${build.dir}/${jar.file}" />
+	<property name="chrome.build.dir" value="${build.dir}/chrome" />
 
-	<!-- create build dir -->
-	<target name="build-dir">
-		<mkdir dir="${build.path}" />
-	</target>
-	
-	<!-- clean -->
-	<target name="clean" description="Delete all build files.">
-		<delete includeEmptyDirs="true">
-			<fileset dir="." includes="*.xpi" />
-			<fileset dir="${build.path}" />
-		</delete>
-	</target>
+	<presetdef name="fileset-chrome.sources">
+		<fileset id="chrome.sources" dir="${src.dir}/chrome" />
+	</presetdef>
+	<fileset id="xpi.sources" dir="${src.dir}">
+		<include name="install.rdf" />
+		<include name="chrome.manifest" />
+		<include name="defaults/**" />
+	</fileset>
 
-	<!-- update locales -->
-	<target name="update-locales">
-		<exec executable="sh" failonerror="true">
-			<arg line="update-locales.sh ${update-locales.mode}" />
-		</exec>
-	</target>
-	
-	<!-- update locales for release -->
-	<target name="update-locales-release">
-		<antcall target="update-locales">
+	<!-- main targets -->
+
+	<target name="release" description="Make release xpi file.">
+		<antcall target="xpi">
 			<param name="update-locales.mode" value="tar" />
 		</antcall>
 	</target>
-
-	<!-- update locales for develop -->
-	<target name="update-locales-develop">
-		<antcall target="update-locales">
-			<param name="update-locales.mode" value="skip" />
+	
+	<target name="develop" description="Make develop xpi file.">
+		<antcall target="xpi">
+			<param name="debug" value="true" />
 		</antcall>
 	</target>
 	
+	<target name="xpi" depends="init,jar" description="Make xpi file.">
+		<zip destfile="${xpi.path}">
+			<fileset refid="xpi.sources" />
+			<fileset file="${jar.path}" />
+		</zip>
+		<condition property="debug.mode" value="YES" else="NO">
+			<isset property="debug" />
+		</condition>
+		<echo message="Debug: ${debug.mode}" />
+	</target>
+	
+	<target name="clean" description="Delete all build files.">
+		<delete includeEmptyDirs="true">
+			<fileset dir="${dest.dir}" includes="*.xpi" />
+			<fileset dir="${build.dir}" />
+		</delete>
+	</target>
+
+	<!-- internal targets -->
+
+	<target name="init" depends="init-filters" />
+
+	<target name="init-filters" depends="init-filters-debug,init-filters-release" />
+
+	<target name="init-filters-debug" if="debug">
+		<filterset id="debug-filter">
+			<filter token="debug" value="true" />
+		</filterset>
+	</target>
+
+	<target name="init-filters-release" unless="debug">
+		<filterset id="debug-filter">
+			<filter token="debug" value="false" />
+		</filterset>
+	</target>
+
+	<target name="chrome" unless="chrome.no-updates">
+		<copy todir="${chrome.build.dir}" overwrite="true" encoding="UTF-8">
+			<fileset-chrome.sources excludes="${binary.files}" />
+			<filterset refid="debug-filter" />
+		</copy>
+		<copy todir="${chrome.build.dir}" overwrite="true">
+			<fileset-chrome.sources includes="${binary.files}" />
+		</copy>
+	</target>
+
+	<target name="update-locales" depends="chrome" if="update-locales.mode">
+		<exec executable="sh" failonerror="true">
+			<arg line="update-locales.sh --build ${update-locales.mode}" />
+		</exec>
+	</target>
+	
+	<target name="jar" depends="chrome,update-locales">
+		<zip destfile="${jar.path}" compress="false">
+			<fileset dir="${chrome.build.dir}" />
+		</zip>
+	</target>
+
 </project>

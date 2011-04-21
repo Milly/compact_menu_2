@@ -2,7 +2,7 @@ var CompactMenu = {
 
 // constants {{{1
 
-DEBUG: false,
+DEBUG: 'true' == '@debug@',
 
 PREFROOT_COMPACTMENU:    'compact.menu.',
 PREFBASE_HIDEMENU:       'hidemenu.',

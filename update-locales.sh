@@ -1,21 +1,59 @@
 #!/bin/sh
 
 # mode: tar or empty or skip
-mode=$1
+mode=
+# build_mode: 1 or empty
+build_mode=
+
+# Babelzilla options
 extension_id=4689
 domain='www.babelzilla.org'
-project_dir="$(cd $(dirname "$0");pwd)/src"
-locale_dir="$project_dir/chrome/locale"
-manifest_file="$project_dir/chrome.manifest"
+
+project_dir="$(cd $(dirname "$0");pwd)"
+source_dir="$project_dir/src"
+locale_dir="$source_dir/chrome/locale"
+manifest_file="$source_dir/chrome.manifest"
+build_dir="$project_dir/build"
+manifest_tmp="$build_dir/chrome.manifest.update-locales-$$.tmp"
+
+raise() { echo "$1"; exit 1; }
 
 # show help
+show_help() {
+    cat <<HELP
+Usage: ${0##*/} [options] [mode]
+
+Options:
+	--[no-]build  : Fetch to build directory
+
+Update modes: (for not been translated lines)
+	tar   : Fill by default lang
+        empty : Output empty string
+        skip  : Skip lines (default)
+
+HELP
+    [ -n "$1" ] && raise "$1"
+    exit 1
+}
+
+# parse options
+while [ 0 -lt $# ]; do
+    case "$1" in
+        --build) build_mode=1;;
+        --no-build) build_mode=;;
+        -*) show_help "Unknown option '$1'";;
+        *) [ -n "$mode" ] && show_help; mode="$1";;
+    esac
+    shift
+done
+
 mode=${mode:=skip}
-if [ tar != $mode -a empty != $mode -a skip != $mode ]; then
-    echo "Usage: ${0##*/} [mode]"
-    echo "Options:"
-    echo "	mode	'tar', 'empty' or 'skip'. (default: 'skip')"
-    exit -1
-fi
+[ tar != $mode -a empty != $mode -a skip != $mode ] && show_help "Unknown mode '$mode'"
+
+[ -n "$build_mode" ] && locale_dir="$build_dir/${locale_dir#$source_dir/}"
+
+[ -d "$locale_dir" ] || raise "Locales directory not found"
+[ -f "$manifest_file" ] || raise "Manifest file not found"
 
 # get user and password
 echo "Login to $domain"
@@ -37,7 +75,7 @@ login_data="username=$BABELZILLA_USER&passwd=$BABELZILLA_PASS&option=ipblogin&ta
 login_url="http://$domain/index.php?option=com_ipblogin&task=login"
 cookies=$(wget -q -O - --save-headers --no-cache --post-data "$login_data" "$login_url" \
     | sed -n '/^Set-Cookie: /{s/^Set-Cookie: \(.[^;]*\).*/\1/;H};/<input type="submit".*value="Logout"/{g;s/^\n\+//;s/\n/;/g;p;q}')
-[ -z "$cookies" ] && echo 'Failed' && exit -1
+[ -z "$cookies" ] && raise 'Failed'
 echo 'OK'
 
 # download and extract
@@ -61,9 +99,9 @@ elif [ $mode == skip ]; then
 fi
 
 # update manifest
-tmp_file="${TEMP=.}/update-locales.sh.manifest"
+rm -f "$manifest_tmp" || raise "Cannot remove tmporary file"
 ls "$locale_dir" \
     | sed 's#\(.*\)#locale\tcompact\t\1\tjar:compact.jar!/locale/\1/compact/#' \
-    > "$tmp_file"
-sed -i "/^locale\>/d;/^# locales/r $tmp_file" "$manifest_file"
-rm "$tmp_file"
+    > "$manifest_tmp"
+sed -i "/^locale\>/d;/^# locales/r $manifest_tmp" "$manifest_file"
+rm -f "$manifest_tmp"
