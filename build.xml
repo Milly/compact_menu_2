@@ -12,8 +12,8 @@
 	<property name="build.dir" value="build" />
 	<property name="target.app" value="fx+tb+sb+sm" />
 	<xmlproperty file="${src.dir}/install.rdf" />
-	<property name="build.mode.file" value="build.mode" />
-	<property file="${build.mode.file}" prefix="last." />
+	<property name="condition.file" value="build.condition" />
+	<property file="${condition.file}" prefix="last." />
 
 	<!-- resources -->
 
@@ -67,7 +67,7 @@
 		<delete includeEmptyDirs="true">
 			<fileset dir="${dest.dir}" includes="*.xpi" />
 			<fileset dir="${build.dir}" />
-			<fileset file="${build.mode.file}" />
+			<fileset file="${condition.file}" />
 		</delete>
 	</target>
 
@@ -107,7 +107,7 @@
 	</target>
 
 	<target name="chrome" unless="chrome.no-updates">
-		<echo message="debug.mode=${debug.mode}&#10;" file="${build.mode.file}" />
+		<echo message="debug.mode=${debug.mode}&#10;" file="${condition.file}" />
 		<delete dir="${chrome.build.dir}" />
 		<copy todir="${chrome.build.dir}" encoding="UTF-8">
 			<fileset-chrome.sources excludes="${binary.files}" />
@@ -119,7 +119,7 @@
 	</target>
 
 	<target name="update-locales" depends="chrome" if="update-locales.mode">
-		<echo message="update-locales.mode=${update-locales.mode}&#10;" file="${build.mode.file}" append="true" />
+		<echo message="update-locales.mode=${update-locales.mode}&#10;" file="${condition.file}" append="true" />
 		<exec executable="sh" failonerror="true">
 			<arg line="update-locales.sh --build ${update-locales.mode}" />
 		</exec>
