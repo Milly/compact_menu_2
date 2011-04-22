@@ -24,8 +24,6 @@
 
 	<property name="binary.files" value="**/*.png" />
 
-	<property name="xpi.file" value="${ant.project.name}-${RDF.Description.em:version}-${target.app}.xpi" />
-	<property name="xpi.path" value="${dest.dir}/${xpi.file}" />
 	<property name="jar.file" value="compact.jar" />
 	<property name="jar.path" value="${build.dir}/${jar.file}" />
 	<property name="chrome.src.dir" value="${src.dir}/chrome" />
@@ -90,6 +88,14 @@
 				</uptodate>
 			</and>
 		</condition>
+		<condition property="xpi.release" value="-develop" else="">
+			<or>
+				<isset property="debug" />
+				<not><equals arg1="${update-locales.mode}" arg2="tar" /></not>
+			</or>
+		</condition>
+		<property name="xpi.file" value="${ant.project.name}-${RDF.Description.em:version}-${target.app}${xpi.release}.xpi" />
+		<property name="xpi.path" value="${dest.dir}/${xpi.file}" />
 	</target>
 
 	<target name="init-filters" depends="init-filters-debug,init-filters-release" />
