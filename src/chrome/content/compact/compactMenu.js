@@ -464,6 +464,10 @@ dispatchKeyEvent: function CM_dispatchKeyEvent(aItem, aKeyCode, aCharCode) {
   aItem.dispatchEvent(event);
 },
 
+isMenuAccessKeyFocuses: function CM_isMenuAccessKey() {
+  return nsPreferences.getBoolPref('ui.key.menuAccessKeyFocuses');
+},
+
 isMenuAccessKey: function CM_isMenuAccessKey(aEvent, aCheckKeyCode) {
   var accessKey = nsPreferences.getIntPref('ui.key.menuAccessKey');
   if (aCheckKeyCode) {
@@ -994,12 +998,14 @@ onkeydown: function CM_onkeydown(aEvent) {
 onkeyup: function CM_onkeyup(aEvent) {
   if (this._menuKeyPressing && this.isMenuAccessKey(aEvent, true)) {
     this._menuKeyPressing = false;
-    aEvent.stopPropagation();
-    if (!this._menuOpenCanceled) {
-      this.delayBundleCall('open_menupopup', 50, this.bind(function CM_open_menupoup() {
-        if (!this._menuOpenCanceled)
-          this.openMenuPopup();
-      }));
+    if (this.isMenuAccessKeyFocuses()) {
+      aEvent.stopPropagation();
+      if (!this._menuOpenCanceled) {
+        this.delayBundleCall('open_menupopup', 50, this.bind(function CM_open_menupoup() {
+          if (!this._menuOpenCanceled)
+            this.openMenuPopup();
+        }));
+      }
     }
   }
 },
