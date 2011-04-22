@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# options {{{1
+
 # mode: tar or empty or skip
 mode=
 # build_mode: 1 or empty
@@ -16,6 +18,7 @@ manifest_file="$source_dir/chrome.manifest"
 build_dir="$project_dir/build"
 manifest_tmp="$build_dir/chrome.manifest.update-locales-$$.tmp"
 
+# functions {{{1
 raise() { echo "$1"; exit 1; }
 
 # show help
@@ -36,7 +39,7 @@ HELP
     exit 1
 }
 
-# parse options
+# parse options {{{1
 while [ 0 -lt $# ]; do
     case "$1" in
         --build) build_mode=1;;
@@ -55,7 +58,7 @@ mode=${mode:=skip}
 [ -d "$locale_dir" ] || raise "Locales directory not found"
 [ -f "$manifest_file" ] || raise "Manifest file not found"
 
-# get user and password
+# get user and password {{{1
 echo "Login to $domain"
 echo -n 'Login: '
 if [ -z "$BABELZILLA_USER" ]; then
@@ -69,7 +72,7 @@ if [ -z "$BABELZILLA_PASS" ]; then
     echo ''
 fi
 
-# login
+# login {{{1
 echo -n 'Logging in...'
 login_data="username=$BABELZILLA_USER&passwd=$BABELZILLA_PASS&option=ipblogin&task=login"
 login_url="http://$domain/index.php?option=com_ipblogin&task=login"
@@ -78,7 +81,7 @@ cookies=$(wget -q -O - --save-headers --no-cache --post-data "$login_data" "$log
 [ -z "$cookies" ] && raise 'Failed'
 echo 'OK'
 
-# download and extract
+# download and extract {{{1
 mv "$locale_dir/en-US" "$locale_dir/en-US.saved"
 locales_url="http://$domain/index.php?option=com_wts&Itemid=88&type=download$mode&extension=$extension_id"
 wget -O - --header "Cookie: $cookies" "$locales_url" \
@@ -86,7 +89,7 @@ wget -O - --header "Cookie: $cookies" "$locales_url" \
 rm -rf "$locale_dir/en-US"
 mv "$locale_dir/en-US.saved" "$locale_dir/en-US"
 
-# remove empty locale
+# remove empty locale {{{1
 if [ $mode == tar ]; then
     for d in "$locale_dir"/*; do
         [ en-US == ${d##*/} ] && continue
@@ -98,7 +101,7 @@ elif [ $mode == skip ]; then
     done
 fi
 
-# update manifest
+# update manifest {{{1
 rm -f "$manifest_tmp" || raise "Cannot remove tmporary file"
 ls "$locale_dir" \
     | sed 's#\(.*\)#locale\tcompact\t\1\tjar:compact.jar!/locale/\1/compact/#' \
