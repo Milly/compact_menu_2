@@ -36,6 +36,6 @@
       onpopupshowing="return CompactMenu.setMenuTooltip(this, document.tooltipNode);" />
   <menupopup id="main-menu-popup"
       onpopupshowing="if (this == event.target) CompactMenu.menuIt(this);"
-      onpopuphidden="if (this == event.target) CompactMenu.hideMenuBar();"/>
+      onpopuphidden="if (this == event.target) CompactMenu.showHideMenuBar();"/>
 
 </overlay>
