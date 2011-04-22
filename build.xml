@@ -12,6 +12,8 @@
 	<property name="build.dir" value="build" />
 	<property name="target.app" value="fx+tb+sb+sm" />
 	<xmlproperty file="${src.dir}/install.rdf" />
+	<property name="build.mode.file" value="build.mode" />
+	<property file="${build.mode.file}" prefix="last." />
 
 	<!-- resources -->
 
@@ -26,16 +28,18 @@
 	<property name="xpi.path" value="${dest.dir}/${xpi.file}" />
 	<property name="jar.file" value="compact.jar" />
 	<property name="jar.path" value="${build.dir}/${jar.file}" />
+	<property name="chrome.src.dir" value="${src.dir}/chrome" />
 	<property name="chrome.build.dir" value="${build.dir}/chrome" />
 
 	<presetdef name="fileset-chrome.sources">
-		<fileset id="chrome.sources" dir="${src.dir}/chrome" />
+		<fileset id="chrome.sources" dir="${chrome.src.dir}" />
 	</presetdef>
 	<fileset id="xpi.sources" dir="${src.dir}">
 		<include name="install.rdf" />
 		<include name="chrome.manifest" />
 		<include name="defaults/**" />
 	</fileset>
+
 
 	<!-- main targets -->
 
@@ -56,9 +60,6 @@
 			<fileset refid="xpi.sources" />
 			<fileset file="${jar.path}" />
 		</zip>
-		<condition property="debug.mode" value="YES" else="NO">
-			<isset property="debug" />
-		</condition>
 		<echo message="Debug: ${debug.mode}" />
 	</target>
 	
@@ -66,12 +67,30 @@
 		<delete includeEmptyDirs="true">
 			<fileset dir="${dest.dir}" includes="*.xpi" />
 			<fileset dir="${build.dir}" />
+			<fileset file="${build.mode.file}" />
 		</delete>
 	</target>
 
 	<!-- internal targets -->
 
-	<target name="init" depends="init-filters" />
+	<target name="init" depends="init-properties,init-filters" />
+
+	<target name="init-properties">
+		<condition property="debug.mode" value="YES" else="NO">
+			<isset property="debug" />
+		</condition>
+		<condition property="chrome.no-updates">
+			<and>
+				<equals arg1="${debug.mode}" arg2="${last.debug.mode}" />
+				<not><isset property="update-locales.mode" /></not>
+				<not><isset property="last.update-locales.mode" /></not>
+				<uptodate property="chrome.no-updates">
+					<srcfiles dir="${chrome.src.dir}" />
+					<mapper type="glob" from="${chrome.src.dir}/*" to="${chrome.build.dir}/*" />
+				</uptodate>
+			</and>
+		</condition>
+	</target>
 
 	<target name="init-filters" depends="init-filters-debug,init-filters-release" />
 
@@ -88,16 +107,19 @@
 	</target>
 
 	<target name="chrome" unless="chrome.no-updates">
-		<copy todir="${chrome.build.dir}" overwrite="true" encoding="UTF-8">
+		<echo message="debug.mode=${debug.mode}&#10;" file="${build.mode.file}" />
+		<delete dir="${chrome.build.dir}" />
+		<copy todir="${chrome.build.dir}" encoding="UTF-8">
 			<fileset-chrome.sources excludes="${binary.files}" />
 			<filterset refid="debug-filter" />
 		</copy>
-		<copy todir="${chrome.build.dir}" overwrite="true">
+		<copy todir="${chrome.build.dir}">
 			<fileset-chrome.sources includes="${binary.files}" />
 		</copy>
 	</target>
 
 	<target name="update-locales" depends="chrome" if="update-locales.mode">
+		<echo message="update-locales.mode=${update-locales.mode}&#10;" file="${build.mode.file}" append="true" />
 		<exec executable="sh" failonerror="true">
 			<arg line="update-locales.sh --build ${update-locales.mode}" />
 		</exec>
