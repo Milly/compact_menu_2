@@ -971,6 +971,7 @@ bind: function CM_bind(aFunc) {
 
 _menuKeyPressing: false,
 _menuOpenCanceled: false,
+_menuClosing: false,
 
 onload: function CM_onload(aEvent) {
   this.init();
@@ -1010,8 +1011,8 @@ onkeydown: function CM_onkeydown(aEvent) {
   var pressing = this.isMenuAccessKey(aEvent, true);
   if (pressing && !this._menuKeyPressing) {
     var menuPopup = this.getMenuPopup();
-    this._menuOpenCanceled = menuPopup && 'open' == menuPopup.state ||
-                             !this.isMenuBarHidden();
+    this._menuClosing = menuPopup && 'open' == menuPopup.state;
+    this._menuOpenCanceled = this._menuClosing || !this.isMenuBarHidden();
   }
   this._menuKeyPressing = pressing;
 },
@@ -1020,7 +1021,8 @@ onkeyup: function CM_onkeyup(aEvent) {
   if (this._menuKeyPressing && this.isMenuAccessKey(aEvent, true)) {
     this._menuKeyPressing = false;
     if (this.isMenuAccessKeyFocuses()) {
-      aEvent.stopPropagation();
+      if (!this._menuOpenCanceled || this._menuClosing)
+        aEvent.stopPropagation();
       if (!this._menuOpenCanceled) {
         this.delayBundleCall('open_menupopup', 50, this.bind(function CM_open_menupoup() {
           if (!this._menuOpenCanceled)
