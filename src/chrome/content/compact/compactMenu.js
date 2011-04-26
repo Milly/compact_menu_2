@@ -800,6 +800,8 @@ initIcon: function CM_initIcon() {
   this.loadIcon();
 },
 
+_overlayLoading: false,
+
 initMainToolbar: function CM_initMainToolbar() {
   var menubar = this.getMainToolbar();
 
@@ -815,11 +817,30 @@ initMainToolbar: function CM_initMainToolbar() {
     this.persist_without_CompactMenu.apply(this, arguments);
   });
 
+  this.hookFunction([document, 'loadOverlay'], function CM_loadOverlay(aUrl, aObserver) {
+    CompactMenu._overlayLoading = true;
+    var hookObserver = {
+      origObserver: aObserver,
+      observe: function CM_loadOverlay_observe() {
+        CompactMenu._overlayLoading = false;
+        if (this.origObserver && this.origObserver.observe)
+          this.origObserver.observe.apply(this.origObserver, arguments);
+      }
+    }
+    this.loadOverlay_without_CompactMenu(aUrl, hookObserver)
+  });
+
   this.addEventListener(menubar, 'DOMAttrModified',
                         this.bind(function CM_initMainToolbar_DOMAttrModified(aEvent) {
     if (this.HIDE_ATTRIBUTE == aEvent.attrName) {
-      var pref = this.toToolbarPrefId(aEvent.target);
-      this.setBoolPref(pref, 'true' == String(aEvent.newValue), true);
+      var newValue = 'true' == String(aEvent.newValue);
+      var prevValue = 'true' == String(aEvent.prevValue);
+      if (this._overlayLoading && !newValue && prevValue) {
+        aEvent.target[this.HIDE_ATTRIBUTE] = true;
+      } else {
+        var pref = this.toToolbarPrefId(aEvent.target);
+        this.setBoolPref(pref, newValue, true);
+      }
     }
   }), false);
 
