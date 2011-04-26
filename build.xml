@@ -82,9 +82,9 @@
 				<equals arg1="${debug.mode}" arg2="${last.debug.mode}" />
 				<not><isset property="update-locales.mode" /></not>
 				<not><isset property="last.update-locales.mode" /></not>
-				<uptodate property="chrome.no-updates">
-					<srcfiles dir="${chrome.src.dir}" />
-					<mapper type="glob" from="${chrome.src.dir}/*" to="${chrome.build.dir}/*" />
+				<uptodate>
+					<srcfiles dir="." includes="${chrome.src.dir}/**" />
+					<globmapper from="${chrome.src.dir}/*" to="${chrome.build.dir}/*" handledirsep="true" />
 				</uptodate>
 			</and>
 		</condition>
