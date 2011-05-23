@@ -676,7 +676,9 @@ init: function CM_init() {
   this.mainWindowInitializing = true;
 
   if (this.application.isFx) {
-    if (0 <= this.application.compare("3.6a")) {
+    if (0 <= this.application.compare("4.0a")) {
+      this.initToolbarContextMenu_Fx40();
+    } else if (0 <= this.application.compare("3.6a")) {
       this.initToolbarContextMenu_Fx36();
     } else {
       this.initToolbarContextMenu_FxTb30();
@@ -845,6 +847,18 @@ initMainToolbar: function CM_initMainToolbar() {
   }), false);
 
   menubar[this.HIDE_ATTRIBUTE] = this.isToolbarHidden(menubar);
+},
+
+initToolbarContextMenu_Fx40: function CM_initToolbarContextMenu_Fx40() {
+  this.initToolbarContextMenu_Fx36();
+  this.hookFunction('updateAppButtonDisplay', function CM_updateAppButtonDisplay() {
+    var menubar = CompactMenu.getMainToolbar();
+    var autohide = menubar.getAttribute('autohide');
+    menubar.setAttribute('autohide', CompactMenu.isToolbarHidden(menubar));
+    updateAppButtonDisplay_without_CompactMenu.apply(this, arguments);
+    menubar.setAttribute('autohide', autohide);
+  });
+  updateAppButtonDisplay();
 },
 
 initToolbarContextMenu_Fx36: function CM_initToolbarContextMenu_Fx36() {
