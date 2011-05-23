@@ -4,6 +4,7 @@ skin	compact	classic/1.0	jar:compact.jar!/skin/classic/compact/
 # locales
 locale	compact	da	jar:compact.jar!/locale/da/compact/
 locale	compact	de	jar:compact.jar!/locale/de/compact/
+locale	compact	el	jar:compact.jar!/locale/el/compact/
 locale	compact	en-US	jar:compact.jar!/locale/en-US/compact/
 locale	compact	es	jar:compact.jar!/locale/es/compact/
 locale	compact	es-ES	jar:compact.jar!/locale/es-ES/compact/

@@ -1,0 +1,23 @@
+<!ENTITY menu.label "Συμπαγές μενού">
+<!ENTITY bookmarks.label "Συμπαγείς σελιδοδείκτες">
+<!ENTITY menuPref.caption "Επιλέξτε τα μενού που θέλετε να εμφανίζονται στο &apos;Συμπαγές μενού&apos;">
+<!ENTITY compactMenu.label "Μενού">
+<!ENTITY compactMenu.key "Μ">
+<!ENTITY menubarCmd.label "Εργαλειοθήκη μενού">
+<!ENTITY menubarCmd.accesskey "θ">
+<!ENTITY iconPref.caption "Αλλαγή εικονιδίου του &apos;Συμπαγούς μενού&apos;">
+<!ENTITY iconPref.accesskey "κ">
+<!ENTITY iconFilePicker.label "Αναζήτηση...">
+<!ENTITY iconFilePicker.accesskey "ν">
+<!ENTITY iconFilePicker.title "Επιλέξτε εικονίδιο για το Συμπαγές μενού">
+<!ENTITY iconMultiple.label "Πολλαπλά εικονίδια">
+<!ENTITY iconMultiple.accesskey "Π">
+<!ENTITY iconMultiple.help "Επιλέξτε αυτό, εάν η εικόνα περιέχει κανονικό, κατάδειξης και ενεργό εικονίδιο.">
+<!ENTITY iconMultiple.normal.help "Κανονικό εικονίδιο (Πάνω)">
+<!ENTITY iconMultiple.hover.help "Εικονίδιο κατάδειξης (Μέση)">
+<!ENTITY iconMultiple.active.help "Ενεργό εικονίδιο (Κάτω)">
+<!ENTITY iconNoBorder.label "Χωρίς περίγραμμα">
+<!ENTITY iconNoBorder.accesskey "Χ">
+<!ENTITY iconFixSize.label "Σταθερό μέγεθος εικονιδίου">
+<!ENTITY iconFixSize.accesskey "Σ">
+<!ENTITY compactMenuButtonAdded.message "Το κουμπί &apos;Συμπαγές μενού&apos; έχει προστεθεί">
