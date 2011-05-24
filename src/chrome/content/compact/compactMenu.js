@@ -658,6 +658,41 @@ hookFunction: function CM_hookFunction(aTarget, aNewFunc) {
   return false;
 },
 
+hookAttribute: function CM_hookAttribute(aTarget, aAttrs, aCallback) {
+  var has = {}, org = {};
+  var hooks = {
+    getAttribute: function(name) {
+      return (null === aAttrs[name]) ? null :
+                    (name in aAttrs) ? String(aAttrs[name]) :
+                                       org.getAttribute.apply(this, arguments);
+    },
+    hasAttribute: function(name) {
+      return (null === aAttrs[name]) ? true :
+                                       org.hasAttribute.apply(this, arguments);
+    }
+  };
+  for (let method in hooks) {
+    has[method] = aTarget.hasOwnProperty(method);
+    org[method] = aTarget[method];
+    aTarget[method] = hooks[method];
+  }
+
+  try {
+    let callback = aCallback, obj = null, args = [];
+    if ('object' == typeof aCallback) {
+      callback = aCallback[0];
+      obj      = aCallback[1] || obj;
+      args     = aCallback[2] || args;
+    }
+    return callback.apply(obj, args);
+  } finally {
+    for (let method in hooks) {
+      delete aTarget[method];
+      if (has[method]) aTarget[method] = org[method];
+    }
+  }
+},
+
 get application() {
   var appInfo = Components.classes['@mozilla.org/xre/app-info;1']
                           .getService(Components.interfaces.nsIXULAppInfo);
@@ -860,13 +895,12 @@ initMainToolbar: function CM_initMainToolbar() {
 
 initToolbarContextMenu_Fx40: function CM_initToolbarContextMenu_Fx40() {
   this.initToolbarContextMenu_Fx36();
-  this.hookFunction('updateAppButtonDisplay', function CM_updateAppButtonDisplay() {
-    var menubar = CompactMenu.getMainToolbar();
-    var autohide = menubar.getAttribute('autohide');
+  this.hookFunction('updateAppButtonDisplay',
+                    function CM_updateAppButtonDisplay() {
     var visible = CompactMenu.prefs.getBoolPref(CompactMenu.PREF_APPBUTTON_VISIBLE);
-    menubar.setAttribute('autohide', visible);
-    updateAppButtonDisplay_without_CompactMenu.apply(this, arguments);
-    menubar.setAttribute('autohide', autohide);
+    CompactMenu.hookAttribute(
+      CompactMenu.getMainToolbar(), { autohide: visible },
+      [updateAppButtonDisplay_without_CompactMenu, this, arguments]);
     document.getElementById('cmd_ToggleAppButtonShowHide')
             .setAttribute('checked', visible);
   });
@@ -876,12 +910,11 @@ initToolbarContextMenu_Fx40: function CM_initToolbarContextMenu_Fx40() {
 
 initToolbarContextMenu_Fx36: function CM_initToolbarContextMenu_Fx36() {
   this.initToolbarContextMenu_FxTb30();
-  this.hookFunction('onViewToolbarCommand', function CM_onViewToolbarCommand() {
-    var menubar = CompactMenu.getMainToolbar();
-    var type = menubar.getAttribute('type');
-    menubar.removeAttribute('type');
-    onViewToolbarCommand_without_CompactMenu.apply(this, arguments);
-    menubar.setAttribute('type', type);
+  this.hookFunction('onViewToolbarCommand',
+                    function CM_onViewToolbarCommand() {
+    CompactMenu.hookAttribute(
+      CompactMenu.getMainToolbar(), { type: null },
+      [onViewToolbarCommand_without_CompactMenu, this, arguments]);
   });
   var menubar = this.getMainToolbar();
   menubar.setAttribute('autohide', false);
@@ -891,22 +924,18 @@ initToolbarContextMenu_Fx36: function CM_initToolbarContextMenu_Fx36() {
 initToolbarContextMenu_FxTb30: function CM_initToolbarContextMenu_FxTb30() {
   this.hookFunction('onViewToolbarsPopupShowing',
                     function CM_onViewToolbarsPopupShowing() {
-    var menubar = CompactMenu.getMainToolbar();
-    var type = menubar.getAttribute('type');
-    menubar.removeAttribute('type');
-    onViewToolbarsPopupShowing_without_CompactMenu.apply(this, arguments);
-    menubar.setAttribute('type', type);
+    CompactMenu.hookAttribute(
+      CompactMenu.getMainToolbar(), { type: null },
+      [onViewToolbarsPopupShowing_without_CompactMenu, this, arguments]);
   });
 },
 
 initToolbarContextMenu_Sb: function CM_initToolbarContextMenu_Sb() {
   this.hookFunction('sbOnViewToolbarsPopupShowing',
                     function CM_sbOnViewToolbarsPopupShowing() {
-    var menubar = CompactMenu.getMainToolbar();
-    var type = menubar.getAttribute('type');
-    menubar.removeAttribute('type');
-    sbOnViewToolbarsPopupShowing_without_CompactMenu.apply(this, arguments);
-    menubar.setAttribute('type', type);
+    CompactMenu.hookAttribute(
+      CompactMenu.getMainToolbar(), { type: null },
+      [sbOnViewToolbarsPopupShowing_without_CompactMenu, this, arguments]);
   });
 },
 
