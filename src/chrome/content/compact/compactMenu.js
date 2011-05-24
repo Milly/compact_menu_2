@@ -451,10 +451,9 @@ setMenuTooltip: function CM_setMenuTooltip(aTooltip, aNode) {
     var menus = this.mapMenus(function(aMenu) {
       return aMenu.hidden ? undefined : aMenu.getAttribute('label');
     });
-    var text = menus
-      .slice(0, 2)
-      .concat(2 < menus.length ? ['...'] : [])
-      .join(' ');
+    var text = menus.slice(0, 2)
+                    .concat(2 < menus.length ? ['...'] : [])
+                    .join(' ');
     if (text) {
       aTooltip.setAttribute('label', text);
       return true;
@@ -627,7 +626,7 @@ toLocalFile: function CM_toLocalFile(aFile) {
   if (aFile instanceof Components.interfaces.nsILocalFile)
     return aFile
   var localFile = Components.classes['@mozilla.org/file/local;1']
-    .createInstance(Components.interfaces.nsILocalFile);
+                            .createInstance(Components.interfaces.nsILocalFile);
   localFile.initWithPath(aFile.path);
   return localFile;
 },
@@ -1035,10 +1034,10 @@ delayBundleCall: function CM_delayBundleCall(aId, aDelay, aFunc) {
     timers[aId].cancel();
   } else {
     timers[aId] = Components.classes["@mozilla.org/timer;1"]
-                           .createInstance(Components.interfaces.nsITimer);
+                            .createInstance(Components.interfaces.nsITimer);
   }
   timers[aId].init({ observe: aFunc }, aDelay,
-                  Components.interfaces.nsITimer.TYPE_ONE_SHOT);
+                   Components.interfaces.nsITimer.TYPE_ONE_SHOT);
 },
 
 bind: function CM_bind(aFunc) {
