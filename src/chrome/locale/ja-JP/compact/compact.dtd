@@ -5,6 +5,8 @@
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "メニューバー">
 <!ENTITY menubarCmd.accesskey "M">
+<!ENTITY viewAppButton.label "アプリボタンを表示">
+<!ENTITY viewAppButton.key "P">
 <!ENTITY iconPref.caption "Compact Menu のアイコンを変更する">
 <!ENTITY iconPref.accesskey "I">
 <!ENTITY iconFilePicker.label "参照...">

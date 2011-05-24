@@ -42,6 +42,18 @@
   <popupset id="mainPopupSet">
     <tooltip id="menu-button-tooltip" />
     <menupopup id="main-menu-popup"/>
+    <menupopup id="compactmenu-template-popup">
+      <menuitem id="compactmenu-toggleAppButtonShowHide"
+                type="checkbox"
+                label="&viewAppButton.label;"
+                accesskey="&viewAppButton.key;"
+                command="cmd_ToggleAppButtonShowHide" />
+    </menupopup>
   </popupset>
+
+  <commandset id="mainCommandSet">
+    <command id="cmd_ToggleAppButtonShowHide"
+             oncommand="CompactMenu.toggleAppButtonShowHide()" />
+  </commandset>
 
 </overlay>

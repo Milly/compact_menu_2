@@ -14,6 +14,7 @@ PREF_ICON_MULTIPLE:      'icon.multiple',
 PREF_ICON_NOBORDER:      'icon.noborder',
 PREF_ICON_FIXSIZE:       'icon.fixsize',
 PREFBASE_INITIALIZED:    'initialized.',
+PREF_APPBUTTON_VISIBLE:  'appbutton.visible',
 
 MAINWINDOWS: [
     'navigator:browser',
@@ -220,6 +221,9 @@ onPrefChanged: function CM_onPrefChanged(aName) {
     case this.PREF_ICON_FIXSIZE:
       this.delayBundleCall('change_icon', 20, this.bind(this.initIcon));
       break;
+    case this.PREF_APPBUTTON_VISIBLE:
+      if (window.updateAppButtonDisplay) updateAppButtonDisplay();
+      break;
     default:
       if (0 == aName.indexOf(this.PREFBASE_HIDETOOLBAR) ||
           0 == aName.indexOf(this.PREFBASE_HIDEMENU))
@@ -384,6 +388,11 @@ hideAll: function CM_hideAll() {
   this.showHideItems();
   this.showHideMenuBar();
   this.showHideToolbar();
+},
+
+toggleAppButtonShowHide: function CM_toggleAppButtonShowHide() {
+  var visible = this.prefs.getBoolPref(this.PREF_APPBUTTON_VISIBLE);
+  this.prefs.setBoolPref(this.PREF_APPBUTTON_VISIBLE, !visible);
 },
 
 isRTL: function CM_isRTL() {
@@ -854,11 +863,15 @@ initToolbarContextMenu_Fx40: function CM_initToolbarContextMenu_Fx40() {
   this.hookFunction('updateAppButtonDisplay', function CM_updateAppButtonDisplay() {
     var menubar = CompactMenu.getMainToolbar();
     var autohide = menubar.getAttribute('autohide');
-    menubar.setAttribute('autohide', CompactMenu.isToolbarHidden(menubar));
+    var visible = CompactMenu.prefs.getBoolPref(CompactMenu.PREF_APPBUTTON_VISIBLE);
+    menubar.setAttribute('autohide', visible);
     updateAppButtonDisplay_without_CompactMenu.apply(this, arguments);
     menubar.setAttribute('autohide', autohide);
+    document.getElementById('cmd_ToggleAppButtonShowHide')
+            .setAttribute('checked', visible);
   });
   updateAppButtonDisplay();
+  this.initAppButtonShowHideMenu();
 },
 
 initToolbarContextMenu_Fx36: function CM_initToolbarContextMenu_Fx36() {
@@ -898,6 +911,27 @@ initToolbarContextMenu_Sb: function CM_initToolbarContextMenu_Sb() {
 },
 
 initToolbarContextMenu_Sm: function CM_initToolbarContextMenu_Sm() {
+},
+
+initAppButtonShowHideMenu: function CM_initAppButtonShowHideMenu() {
+  var visible = this.prefs.getBoolPref(this.PREF_APPBUTTON_VISIBLE);
+  document.getElementById('cmd_ToggleAppButtonShowHide')
+          .setAttribute('checked', visible);
+
+  var menuitem = document.getElementById('compactmenu-toggleAppButtonShowHide');
+  var items = document.evaluate('//*[@command="cmd_ToggleTabsOnTop"]',
+                                document.documentElement, null,
+                                XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+  for (let i = 0; i < items.snapshotLength; ++i) {
+    let prev = items.snapshotItem(i);
+    if ('menuitem' == prev.nodeName) {
+      let item = menuitem.cloneNode(true);
+      item.id += i;
+      if (!prev.hasAttribute('accesskey'))
+        item.removeAttribute('accesskey');
+      prev.parentNode.insertBefore(item, prev.nextSibling);
+    }
+  }
 },
 
 onViewToolbarCommand: function CM_onViewToolbarCommand() {
