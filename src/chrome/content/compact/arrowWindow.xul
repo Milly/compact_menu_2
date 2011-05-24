@@ -8,26 +8,35 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
          xmlns:svg="http://www.w3.org/2000/svg">
 
-  <panel id="compactArrowPanel" noautofocus="true" level="parent"
+  <panel id="compactArrowPanel"
+         noautofocus="true"
+         level="parent"
          onclick="this.hidePopup();">
     <stack>
       <vbox id="compactArrowMessageContainer">
-        <description class="header" value="&compactMenuButtonAdded.message;" />
+        <description class="header"
+                     value="&compactMenuButtonAdded.message;" />
       </vbox>
       <vbox id="compactArrowImageContainer">
         <svg:svg width="50" height="70">
           <svg:defs>
-            <svg:linearGradient id="compactArrowPanel_svg_bg" x1="0" y1="0" x2="0" y2="1">
+            <svg:linearGradient id="compactArrowPanel_svg_bg"
+                                x1="0" y1="0" x2="0" y2="1">
               <svg:stop stop-color="#ddeeff" offset="0"/>
               <svg:stop stop-color="#22ccff" offset="1"/>
             </svg:linearGradient>
-            <svg:filter id="compactArrowPanel_svg_shadow" x="-50%" y="-50%" width="200%" height="200%">
+            <svg:filter id="compactArrowPanel_svg_shadow"
+                        x="-50%" y="-50%" width="200%" height="200%">
               <svg:feGaussianBlur stdDeviation="2" in="SourceGraphic"/>
             </svg:filter>
           </svg:defs>
           <svg:g stroke-width="3">
-            <svg:path d="m 3,3 v 30 c 0,20 15,30 30,30 c -10,-10 -10,-30 -10,-35 h 15 z" fill="#000000" stroke="#000000" opacity="0.5" filter="url(#compactArrowPanel_svg_shadow)" transform="translate(2,2)" />
-            <svg:path d="m 3,3 v 30 c 0,20 15,30 30,30 c -10,-10 -10,-30 -10,-35 h 15 z" fill="url(#compactArrowPanel_svg_bg)" stroke="#0088cc" />
+            <svg:path d="m 3,3 v 30 c 0,20 15,30 30,30 c -10,-10 -10,-30 -10,-35 h 15 z"
+                      fill="#000000" stroke="#000000" opacity="0.5"
+                      filter="url(#compactArrowPanel_svg_shadow)"
+                      transform="translate(2,2)" />
+            <svg:path d="m 3,3 v 30 c 0,20 15,30 30,30 c -10,-10 -10,-30 -10,-35 h 15 z"
+                      fill="url(#compactArrowPanel_svg_bg)" stroke="#0088cc" />
           </svg:g>
         </svg:svg>
       </vbox>

@@ -9,24 +9,23 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <toolbar id="toolbar-menubar"
-      togglemenuitem="cmd_viewmenubar"
-      toolbarname="&menubarCmd.label;"
-      accesskey="&menubarCmd.accesskey;" />
+           togglemenuitem="cmd_viewmenubar"
+           toolbarname="&menubarCmd.label;"
+           accesskey="&menubarCmd.accesskey;" />
 
   <broadcasterset id="navBroadcasters">
     <broadcaster id="cmd_viewmenubar"
-        oncommand="goToggleToolbar('toolbar-menubar','cmd_viewmenubar');"
-        checked="true"/>
+                 oncommand="goToggleToolbar('toolbar-menubar','cmd_viewmenubar');"
+                 checked="true"/>
   </broadcasterset>
 
   <menupopup id="view_toolbars_popup">
-    <menuitem
-        label="&menubarCmd.label;"
-        accesskey="&menubarCmd.accesskey;"
-        class="menuitem-iconic"
-        type="checkbox"
-        observes="cmd_viewmenubar"
-        position="1"/>
+    <menuitem label="&menubarCmd.label;"
+              accesskey="&menubarCmd.accesskey;"
+              class="menuitem-iconic"
+              type="checkbox"
+              observes="cmd_viewmenubar"
+              position="1"/>
   </menupopup>
 
   <toolbarpalette id="BrowserToolbarPalette">

@@ -8,26 +8,26 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <menupopup id="event-dialog-toolbar-context-menu"
-      onpopupshowing="CompactMenu.onViewToolbarsPopupShowing(event, 'ViewToolbarsMenubar');">
+             onpopupshowing="CompactMenu.onViewToolbarsPopupShowing(event, 'ViewToolbarsMenubar');">
     <menuitem id="ViewToolbarsMenubar"
-        label="&menubarCmd.label;"
-        accesskey="&menubarCmd.accesskey;"
-        type="checkbox"
-        checked="true"
-        oncommand="CompactMenu.onViewToolbarCommand();"
-        position="1"/>
+              label="&menubarCmd.label;"
+              accesskey="&menubarCmd.accesskey;"
+              type="checkbox"
+              checked="true"
+              oncommand="CompactMenu.onViewToolbarCommand();"
+              position="1"/>
     <menuseparator position="2"/>
   </menupopup>
 
   <menupopup id="view-toolbars-menupopup"
-      onpopupshowing="CompactMenu.onViewToolbarsPopupShowing(event, 'view-toolbars-menubar');">
+             onpopupshowing="CompactMenu.onViewToolbarsPopupShowing(event, 'view-toolbars-menubar');">
     <menuitem id="view-toolbars-menubar"
-        label="&menubarCmd.label;"
-        accesskey="&menubarCmd.accesskey;"
-        type="checkbox"
-        checked="true"
-        oncommand="CompactMenu.onViewToolbarCommand();"
-        position="1"/>
+              label="&menubarCmd.label;"
+              accesskey="&menubarCmd.accesskey;"
+              type="checkbox"
+              checked="true"
+              oncommand="CompactMenu.onViewToolbarCommand();"
+              position="1"/>
   </menupopup>
 
   <toolbarpalette id="event-toolbarpalette">

@@ -16,26 +16,31 @@
   </script>
 
   <toolbarbutton id="menu-button"
-      type="menu" class="toolbarbutton-1 compactbutton"
-      label="&menu.label;"
-      tooltip="menu-button-tooltip">
+                 type="menu"
+                 class="toolbarbutton-1 compactbutton"
+                 label="&menu.label;"
+                 tooltip="menu-button-tooltip">
     <menupopup id="menu-button-popup"
-        onpopupshowing="if (this == event.target) CompactMenu.menuIt(this);"/>
+               onpopupshowing="if (this == event.target) CompactMenu.menuIt(this);"/>
   </toolbarbutton>
 
-  <toolbaritem id="compact-menu" align="center" label="&menu.label;">
+  <toolbaritem id="compact-menu"
+               align="center"
+               label="&menu.label;">
     <menubar id="compact-menu-menubar">
-      <menu id="compact-menu-menu" label="&compactMenu.label;" accesskey="&compactMenu.key;">
+      <menu id="compact-menu-menu"
+            label="&compactMenu.label;"
+            accesskey="&compactMenu.key;">
         <menupopup id="compact-menu-popup"
-            onpopupshowing="if (this == event.target) CompactMenu.menuIt(this);"/>
+                   onpopupshowing="if (this == event.target) CompactMenu.menuIt(this);"/>
       </menu>
     </menubar>
   </toolbaritem>
 
   <tooltip id="menu-button-tooltip"
-      onpopupshowing="return CompactMenu.setMenuTooltip(this, document.tooltipNode);" />
+           onpopupshowing="return CompactMenu.setMenuTooltip(this, document.tooltipNode);" />
   <menupopup id="main-menu-popup"
-      onpopupshowing="if (this == event.target) CompactMenu.menuIt(this);"
-      onpopuphidden="if (this == event.target) CompactMenu.showHideMenuBar();"/>
+             onpopupshowing="if (this == event.target) CompactMenu.menuIt(this);"
+             onpopuphidden="if (this == event.target) CompactMenu.showHideMenuBar();"/>
 
 </overlay>

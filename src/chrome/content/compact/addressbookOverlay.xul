@@ -8,8 +8,8 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <toolbar id="addrbook-toolbar-menubar2"
-      toolbarname="&menubarCmd.label;"
-      accesskey="&menubarCmd.accesskey;" />
+           toolbarname="&menubarCmd.label;"
+           accesskey="&menubarCmd.accesskey;" />
 
   <toolbarpalette id="AddressBookToolbarPalette">
     <toolbarbutton id="menu-button" />

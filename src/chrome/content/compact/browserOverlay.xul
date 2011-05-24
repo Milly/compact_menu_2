@@ -18,13 +18,15 @@
   <script type="application/x-javascript" src="chrome://compact/content/compactBookmarks.js"/>
 
   <toolbar id="toolbar-menubar"
-      toolbarname="&menubarCmd.label;"
-      accesskey="&menubarCmd.accesskey;" />
+           toolbarname="&menubarCmd.label;"
+           accesskey="&menubarCmd.accesskey;" />
 
   <toolbarpalette id="BrowserToolbarPalette">
     <toolbarbutton id="menu-button" />
     <toolbaritem id="compact-menu" />
-    <toolbaritem id="compact-bk-menu" align="center" label="&bookmarksMenu.label;">
+    <toolbaritem id="compact-bk-menu"
+                 align="center"
+                 label="&bookmarksMenu.label;">
       <menubar id="compact-bk-menubar">
         <menu label="&bookmarksMenu.label;"
               accesskey="&bookmarksMenu.accesskey;">
@@ -33,10 +35,11 @@
       </menubar>
     </toolbaritem>
     <toolbarbutton id="compact-bk-button"
-        type="menu" container="true"
-        class="toolbarbutton-1 compactbutton"
-        label="&bookmarks.label;"
-        tooltiptext="&bookmarksMenu.label;" />
+                   type="menu"
+                   container="true"
+                   class="toolbarbutton-1 compactbutton"
+                   label="&bookmarks.label;"
+                   tooltiptext="&bookmarksMenu.label;" />
   </toolbarpalette>
 
   <popupset id="mainPopupSet">

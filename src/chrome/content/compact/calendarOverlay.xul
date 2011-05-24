@@ -8,11 +8,11 @@
          xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
 
   <toolbar id="main-toolbar"
-      toolbarname="&menubarCmd.label;"
-      accesskey="&menubarCmd.accesskey;" />
+           toolbarname="&menubarCmd.label;"
+           accesskey="&menubarCmd.accesskey;" />
 
   <menupopup id="toolbar-context-menu"
-      onpopupshowing="sbOnViewToolbarsPopupShowing(event);">
+             onpopupshowing="sbOnViewToolbarsPopupShowing(event);">
     <menuseparator position="1"/>
   </menupopup>
 
