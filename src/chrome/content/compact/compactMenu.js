@@ -956,9 +956,9 @@ initAppButtonShowHideMenu: function CM_initAppButtonShowHideMenu() {
     if ('menuitem' == prev.nodeName) {
       let item = menuitem.cloneNode(true);
       item.id += i;
+      prev.parentNode.insertBefore(item, prev.nextSibling);
       if (!prev.hasAttribute('accesskey'))
         item.removeAttribute('accesskey');
-      prev.parentNode.insertBefore(item, prev.nextSibling);
     }
   }
 },
