@@ -62,3 +62,7 @@ toolbar[collapsed="true"]:first-child + toolbar[collapsed="true"] + toolbar[coll
 #compact-visible-menu-items {
   display: block;
 }
+
+#compact-appmenu-spacer {
+  min-height: 1em;
+}

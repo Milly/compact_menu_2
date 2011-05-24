@@ -59,4 +59,14 @@
              oncommand="CompactMenu.toggleAppButtonShowHide()" />
   </commandset>
 
+  <vbox id="appmenuSecondaryPane">
+    <menu id="compact-appmenu"
+          label="&compactMenu.label;"
+          position="1">
+      <menupopup id="appmenu-menu-popup"
+                 onpopupshowing="if (this == event.target) CompactMenu.menuIt(this);"/>
+    </menu>
+    <spacer id="compact-appmenu-spacer" position="2" />
+  </vbox>
+
 </overlay>

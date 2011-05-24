@@ -75,6 +75,7 @@ POPUPS: [
     'menu-button-popup',
     'compact-menu-popup',
     'main-menu-popup',
+    'appmenu-menu-popup',
   ],
 
 SINGLE_POPUP: 'main-menu-popup',
