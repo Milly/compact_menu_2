@@ -86,6 +86,10 @@ mv "$locale_dir/en-US" "$locale_dir/en-US.saved"
 locales_url="http://$domain/index.php?option=com_wts&Itemid=88&type=download$mode&extension=$extension_id"
 wget -O - --header "Cookie: $cookies" "$locales_url" \
     | tar zxCf "$locale_dir" -
+if [ -d "$locale_dir/locale" ]; then
+    cp -r "$locale_dir/locale/"* "$locale_dir"
+    rm -rf "$locale_dir/locale"
+fi
 rm -rf "$locale_dir/en-US"
 mv "$locale_dir/en-US.saved" "$locale_dir/en-US"
 
