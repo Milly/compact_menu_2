@@ -66,6 +66,10 @@ MENUBARS: [
     'event-menubar',
   ],
 
+APPBUTTONS: [
+    'appmenu-button',
+  ],
+
 ITEMS: [
     'menu-button',
     'compact-menu',
@@ -346,6 +350,10 @@ getTabsToolbar: function CM_getTabsToolbar() {
   return this.getElementByIds(this.TABTOOLBARS);
 },
 
+getAppButton: function CM_getAppButton() {
+  return this.getElementByIds(this.APPBUTTONS);
+},
+
 showHideItems: function CM_showHideItems() {
   this.mapMenus(function(aMenu, aIndex) {
     var id = aMenu.id || aIndex;
@@ -402,6 +410,14 @@ isRTL: function CM_isRTL() {
   return 'rtl' == document.defaultView.getComputedStyle(menubar, '').direction;
 },
 
+checkVisibility: function CM_checkVisibility(aElement) {
+  if (!aElement) return false;
+  do {
+    if (aElement.hidden || aElement.collapsed) return false;
+  } while (aElement = aElement.parentNode);
+  return true;
+},
+
 mapMenus: function CM_mapMenus(aCallback) {
   var res = [];
   var menuContainer = this.getCurrentMenuContainer();
@@ -435,13 +451,16 @@ menuIt: function CM_menuIt(aTargetMenu) {
 openMenuPopup: function CM_openMenuPopup() {
   var popup = this.getMenuPopup();
   if (!popup) return;
-  var x = 0, y = 0;
+  var anchor = null, position = '', x = 0, y = 0;
   if (this.SINGLE_POPUP != popup.id) {
-    var anchor = popup.parentNode;
-    var position = 'after_start';
+    anchor = popup.parentNode;
+    position = 'after_start';
   } else {
-    var anchor = null;
-    var position = '';
+    let appbutton = this.getAppButton();
+    if (appbutton && this.checkVisibility(appbutton)) {
+      anchor = appbutton;
+      position = 'after_start';
+    }
     // ToDo: fix popup position when RTL
   }
   popup.openPopup(anchor, position, x, y, false, false);
