@@ -5,6 +5,8 @@
 <!ENTITY compactMenu.key "М">
 <!ENTITY menubarCmd.label "Панель меню">
 <!ENTITY menubarCmd.accesskey "м">
+<!ENTITY viewAppButton.label "Показать кнопку приложения">
+<!ENTITY viewAppButton.key "ж">
 <!ENTITY iconPref.caption "Изменить значок Compact Menu">
 <!ENTITY iconPref.accesskey "з">
 <!ENTITY iconFilePicker.label "Обзор…">

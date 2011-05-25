@@ -5,6 +5,8 @@
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Menulinje">
 <!ENTITY menubarCmd.accesskey "M">
+<!ENTITY viewAppButton.label "Vis program-knap">
+<!ENTITY viewAppButton.key "V">
 <!ENTITY iconPref.caption "Skift Compact Menus ikon">
 <!ENTITY iconPref.accesskey "S">
 <!ENTITY iconFilePicker.label "Gennemse…">

@@ -5,6 +5,8 @@
 <!ENTITY compactMenu.key "n">
 <!ENTITY menubarCmd.label "Barra de menú">
 <!ENTITY menubarCmd.accesskey "B">
+<!ENTITY viewAppButton.label "Mostrar botón Aplicaciones">
+<!ENTITY viewAppButton.key "p">
 <!ENTITY iconPref.caption "Reemplazar icono de Compact Menu">
 <!ENTITY iconPref.accesskey "R">
 <!ENTITY iconFilePicker.label "Examinar...">

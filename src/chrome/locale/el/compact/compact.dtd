@@ -5,6 +5,8 @@
 <!ENTITY compactMenu.key "Μ">
 <!ENTITY menubarCmd.label "Εργαλειοθήκη μενού">
 <!ENTITY menubarCmd.accesskey "θ">
+<!ENTITY viewAppButton.label "Εμφάνιση κουμπιού εφαρμογής">
+<!ENTITY viewAppButton.key "κ">
 <!ENTITY iconPref.caption "Αλλαγή εικονιδίου του &apos;Συμπαγούς μενού&apos;">
 <!ENTITY iconPref.accesskey "κ">
 <!ENTITY iconFilePicker.label "Αναζήτηση...">

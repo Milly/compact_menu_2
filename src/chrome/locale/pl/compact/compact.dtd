@@ -5,6 +5,8 @@
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Pasek menu">
 <!ENTITY menubarCmd.accesskey "P">
+<!ENTITY viewAppButton.label "Wyświetlaj przycisk aplikacji">
+<!ENTITY viewAppButton.key "c">
 <!ENTITY iconPref.caption "Dodaj/zmień ikonę rozszerzenia">
 <!ENTITY iconPref.accesskey "D">
 <!ENTITY iconFilePicker.label "Przeglądaj…">

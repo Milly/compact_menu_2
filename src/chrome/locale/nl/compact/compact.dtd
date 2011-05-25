@@ -5,6 +5,8 @@
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Menubalk">
 <!ENTITY menubarCmd.accesskey "M">
+<!ENTITY viewAppButton.label "App-knop weergeven">
+<!ENTITY viewAppButton.key "p">
 <!ENTITY iconPref.caption "Pictogram van Compact Menu wijzigen">
 <!ENTITY iconPref.accesskey "P">
 <!ENTITY iconFilePicker.label "Bladeren…">

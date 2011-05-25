@@ -5,6 +5,8 @@
 <!ENTITY compactMenu.key "М">
 <!ENTITY menubarCmd.label "Трака са менијем">
 <!ENTITY menubarCmd.accesskey "Т">
+<!ENTITY viewAppButton.label "Прикажи дугме за сужавање">
+<!ENTITY viewAppButton.key "Д">
 <!ENTITY iconPref.caption "Промени икону компактног менија">
 <!ENTITY iconPref.accesskey "И">
 <!ENTITY iconFilePicker.label "Прегледај...">

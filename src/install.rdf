@@ -13,10 +13,10 @@
 		<em:iconURL>chrome://compact/skin/compact.png</em:iconURL>
 		<em:type>2</em:type>
 
-		<em:translator>Joergen (da-DK)</em:translator>
+		<em:translator>Joergen (da)</em:translator>
 		<em:translator>Fux - BabelZilla.org (de)</em:translator>
-		<em:translator>Grg68 (el)</em:translator>
-		<em:translator>Ninnetyer (es)</em:translator>
+		<em:translator>George Malamas (el)</em:translator>
+		<em:translator>Ninnetyer - Info™ (es)</em:translator>
 		<em:translator>urko (es-ES)</em:translator>
 		<em:translator>Jojaba - BabelZilla (fr)</em:translator>
 		<em:translator>MIKES KASZMÁN István (hu-HU)</em:translator>
@@ -26,12 +26,12 @@
 		<em:translator>Leszek(teo)Życzkowski (pl)</em:translator>
 		<em:translator>Claudio M. Vieira (pt-BR)</em:translator>
 		<em:translator>Carlos Simão (pt-PT)</em:translator>
-		<em:translator>Пирятинский Виталий (ru-RU)</em:translator>
+		<em:translator>Пирятинский Виталий (ru)</em:translator>
 		<em:translator>ДакСРБИЈА (sr)</em:translator>
 		<em:translator>Cecilia B (sv-SE)</em:translator>
 		<em:translator>Anıl Yıldız (tr-TR)</em:translator>
 		<em:translator>Володимир Савчук Volodymyr Savchuk (uk-UA)</em:translator>
-		<em:translator>killfeyliu (zh-CN)</em:translator>
+		<em:translator>killfeyliu, yfdyh000 (yfdyh000@gmail.com) (zh-CN)</em:translator>
 		<em:translator>Tsprajna (zh-TW)</em:translator>
 
 		<em:contributor>Chris Neale</em:contributor>

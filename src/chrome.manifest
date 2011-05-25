@@ -17,7 +17,7 @@ locale	compact	nl	jar:compact.jar!/locale/nl/compact/
 locale	compact	pl	jar:compact.jar!/locale/pl/compact/
 locale	compact	pt-BR	jar:compact.jar!/locale/pt-BR/compact/
 locale	compact	pt-PT	jar:compact.jar!/locale/pt-PT/compact/
-locale	compact	ru-RU	jar:compact.jar!/locale/ru-RU/compact/
+locale	compact	ru	jar:compact.jar!/locale/ru/compact/
 locale	compact	sr	jar:compact.jar!/locale/sr/compact/
 locale	compact	sv-SE	jar:compact.jar!/locale/sv-SE/compact/
 locale	compact	tr-TR	jar:compact.jar!/locale/tr-TR/compact/
