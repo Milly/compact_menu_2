@@ -603,7 +603,7 @@ setIconStyle: function CM_setIconStyle(aIconURI, aWidth, aHeight, aMultiple, aNo
     code += '#menu-button{-moz-image-region:rect(0px,'+aWidth+'px,'+aHeight+'px,0px)!important;}';
   }
   if (aNoBorder)
-    code += '#menu-button{border:none!important;}';
+    code += '#menu-button{border:none!important;padding:0!important;margin:0!important;}';
   if (aFixSize) {
     code += '#menu-button>.toolbarbutton-icon{width:16px!important;height:16px!important;}';
   } else {
