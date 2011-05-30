@@ -106,6 +106,7 @@ elif [ $mode == skip ]; then
 fi
 
 # update manifest {{{1
+[ -d "$build_dir" ] || mkdir -p "$build_dir" || raise "Cannot make build dir"
 rm -f "$manifest_tmp" || raise "Cannot remove tmporary file"
 ls "$locale_dir" \
     | sed 's#\(.*\)#locale\tcompact\t\1\tjar:compact.jar!/locale/\1/compact/#' \
