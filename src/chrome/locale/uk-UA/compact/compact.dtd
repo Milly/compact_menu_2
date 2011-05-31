@@ -5,6 +5,8 @@
 <!ENTITY compactMenu.key "М">
 <!ENTITY menubarCmd.label "Панель меню">
 <!ENTITY menubarCmd.accesskey "П">
+<!ENTITY viewAppButton.label "Показувати кнопку додатку">
+<!ENTITY viewAppButton.key "д">
 <!ENTITY iconPref.caption "Змінити піктограму Compact Menu">
 <!ENTITY iconPref.accesskey "З">
 <!ENTITY iconFilePicker.label "Вибір...">

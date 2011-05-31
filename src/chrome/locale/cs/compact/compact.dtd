@@ -1,0 +1,25 @@
+<!ENTITY menu.label "Kompaktní nabídka">
+<!ENTITY bookmarks.label "Kompaktní záložky">
+<!ENTITY menuPref.caption "Zvolte nabídky, které se mají v Kompaktní nabídce zobrazovat">
+<!ENTITY compactMenu.label "Nabídka">
+<!ENTITY compactMenu.key "N">
+<!ENTITY menubarCmd.label "Hlavní nabídka">
+<!ENTITY menubarCmd.accesskey "H">
+<!ENTITY viewAppButton.label "Zobrazit tlačítko aplikace">
+<!ENTITY viewAppButton.key "p">
+<!ENTITY iconPref.caption "Změnit ikonu kompaktní nabídky">
+<!ENTITY iconPref.accesskey "i">
+<!ENTITY iconFilePicker.label "Procházet...">
+<!ENTITY iconFilePicker.accesskey "P">
+<!ENTITY iconFilePicker.title "Zvolte ikonu pro Kompaktní nabídku">
+<!ENTITY iconMultiple.label "Animované ikony">
+<!ENTITY iconMultiple.accesskey "V">
+<!ENTITY iconMultiple.help "Zaškrtněte toto pole, pokud obrázek obsahuje běžné a aktivní ikony, které se zobrazují při najetí ukazatelem myši nad tlačítko Kompaktní nabídky.">
+<!ENTITY iconMultiple.normal.help "Běžná ikona">
+<!ENTITY iconMultiple.hover.help "Aktivní ikona">
+<!ENTITY iconMultiple.active.help "Stlačené tlačítko">
+<!ENTITY iconNoBorder.label "Bez rámečku">
+<!ENTITY iconNoBorder.accesskey "B">
+<!ENTITY iconFixSize.label "Pevná velikost ikony">
+<!ENTITY iconFixSize.accesskey "P">
+<!ENTITY compactMenuButtonAdded.message "Bylo přidáno tlačítko Kompaktní nabídky">

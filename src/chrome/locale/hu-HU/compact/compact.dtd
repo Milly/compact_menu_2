@@ -5,6 +5,8 @@
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Menü eszköztár">
 <!ENTITY menubarCmd.accesskey "M">
+<!ENTITY viewAppButton.label "Alkalmazás gomb megjelenítése">
+<!ENTITY viewAppButton.key "g">
 <!ENTITY iconPref.caption "A Compact Menu ikonjának testreszabása">
 <!ENTITY iconPref.accesskey "i">
 <!ENTITY iconFilePicker.label "Tallózás...">

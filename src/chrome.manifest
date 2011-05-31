@@ -2,6 +2,7 @@
 content	compact	jar:compact.jar!/content/compact/
 skin	compact	classic/1.0	jar:compact.jar!/skin/classic/compact/
 # locales
+locale	compact	cs	jar:compact.jar!/locale/cs/compact/
 locale	compact	da	jar:compact.jar!/locale/da/compact/
 locale	compact	de	jar:compact.jar!/locale/de/compact/
 locale	compact	el	jar:compact.jar!/locale/el/compact/
