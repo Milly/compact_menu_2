@@ -5,6 +5,8 @@
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Menyfältet">
 <!ENTITY menubarCmd.accesskey "M">
+<!ENTITY viewAppButton.label "Visa Programknappen">
+<!ENTITY viewAppButton.key "P">
 <!ENTITY iconPref.caption "Ändra ikonen för kompaktmeny-knappen">
 <!ENTITY iconPref.accesskey "I">
 <!ENTITY iconFilePicker.label "Bläddra...">

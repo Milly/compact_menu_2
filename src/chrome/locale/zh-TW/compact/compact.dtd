@@ -5,6 +5,8 @@
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "選單工具列">
 <!ENTITY menubarCmd.accesskey "M">
+<!ENTITY viewAppButton.label "顯示應用程式按鈕">
+<!ENTITY viewAppButton.key "P">
 <!ENTITY iconPref.caption "更換「簡潔選單」的圖示">
 <!ENTITY iconPref.accesskey "I">
 <!ENTITY iconFilePicker.label "瀏覽...">
