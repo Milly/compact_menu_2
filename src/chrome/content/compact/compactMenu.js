@@ -592,8 +592,8 @@ setIconStyle: function CM_setIconStyle(aIconURI, aWidth, aHeight, aMultiple, aNo
   const IOS = Components.classes["@mozilla.org/network/io-service;1"]
                         .getService(Components.interfaces.nsIIOService);
 
-  var code = 'data:text/css,@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);'
-           + '#menu-button{list-style-image:url('+encodeURIComponent(aIconURI)+')!important;}';
+  var code = '@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);'
+           + '#menu-button{list-style-image:url('+encodeURI(aIconURI)+')!important;}';
   if (aMultiple) {
     var h1 = Math.ceil(aHeight / 3), h2 = h1 * 2, h3 = h1 * 3;
     code += '#menu-button{-moz-image-region:rect(0px,'+aWidth+'px,'+h1+'px,0px)!important;}'
@@ -610,17 +610,17 @@ setIconStyle: function CM_setIconStyle(aIconURI, aWidth, aHeight, aMultiple, aNo
     code += '#menu-button>.toolbarbutton-icon{width:auto!important;height:auto!important;}';
   }
 
-  this._iconStyle = IOS.newURI(code, null, null);
-  if (!SSS.sheetRegistered(this._iconStyle, SSS.USER_SHEET))
-    SSS.loadAndRegisterSheet(this._iconStyle, SSS.USER_SHEET);
+  this._iconStyle = IOS.newURI('data:text/css,' + encodeURIComponent(code), null, null);
+  if (!SSS.sheetRegistered(this._iconStyle, SSS.AGENT_SHEET))
+    SSS.loadAndRegisterSheet(this._iconStyle, SSS.AGENT_SHEET);
 },
 
 clearIconStyle: function CM_clearIconStyle() {
   if (!this._iconStyle) return;
   const SSS = Components.classes["@mozilla.org/content/style-sheet-service;1"]
                         .getService(Components.interfaces.nsIStyleSheetService);
-  if (SSS.sheetRegistered(this._iconStyle, SSS.USER_SHEET))
-    SSS.unregisterSheet(this._iconStyle, SSS.USER_SHEET);
+  if (SSS.sheetRegistered(this._iconStyle, SSS.AGENT_SHEET))
+    SSS.unregisterSheet(this._iconStyle, SSS.AGENT_SHEET);
   this._iconStyle = null;
 },
 
