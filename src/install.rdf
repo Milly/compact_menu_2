@@ -12,6 +12,7 @@
 		<em:optionsURL>chrome://compact/content/compactMenuPreference.xul</em:optionsURL>
 		<em:iconURL>chrome://compact/skin/compact.png</em:iconURL>
 		<em:type>2</em:type>
+		<em:unpack>false</em:unpack>
 
 		<em:translator>PetrTwo (cz)</em:translator>
 		<em:translator>Joergen (da)</em:translator>
