@@ -35,6 +35,7 @@ init: function CMC_init() {
   if (toolbar) toolbar.setAttribute('customizing', true);
   this._mainToolbarCollapsed = toolbar && toolbar[this.HIDE_ATTRIBUTE];
   this.hideAll();
+  this.initIcon();
 
   this.hookFunction('restoreDefaultSet', function CMC_restoreDefaultSet() {
     CompactMenuCustomize.restoreMainToolbar();
