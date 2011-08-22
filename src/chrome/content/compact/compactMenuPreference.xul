@@ -8,17 +8,13 @@
 <?xml-stylesheet href="chrome://calendar/skin/preferences/preferences.css"?>
 <?xml-stylesheet href="chrome://compact/skin/preferences.css" type="text/css"?>
 
-<!DOCTYPE dialog SYSTEM "chrome://compact/locale/compact.dtd" >
+<!DOCTYPE prefwindow SYSTEM "chrome://compact/locale/compact.dtd" >
 
-<dialog id="compactmenuPrefs" windowtype="menuedit:options"
-        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-        title="&menu.label;"
-        >
+<prefwindow id="compactmenuPrefs"
+            xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+            title="&menu.label;">
 
-  <script type="application/x-javascript" src="chrome://compact/content/compactMenu.js"/>
-  <script type="application/x-javascript" src="chrome://compact/content/compactMenuPreference.js"/>
-
-  <vbox flex="1">
+  <prefpane>
     <groupbox>
       <caption>
         <checkbox id="icon_enable"
@@ -58,7 +54,7 @@
         </hbox>
       </vbox>
     </groupbox>
-  </vbox>
+  </prefpane>
 
   <tooltip id="multiple-icon-tooltip"
            orient="vertical">
@@ -75,4 +71,8 @@
       <spacer flex="1"/>
     </hbox>
   </tooltip>
-</dialog>
+
+  <script type="application/x-javascript" src="chrome://compact/content/compactMenu.js"/>
+  <script type="application/x-javascript" src="chrome://compact/content/compactMenuPreference.js"/>
+
+</prefwindow>
