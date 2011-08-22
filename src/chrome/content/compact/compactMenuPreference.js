@@ -5,20 +5,20 @@ var CompactMenuPreference = { __proto__: CompactMenu,
 init: function CMP_init() {
   this.c_dump('prefInit');
 
-  var icon_enable = this.getBoolPrefToElement(this.PREF_ICON_ENABLED, 'icon_enable', false);
-  var icon_file = document.getElementById('icon_file');
-  icon_file.file = this.getIconFile();
+  var icon_enable = this.prefField('icon_enable', this.pref_icon_enabled);
+  var icon_file = this.prefField('icon_file');
+  icon_file.file = this.pref_icon_file;
   if (icon_file.file) {
     var localIconFile = this.getLocalIconFile();
     if (localIconFile && localIconFile.exists())
       icon_file.image = this.toFileURI(localIconFile).spec;
   }
-  this.getBoolPrefToElement(this.PREF_ICON_MULTIPLE, 'icon_multiple', false);
-  this.getBoolPrefToElement(this.PREF_ICON_NOBORDER, 'icon_noborder', false);
-  this.getBoolPrefToElement(this.PREF_ICON_FIXSIZE, 'icon_fixsize', false);
-  this.getIntPrefToElement(this.PREF_ICON_WIDTH, 'icon_width', 16);
-  this.getIntPrefToElement(this.PREF_ICON_HEIGHT, 'icon_height', 16);
-  icon_enable.doCommand();
+  this.prefField('icon_multiple', this.pref_icon_multiple);
+  this.prefField('icon_noborder', this.pref_icon_noborder);
+  this.prefField('icon_fixsize',  this.pref_icon_fixsize);
+  this.prefField('icon_width',    this.pref_icon_width);
+  this.prefField('icon_height',   this.pref_icon_height);
+  icon_enable.doCommand(); // {en,dis}able group
 
   this.addEventListener(window, 'unload', this, false);
   this.addEventListener(window, 'dialogaccept', this, true);
@@ -26,24 +26,21 @@ init: function CMP_init() {
 
 resetAllWindowIcons: function CMP_resetAllWindowIcons() {
   this.__proto__.resetAllWindowIcons.call(this);
-  var icon_file = document.getElementById('icon_file');
-  if (icon_file) {
-    icon_file.image = null;
-  }
+  this.prefField('icon_file').image = null;
 },
 
 accept: function CMP_accept() {
   this.c_dump('prefAccept');
 
-  var icon_enable = this.setBoolPrefFromElement(this.PREF_ICON_ENABLED, 'icon_enable');
-  var icon_file = document.getElementById('icon_file').file;
-  if (icon_enable.checked && icon_file && icon_file.exists())
-    this.setIconFile(icon_file);
-  this.setBoolPrefFromElement(this.PREF_ICON_MULTIPLE, 'icon_multiple');
-  this.setBoolPrefFromElement(this.PREF_ICON_NOBORDER, 'icon_noborder');
-  this.setBoolPrefFromElement(this.PREF_ICON_FIXSIZE, 'icon_fixsize');
-  this.setIntPrefFromElement(this.PREF_ICON_WIDTH, 'icon_width');
-  this.setIntPrefFromElement(this.PREF_ICON_HEIGHT, 'icon_height');
+  this.pref_icon_enabled = this.prefField('icon_enable').checked;
+  var iconFile = this.prefField('icon_file').file;
+  if (iconFile && iconFile.exists())
+    this.setIconFile(iconFile);
+  this.pref_icon_multiple = this.prefField('icon_multiple').checked;
+  this.pref_icon_noborder = this.prefField('icon_noborder').checked;
+  this.pref_icon_fixsize  = this.prefField('icon_fixsize').checked;
+  this.pref_icon_width    = this.prefField('icon_width').value;
+  this.pref_icon_height   = this.prefField('icon_height').value;
 },
 
 disableGroup: function CMP_disableGroup(aGroup, aDisabled) {
@@ -79,29 +76,15 @@ openImagePicker: function CMP_openImagePicker(aTitle, aFileField) {
   }
 },
 
-// preferences methods {{{1
-
-getBoolPrefToElement: function CMP_getBoolPrefToElement(aName, aId, aDefaultValue) {
+prefField: function CMP_prefField(aId, aValue) {
   var element = document.getElementById(aId);
-  element.checked = this.getBoolPref(aName, aDefaultValue);
-  return element;
-},
-
-getIntPrefToElement: function CMP_getIntPrefToElement(aName, aId, aDefaultValue) {
-  var element = document.getElementById(aId);
-  element.value = this.getIntPref(aName, aDefaultValue);
-  return element;
-},
-
-setBoolPrefFromElement: function CMP_setBoolPrefFromElement(aName, aId) {
-  var element = document.getElementById(aId);
-  this.setBoolPref(aName, element.checked);
-  return element;
-},
-
-setIntPrefFromElement: function CMP_setIntPrefFromElement(aName, aId) {
-  var element = document.getElementById(aId);
-  this.prefs.setIntPref(aName, element.value);
+  if (1 < arguments.length) {
+    if ('checked' in element) {
+      element.checked = aValue;
+    } else {
+      element.value = aValue;
+    }
+  }
   return element;
 },
 

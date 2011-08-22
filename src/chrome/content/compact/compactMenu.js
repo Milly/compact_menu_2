@@ -126,6 +126,74 @@ getString: function CM_getString(aKey, aReplacements) {
                                            aReplacements.length);
 },
 
+// preferences properties {{{1
+
+// [RW] pref_icon_enabled {{{2
+get pref_icon_enabled() {
+  return this.getBoolPref(this.PREF_ICON_ENABLED, false);
+},
+
+set pref_icon_enabled(aValue) {
+  this.setBoolPref(this.PREF_ICON_ENABLED, aValue, true);
+},
+
+// [RO] pref_icon_file {{{2
+get pref_icon_file() {
+  try {
+    return this.prefs.getComplexValue(this.PREF_ICON_FILE,
+                                      Components.interfaces.nsILocalFile);
+  } catch (e) {
+    return null;
+  }
+},
+
+// [RW] pref_icon_multiple {{{2
+get pref_icon_multiple() {
+  return this.getBoolPref(this.PREF_ICON_MULTIPLE, false);
+},
+
+set pref_icon_multiple(aValue) {
+  this.setBoolPref(this.PREF_ICON_MULTIPLE, aValue, true);
+},
+
+// [RW] pref_icon_noborder {{{2
+get pref_icon_noborder() {
+  return this.getBoolPref(this.PREF_ICON_NOBORDER, false);
+},
+
+set pref_icon_noborder(aValue) {
+  this.setBoolPref(this.PREF_ICON_NOBORDER, aValue, true);
+},
+
+// [RW] pref_icon_fixsize {{{2
+get pref_icon_fixsize() {
+  return this.getBoolPref(this.PREF_ICON_FIXSIZE, false);
+},
+
+set pref_icon_fixsize(aValue) {
+  this.setBoolPref(this.PREF_ICON_FIXSIZE, aValue, true);
+},
+
+// [RW] pref_icon_width {{{2
+get pref_icon_width() {
+  return this.getIntPref(this.PREF_ICON_WIDTH,  16);
+},
+
+set pref_icon_width(aValue) {
+  this.prefs.setIntPref(this.PREF_ICON_WIDTH, aValue);
+},
+
+// [RW] pref_icon_height {{{2
+get pref_icon_height() {
+  return this.getIntPref(this.PREF_ICON_HEIGHT, 16);
+},
+
+set pref_icon_height(aValue) {
+  this.prefs.setIntPref(this.PREF_ICON_HEIGHT, aValue);
+},
+
+// }}}2
+
 // preferences methods {{{1
 
 get prefs() {
@@ -527,15 +595,6 @@ isMenuAccessKey: function CM_isMenuAccessKey(aEvent, aCheckKeyCode) {
 
 // icon methods {{{1
 
-getIconFile: function CM_getIconFile() {
-  try {
-    return this.prefs.getComplexValue(this.PREF_ICON_FILE,
-                                      Components.interfaces.nsILocalFile);
-  } catch (e) {
-    return null;
-  }
-},
-
 getLocalIconFile: function CM_getLocalIconFile() {
   var localFileName = this.prefs.getCharPref(this.PREF_ICON_LOCALFILENAME);
   if (!localFileName) return null;
@@ -555,7 +614,7 @@ loadIcon: function CM_loadIcon() {
   var button = document.getElementById('menu-button');
   if (!button) return;
 
-  var iconEnable = this.getBoolPref(this.PREF_ICON_ENABLED, false);
+  var iconEnable = this.pref_icon_enabled;
   if (iconEnable) {
     var icon = this.getLocalIconFile();
     if (icon && icon.exists()) {
@@ -571,21 +630,16 @@ loadIcon: function CM_loadIcon() {
   }
 
   if (iconURI) {
-    var iconMultiple = this.getBoolPref(this.PREF_ICON_MULTIPLE, false);
-    var iconNoBorder = this.getBoolPref(this.PREF_ICON_NOBORDER, false);
-    var iconFixSize  = this.getBoolPref(this.PREF_ICON_FIXSIZE,  false);
-    var iconWidth    = this.getIntPref(this.PREF_ICON_WIDTH,  16);
-    var iconHeight   = this.getIntPref(this.PREF_ICON_HEIGHT, 16);
     var img = new Image();
     img.onload = this.bind(function CM_loadIcon_img_onload() {
       this.c_dump('icon loaded: width='+img.width+', height='+img.height);
       if (img.width && img.height &&
           (iconEnable || 16 != img.width || 48 != img.height))
         this.setIconStyle(iconURI, img.width, img.height,
-                          iconEnable && iconMultiple,
-                          iconEnable && iconNoBorder,
-                          iconEnable && iconFixSize,
-                          iconWidth, iconHeight);
+                          iconEnable && this.pref_icon_multiple,
+                          iconEnable && this.pref_icon_noborder,
+                          iconEnable && this.pref_icon_fixsize,
+                          this.pref_icon_width, this.pref_icon_height);
     });
     img.src = iconURI;
   }
