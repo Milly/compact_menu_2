@@ -19,30 +19,44 @@
   <script type="application/x-javascript" src="chrome://compact/content/compactMenuPreference.js"/>
 
   <vbox flex="1">
-    <groupbox id="compact-icon" align="start" pack="start" orient="vertical">
+    <groupbox>
       <caption>
         <checkbox id="icon_enable"
                   label="&iconPref.caption;"
                   accesskey="&iconPref.accesskey;"
                   oncommand="CompactMenuPreference.disableGroup('compact-icon', !this.checked)"/>
       </caption>
-      <hbox align="center">
-        <filefield id="icon_file" flex="1" />
-        <button id="icon_file_picker"
-                label="&iconFilePicker.label;"
-                accesskey="&iconFilePicker.accesskey;"
-                oncommand="CompactMenuPreference.openImagePicker('&iconFilePicker.title;', 'icon_file')"/>
-      </hbox>
-      <checkbox id="icon_multiple"
-                label="&iconMultiple.label;"
-                accesskey="&iconMultiple.accesskey;"
-                tooltip="multiple-icon-tooltip"/>
-      <checkbox id="icon_noborder"
-                label="&iconNoBorder.label;"
-                accesskey="&iconNoBorder.accesskey;"/>
-      <checkbox id="icon_fixsize"
-                label="&iconFixSize.label;"
-                accesskey="&iconFixSize.accesskey;"/>
+      <vbox id="compact-icon">
+        <hbox>
+          <filefield id="icon_file" flex="1" />
+          <button id="icon_file_picker"
+                  label="&iconFilePicker.label;"
+                  accesskey="&iconFilePicker.accesskey;"
+                  oncommand="CompactMenuPreference.openImagePicker('&iconFilePicker.title;', 'icon_file')"/>
+        </hbox>
+        <checkbox id="icon_multiple"
+                  label="&iconMultiple.label;"
+                  accesskey="&iconMultiple.accesskey;"
+                  tooltip="multiple-icon-tooltip"/>
+        <checkbox id="icon_noborder"
+                  label="&iconNoBorder.label;"
+                  accesskey="&iconNoBorder.accesskey;"/>
+        <hbox>
+          <checkbox id="icon_fixsize"
+                    label="&iconFixSize.label;"
+                    accesskey="&iconFixSize.accesskey;"
+                    oncommand="CompactMenuPreference.disableGroup('compact-icon-fixsize', !this.checked)"/>
+          <hbox id="compact-icon-fixsize" align="baseline">
+            <textbox id="icon_width" type="number"
+                     min="1" max="256" maxlength="3" size="3"
+                     tooltiptext="&iconWidth.tooltip;"/>
+            <label value="&#215;"/>
+            <textbox id="icon_height" type="number"
+                     min="1" max="256" maxlength="3" size="3"
+                     tooltiptext="&iconHeight.tooltip;"/>
+          </hbox>
+        </hbox>
+      </vbox>
     </groupbox>
   </vbox>
 

@@ -6,7 +6,6 @@ init: function CMP_init() {
   this.c_dump('prefInit');
 
   var icon_enable = this.getBoolPrefToElement(this.PREF_ICON_ENABLED, 'icon_enable', false);
-  icon_enable.doCommand();
   var icon_file = document.getElementById('icon_file');
   icon_file.file = this.getIconFile();
   if (icon_file.file) {
@@ -17,6 +16,9 @@ init: function CMP_init() {
   this.getBoolPrefToElement(this.PREF_ICON_MULTIPLE, 'icon_multiple', false);
   this.getBoolPrefToElement(this.PREF_ICON_NOBORDER, 'icon_noborder', false);
   this.getBoolPrefToElement(this.PREF_ICON_FIXSIZE, 'icon_fixsize', false);
+  this.getIntPrefToElement(this.PREF_ICON_WIDTH, 'icon_width', 16);
+  this.getIntPrefToElement(this.PREF_ICON_HEIGHT, 'icon_height', 16);
+  icon_enable.doCommand();
 
   this.addEventListener(window, 'unload', this, false);
   this.addEventListener(window, 'dialogaccept', this, true);
@@ -40,16 +42,25 @@ accept: function CMP_accept() {
   this.setBoolPrefFromElement(this.PREF_ICON_MULTIPLE, 'icon_multiple');
   this.setBoolPrefFromElement(this.PREF_ICON_NOBORDER, 'icon_noborder');
   this.setBoolPrefFromElement(this.PREF_ICON_FIXSIZE, 'icon_fixsize');
+  this.setIntPrefFromElement(this.PREF_ICON_WIDTH, 'icon_width');
+  this.setIntPrefFromElement(this.PREF_ICON_HEIGHT, 'icon_height');
 },
 
 disableGroup: function CMP_disableGroup(aGroup, aDisabled) {
   if ('string' == typeof aGroup)
     aGroup = document.getElementById(aGroup);
   var elements = aGroup.getElementsByTagName('*');
+  var subgroups = [];
   for (var i = elements.length; 0 <= --i;) {
     var element = elements[i];
-    if ('disabled' in element && 'caption' != element.parentNode.nodeName)
+    if ('disabled' in element)
       element.disabled = aDisabled;
+    if (/\bdisableGroup\b/.test(element.getAttribute('oncommand')))
+      subgroups.push(element);
+  }
+  if (!aDisabled && subgroups.length) {
+    for each (var element in subgroups)
+      element.doCommand();
   }
 },
 
@@ -76,9 +87,21 @@ getBoolPrefToElement: function CMP_getBoolPrefToElement(aName, aId, aDefaultValu
   return element;
 },
 
+getIntPrefToElement: function CMP_getIntPrefToElement(aName, aId, aDefaultValue) {
+  var element = document.getElementById(aId);
+  element.value = this.getIntPref(aName, aDefaultValue);
+  return element;
+},
+
 setBoolPrefFromElement: function CMP_setBoolPrefFromElement(aName, aId) {
   var element = document.getElementById(aId);
   this.setBoolPref(aName, element.checked);
+  return element;
+},
+
+setIntPrefFromElement: function CMP_setIntPrefFromElement(aName, aId) {
+  var element = document.getElementById(aId);
+  this.prefs.setIntPref(aName, element.value);
   return element;
 },
 

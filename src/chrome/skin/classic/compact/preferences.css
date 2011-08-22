@@ -19,3 +19,7 @@
   line-height: 16px;
   vertical-align: middle;
 }
+
+#compact-icon-fixsize>* {
+  margin: 0;
+}

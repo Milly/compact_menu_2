@@ -22,4 +22,6 @@
 <!ENTITY iconNoBorder.accesskey "N">
 <!ENTITY iconFixSize.label "アイコンサイズを固定">
 <!ENTITY iconFixSize.accesskey "F">
+<!ENTITY iconWidth.tooltip "幅">
+<!ENTITY iconHeight.tooltip "高さ">
 <!ENTITY compactMenuButtonAdded.message "Compact Menu ボタンが追加されました">

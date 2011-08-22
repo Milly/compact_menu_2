@@ -13,6 +13,8 @@ PREF_ICON_LOCALFILENAME: 'icon.localfilename',
 PREF_ICON_MULTIPLE:      'icon.multiple',
 PREF_ICON_NOBORDER:      'icon.noborder',
 PREF_ICON_FIXSIZE:       'icon.fixsize',
+PREF_ICON_WIDTH:         'icon.fixsize.width',
+PREF_ICON_HEIGHT:        'icon.fixsize.height',
 PREFBASE_INITIALIZED:    'initialized.',
 PREF_APPBUTTON_VISIBLE:  'appbutton.visible',
 
@@ -135,10 +137,16 @@ get prefs() {
 },
 
 getBoolPref: function CM_getBoolPref(aName, aDefaultValue) {
-  const nsIPrefBranch = Components.interfaces.nsIPrefBranch;
-  if (this.prefs.prefHasUserValue(aName) &&
-      nsIPrefBranch.PREF_BOOL == this.prefs.getPrefType(aName))
+  const PREF_BOOL = Components.interfaces.nsIPrefBranch.PREF_BOOL;
+  if (this.prefs.prefHasUserValue(aName) && PREF_BOOL == this.prefs.getPrefType(aName))
     return this.prefs.getBoolPref(aName);
+  return aDefaultValue;
+},
+
+getIntPref: function CM_getIntPref(aName, aDefaultValue) {
+  const PREF_INT = Components.interfaces.nsIPrefBranch.PREF_INT;
+  if (this.prefs.prefHasUserValue(aName) && PREF_INT == this.prefs.getPrefType(aName))
+    return this.prefs.getIntPref(aName);
   return aDefaultValue;
 },
 
@@ -224,6 +232,8 @@ onPrefChanged: function CM_onPrefChanged(aName) {
     case this.PREF_ICON_MULTIPLE:
     case this.PREF_ICON_NOBORDER:
     case this.PREF_ICON_FIXSIZE:
+    case this.PREF_ICON_WIDTH:
+    case this.PREF_ICON_HEIGHT:
       this.delayBundleCall('change_icon', 20, this.bind(this.initIcon));
       break;
     case this.PREF_APPBUTTON_VISIBLE:
@@ -564,6 +574,8 @@ loadIcon: function CM_loadIcon() {
     var iconMultiple = this.getBoolPref(this.PREF_ICON_MULTIPLE, false);
     var iconNoBorder = this.getBoolPref(this.PREF_ICON_NOBORDER, false);
     var iconFixSize  = this.getBoolPref(this.PREF_ICON_FIXSIZE,  false);
+    var iconWidth    = this.getIntPref(this.PREF_ICON_WIDTH,  16);
+    var iconHeight   = this.getIntPref(this.PREF_ICON_HEIGHT, 16);
     var img = new Image();
     img.onload = this.bind(function CM_loadIcon_img_onload() {
       this.c_dump('icon loaded: width='+img.width+', height='+img.height);
@@ -572,7 +584,8 @@ loadIcon: function CM_loadIcon() {
         this.setIconStyle(iconURI, img.width, img.height,
                           iconEnable && iconMultiple,
                           iconEnable && iconNoBorder,
-                          iconEnable && iconFixSize);
+                          iconEnable && iconFixSize,
+                          iconWidth, iconHeight);
     });
     img.src = iconURI;
   }
@@ -585,7 +598,9 @@ resetAllWindowIcons: function CM_resetAllWindowIcons() {
 },
 
 _iconStyle: null,
-setIconStyle: function CM_setIconStyle(aIconURI, aWidth, aHeight, aMultiple, aNoBorder, aFixSize) {
+setIconStyle: function CM_setIconStyle(aIconURI, aWidth, aHeight,
+                                       aMultiple, aNoBorder, aFixSize,
+                                       aFixWidth, aFixHeight) {
   this.clearIconStyle();
   const SSS = Components.classes["@mozilla.org/content/style-sheet-service;1"]
                         .getService(Components.interfaces.nsIStyleSheetService);
@@ -605,7 +620,7 @@ setIconStyle: function CM_setIconStyle(aIconURI, aWidth, aHeight, aMultiple, aNo
   if (aNoBorder)
     code += '#menu-button{border:none!important;padding:0!important;margin:0!important;}';
   if (aFixSize) {
-    code += '#menu-button>.toolbarbutton-icon{width:16px!important;height:16px!important;}';
+    code += '#menu-button>.toolbarbutton-icon{width:'+aFixWidth+'px!important;height:'+aFixHeight+'px!important;}';
   } else {
     code += '#menu-button>.toolbarbutton-icon{width:auto!important;height:auto!important;}';
   }
