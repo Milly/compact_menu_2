@@ -33,14 +33,26 @@ accept: function CMP_accept() {
   this.c_dump('prefAccept');
 
   this.pref_icon_enabled = this.prefField('icon_enable').checked;
-  var iconFile = this.prefField('icon_file').file;
-  if (iconFile && iconFile.exists())
-    this.setIconFile(iconFile);
+  var icon_file = this.prefField('icon_file');
+  if (icon_file.file && icon_file.file.exists()) {
+    this.setIconFile(icon_file.file);
+    icon_file.image = this.toFileURI(this.getLocalIconFile()).spec;
+  }
   this.pref_icon_multiple = this.prefField('icon_multiple').checked;
   this.pref_icon_noborder = this.prefField('icon_noborder').checked;
   this.pref_icon_fixsize  = this.prefField('icon_fixsize').checked;
   this.pref_icon_width    = this.prefField('icon_width').value;
   this.pref_icon_height   = this.prefField('icon_height').value;
+},
+
+userChanged: function CMP_userChanged(aTarget) {
+  var group = aTarget.getAttribute('target_group');
+  if (group)
+    this.disableGroup(group, !aTarget.checked);
+
+  var instantApply = this.prefField('compactmenuPrefs').instantApply;
+  if (instantApply)
+    this.accept();
 },
 
 disableGroup: function CMP_disableGroup(aGroup, aDisabled) {
@@ -73,6 +85,9 @@ openImagePicker: function CMP_openImagePicker(aTitle, aFileField) {
     aFileField.file = fp.file;
     aFileField.image = fp.fileURL.spec;
     aFileField.label = decodeURIComponent(aFileField.label);
+    var event = document.createEvent('Events');
+    event.initEvent('change', true, true);
+    aFileField.dispatchEvent(event);
   }
 },
 
@@ -91,14 +106,8 @@ prefField: function CMP_prefField(aId, aValue) {
 // handle events {{{1
 
 addEvents: function CMP_addEvents() {
-  function disableGroupOnCommand(event) {
-    var group = this.getAttribute('target_group');
-    CompactMenuPreference.disableGroup(group, !this.checked);
-  }
-  this.evaluateEach('//xul:checkbox[@target_group]', function(item) {
-    this.addEventListener(item, 'command', disableGroupOnCommand, false);
-  });
-
+  this.addEventListener(window, 'command', this, true);
+  this.addEventListener(window, 'change', this, true);
   this.addEventListener(window, 'unload', this, false);
   this.addEventListener(window, 'dialogaccept', this, true);
 },
@@ -108,6 +117,8 @@ handleEvent: function CMP_handleEvent(aEvent) {
     case 'load'        : this.init(); break;
     case 'unload'      : this.destroy(); break;
     case 'dialogaccept': this.accept(); break;
+    case 'command'     :
+    case 'change'      : this.userChanged(aEvent.originalTarget); break;
   }
 }
 
