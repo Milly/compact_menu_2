@@ -12,6 +12,7 @@ init: function CMP_init() {
     var localIconFile = this.getLocalIconFile();
     if (localIconFile && localIconFile.exists())
       icon_file.image = this.toFileURI(localIconFile).spec;
+    icon_file.label = decodeURIComponent(icon_file.label);
   }
   this.prefField('icon_multiple', this.pref_icon_multiple);
   this.prefField('icon_noborder', this.pref_icon_noborder);
@@ -71,6 +72,7 @@ openImagePicker: function CMP_openImagePicker(aTitle, aFileField) {
       aFileField = this.prefField(aFileField);
     aFileField.file = fp.file;
     aFileField.image = fp.fileURL.spec;
+    aFileField.label = decodeURIComponent(aFileField.label);
   }
 },
 
