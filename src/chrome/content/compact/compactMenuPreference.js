@@ -20,8 +20,7 @@ init: function CMP_init() {
   this.prefField('icon_height',   this.pref_icon_height);
   icon_enable.doCommand(); // {en,dis}able group
 
-  this.addEventListener(window, 'unload', this, false);
-  this.addEventListener(window, 'dialogaccept', this, true);
+  this.addEvents();
 },
 
 resetAllWindowIcons: function CMP_resetAllWindowIcons() {
@@ -45,19 +44,18 @@ accept: function CMP_accept() {
 
 disableGroup: function CMP_disableGroup(aGroup, aDisabled) {
   if ('string' == typeof aGroup)
-    aGroup = document.getElementById(aGroup);
+    aGroup = this.prefField(aGroup);
+
   var elements = aGroup.getElementsByTagName('*');
-  var subgroups = [];
   for (var i = elements.length; 0 <= --i;) {
     var element = elements[i];
     if ('disabled' in element)
       element.disabled = aDisabled;
-    if (/\bdisableGroup\b/.test(element.getAttribute('oncommand')))
-      subgroups.push(element);
   }
-  if (!aDisabled && subgroups.length) {
-    for each (var element in subgroups)
-      element.doCommand();
+
+  if (!aDisabled) {
+    this.evaluateEach('.//xul:checkbox[@target_group]', aGroup,
+                      function(subgroup) { subgroup.doCommand(); });
   }
 },
 
@@ -70,7 +68,7 @@ openImagePicker: function CMP_openImagePicker(aTitle, aFileField) {
   fp.appendFilters(nsIFilePicker.filterAll);
   if (nsIFilePicker.returnOK == fp.show()) {
     if ('string' == typeof aFileField)
-      aFileField = document.getElementById(aFileField);
+      aFileField = this.prefField(aFileField);
     aFileField.file = fp.file;
     aFileField.image = fp.fileURL.spec;
   }
@@ -89,6 +87,19 @@ prefField: function CMP_prefField(aId, aValue) {
 },
 
 // handle events {{{1
+
+addEvents: function CMP_addEvents() {
+  function disableGroupOnCommand(event) {
+    var group = this.getAttribute('target_group');
+    CompactMenuPreference.disableGroup(group, !this.checked);
+  }
+  this.evaluateEach('//xul:checkbox[@target_group]', function(item) {
+    this.addEventListener(item, 'command', disableGroupOnCommand, false);
+  });
+
+  this.addEventListener(window, 'unload', this, false);
+  this.addEventListener(window, 'dialogaccept', this, true);
+},
 
 handleEvent: function CMP_handleEvent(aEvent) {
   switch (aEvent.type) {
