@@ -560,6 +560,28 @@ setMenuTooltip: function CM_setMenuTooltip(aTooltip, aNode) {
   return false;
 },
 
+evaluateEach: function CM_evaluateEach(aXPath, aNode, aCallback) {
+  if (2 == arguments.length) {
+    aCallback = aNode;
+    aNode = document.documentElement;
+  }
+
+  function nsResolver(ns) {
+    return ({
+      xul: 'http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul',
+      html: 'http://www.w3.org/1999/xhtml'
+    })[ns] || '';
+  }
+
+  var items = document.evaluate(aXPath, aNode, nsResolver,
+                                XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+  for (let i = 0; i < items.snapshotLength; ++i) {
+    let item = items.snapshotItem(i);
+    let res = aCallback.call(this, item, i);
+    if (false === res) break;
+  }
+},
+
 // keybord methods {{{1
 
 dispatchKeyEvent: function CM_dispatchKeyEvent(aItem, aKeyCode, aCharCode) {
@@ -1036,11 +1058,7 @@ initAppButtonShowHideMenu: function CM_initAppButtonShowHideMenu() {
           .setAttribute('checked', visible);
 
   var menuitem = document.getElementById('compactmenu-toggleAppButtonShowHide');
-  var items = document.evaluate('//*[@command="cmd_ToggleTabsOnTop"]',
-                                document.documentElement, null,
-                                XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
-  for (let i = 0; i < items.snapshotLength; ++i) {
-    let prev = items.snapshotItem(i);
+  this.evaluateEach('//*[@command="cmd_ToggleTabsOnTop"]', function(prev, i) {
     if ('menuitem' == prev.nodeName) {
       let item = menuitem.cloneNode(true);
       item.id += i;
@@ -1048,7 +1066,7 @@ initAppButtonShowHideMenu: function CM_initAppButtonShowHideMenu() {
       if (!prev.hasAttribute('accesskey'))
         item.removeAttribute('accesskey');
     }
-  }
+  });
 },
 
 onViewToolbarCommand: function CM_onViewToolbarCommand() {
