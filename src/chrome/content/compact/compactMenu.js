@@ -500,7 +500,7 @@ toggleTabsInTitlebar: function CM_toggleTabsInTitlebar() {
   this.pref_tabs_in_titlebar = !this.pref_tabs_in_titlebar;
 },
 
-updateTabsInTitlebar: function CM_updateTabsInTitlebar() {
+updateTabsInTitlebar: function CM_updateTabsInTitlebar(reload) {
   this.c_dump('updateTabsInTitlebar');
 
   var docElement = document.documentElement;
@@ -510,6 +510,8 @@ updateTabsInTitlebar: function CM_updateTabsInTitlebar() {
   var sizemode = docAttr('sizemode');
   var force = 'maximized' == sizemode || 'fullscreen' == sizemode;
   var enabled = this.pref_tabs_in_titlebar;
+  if (reload)
+    TabsInTitlebar.allowedBy_without_CompactMenu('sizemode', false);
   TabsInTitlebar.allowedBy_without_CompactMenu('sizemode', force || enabled);
   var allowed = ('true' == docAttr('tabsintitlebar'));
   this.c_dump('allowed='+allowed);
@@ -1051,6 +1053,7 @@ initToolbarContextMenu_Fx40: function CM_initToolbarContextMenu_Fx40() {
       [updateAppButtonDisplay_without_CompactMenu, this, arguments]);
     document.getElementById('cmd_ToggleAppButtonShowHide')
             .setAttribute('checked', visible);
+    CompactMenu.updateTabsInTitlebar(true);
   });
 
   if (window.TabsInTitlebar) {
