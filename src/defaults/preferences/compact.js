@@ -8,3 +8,4 @@ pref("compact.menu.icon.fixsize", false);
 pref("compact.menu.icon.fixsize.width", 16);
 pref("compact.menu.icon.fixsize.height", 16);
 pref("compact.menu.appbutton.visible", true);
+pref("compact.menu.tabsintitlebar.enabled", false);

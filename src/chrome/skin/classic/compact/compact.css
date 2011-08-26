@@ -66,3 +66,34 @@ toolbar[collapsed="true"]:first-child + toolbar[collapsed="true"] + toolbar[coll
 #compact-appmenu-spacer {
   min-height: 1em;
 }
+
+/* for tabs in titlebar */
+#toolbar-menubar[collapsed="true"][autohide="false"] {
+  visibility: hidden !important;
+  overflow: hidden !important;
+  height: 0 !important;
+  min-height: 0 !important;
+}
+
+@media all and (-moz-windows-classic) {
+  #main-window[sizemode="normal"][tabsintitlebar="true"] > #titlebar {
+    min-height: 30px;
+  }
+}
+
+/* fix Personas */
+@media all and (-moz-windows-classic) {
+  #main-window[sizemode="normal"] > #titlebar:-moz-lwtheme,
+  #main-window[sizemode="normal"] > #titlebar > #titlebar-content:-moz-lwtheme {
+    background-image: inherit;
+    background-position: inherit;
+    visibility: hidden !important;
+  }
+
+  #main-window[sizemode="normal"] > #titlebar > #titlebar-content:-moz-lwtheme {
+    box-shadow: 0 1px 0 0 threedlightshadow inset,
+                0 2px 0 0 threedhighlight inset,
+                0 4px 0 0 threedface inset;
+    visibility: visible !important;
+  }
+}

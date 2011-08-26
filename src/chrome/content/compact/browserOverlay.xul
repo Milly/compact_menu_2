@@ -51,12 +51,19 @@
                 label="&viewAppButton.label;"
                 accesskey="&viewAppButton.key;"
                 command="cmd_ToggleAppButtonShowHide" />
+      <menuitem id="compactmenu-toggleTabsInTitlebar"
+                type="checkbox"
+                label="&viewTabsInTitlebar.label;"
+                accesskey="&viewTabsInTitlebar.key;"
+                command="cmd_ToggleTabsInTitlebar" />
     </menupopup>
   </popupset>
 
   <commandset id="mainCommandSet">
     <command id="cmd_ToggleAppButtonShowHide"
              oncommand="CompactMenu.toggleAppButtonShowHide()" />
+    <command id="cmd_ToggleTabsInTitlebar"
+             oncommand="CompactMenu.toggleTabsInTitlebar()" />
   </commandset>
 
   <vbox id="appmenuSecondaryPane">

@@ -17,6 +17,7 @@ PREF_ICON_WIDTH:         'icon.fixsize.width',
 PREF_ICON_HEIGHT:        'icon.fixsize.height',
 PREFBASE_INITIALIZED:    'initialized.',
 PREF_APPBUTTON_VISIBLE:  'appbutton.visible',
+PREF_TABS_IN_TITLEBAR:   'tabsintitlebar.enabled',
 
 MAINWINDOWS: [
     'navigator:browser',
@@ -130,11 +131,11 @@ getString: function CM_getString(aKey, aReplacements) {
 
 // [RW] pref_icon_enabled {{{2
 get pref_icon_enabled() {
-  return this.getBoolPref(this.PREF_ICON_ENABLED, false);
+  return this.prefs.getBoolPref(this.PREF_ICON_ENABLED);
 },
 
 set pref_icon_enabled(aValue) {
-  this.setBoolPref(this.PREF_ICON_ENABLED, aValue, true);
+  this.prefs.setBoolPref(this.PREF_ICON_ENABLED, aValue);
 },
 
 // [RO] pref_icon_file {{{2
@@ -149,34 +150,34 @@ get pref_icon_file() {
 
 // [RW] pref_icon_multiple {{{2
 get pref_icon_multiple() {
-  return this.getBoolPref(this.PREF_ICON_MULTIPLE, false);
+  return this.prefs.getBoolPref(this.PREF_ICON_MULTIPLE);
 },
 
 set pref_icon_multiple(aValue) {
-  this.setBoolPref(this.PREF_ICON_MULTIPLE, aValue, true);
+  this.prefs.setBoolPref(this.PREF_ICON_MULTIPLE, aValue);
 },
 
 // [RW] pref_icon_noborder {{{2
 get pref_icon_noborder() {
-  return this.getBoolPref(this.PREF_ICON_NOBORDER, false);
+  return this.prefs.getBoolPref(this.PREF_ICON_NOBORDER);
 },
 
 set pref_icon_noborder(aValue) {
-  this.setBoolPref(this.PREF_ICON_NOBORDER, aValue, true);
+  this.prefs.setBoolPref(this.PREF_ICON_NOBORDER, aValue);
 },
 
 // [RW] pref_icon_fixsize {{{2
 get pref_icon_fixsize() {
-  return this.getBoolPref(this.PREF_ICON_FIXSIZE, false);
+  return this.prefs.getBoolPref(this.PREF_ICON_FIXSIZE);
 },
 
 set pref_icon_fixsize(aValue) {
-  this.setBoolPref(this.PREF_ICON_FIXSIZE, aValue, true);
+  this.prefs.setBoolPref(this.PREF_ICON_FIXSIZE, aValue);
 },
 
 // [RW] pref_icon_width {{{2
 get pref_icon_width() {
-  return this.getIntPref(this.PREF_ICON_WIDTH,  16);
+  return this.prefs.getIntPref(this.PREF_ICON_WIDTH);
 },
 
 set pref_icon_width(aValue) {
@@ -185,11 +186,29 @@ set pref_icon_width(aValue) {
 
 // [RW] pref_icon_height {{{2
 get pref_icon_height() {
-  return this.getIntPref(this.PREF_ICON_HEIGHT, 16);
+  return this.prefs.getIntPref(this.PREF_ICON_HEIGHT);
 },
 
 set pref_icon_height(aValue) {
   this.prefs.setIntPref(this.PREF_ICON_HEIGHT, aValue);
+},
+
+// [RW] pref_appbutton_visible {{{2
+get pref_appbutton_visible() {
+  return this.prefs.getBoolPref(this.PREF_APPBUTTON_VISIBLE);
+},
+
+set pref_appbutton_visible(aValue) {
+  this.prefs.setBoolPref(this.PREF_APPBUTTON_VISIBLE, aValue);
+},
+
+// [RW] pref_tabs_in_titlebar {{{2
+get pref_tabs_in_titlebar() {
+  return this.prefs.getBoolPref(this.PREF_TABS_IN_TITLEBAR);
+},
+
+set pref_tabs_in_titlebar(aValue) {
+  this.prefs.setBoolPref(this.PREF_TABS_IN_TITLEBAR, aValue);
 },
 
 // }}}2
@@ -208,13 +227,6 @@ getBoolPref: function CM_getBoolPref(aName, aDefaultValue) {
   const PREF_BOOL = Components.interfaces.nsIPrefBranch.PREF_BOOL;
   if (this.prefs.prefHasUserValue(aName) && PREF_BOOL == this.prefs.getPrefType(aName))
     return this.prefs.getBoolPref(aName);
-  return aDefaultValue;
-},
-
-getIntPref: function CM_getIntPref(aName, aDefaultValue) {
-  const PREF_INT = Components.interfaces.nsIPrefBranch.PREF_INT;
-  if (this.prefs.prefHasUserValue(aName) && PREF_INT == this.prefs.getPrefType(aName))
-    return this.prefs.getIntPref(aName);
   return aDefaultValue;
 },
 
@@ -306,6 +318,9 @@ onPrefChanged: function CM_onPrefChanged(aName) {
       break;
     case this.PREF_APPBUTTON_VISIBLE:
       if (window.updateAppButtonDisplay) updateAppButtonDisplay();
+      break;
+    case this.PREF_TABS_IN_TITLEBAR:
+      this.updateTabsInTitlebar();
       break;
     default:
       if (0 == aName.indexOf(this.PREFBASE_HIDETOOLBAR) ||
@@ -478,8 +493,30 @@ hideAll: function CM_hideAll() {
 },
 
 toggleAppButtonShowHide: function CM_toggleAppButtonShowHide() {
-  var visible = this.prefs.getBoolPref(this.PREF_APPBUTTON_VISIBLE);
-  this.prefs.setBoolPref(this.PREF_APPBUTTON_VISIBLE, !visible);
+  this.pref_appbutton_visible = !this.pref_appbutton_visible;
+},
+
+toggleTabsInTitlebar: function CM_toggleTabsInTitlebar() {
+  this.pref_tabs_in_titlebar = !this.pref_tabs_in_titlebar;
+},
+
+updateTabsInTitlebar: function CM_updateTabsInTitlebar() {
+  this.c_dump('updateTabsInTitlebar');
+
+  var docElement = document.documentElement;
+  function $(id) document.getElementById(id);
+  function docAttr(name) docElement.getAttribute(name);
+
+  var sizemode = docAttr('sizemode');
+  var force = 'maximized' == sizemode || 'fullscreen' == sizemode;
+  var enabled = this.pref_tabs_in_titlebar;
+  TabsInTitlebar.allowedBy_without_CompactMenu('sizemode', force || enabled);
+  var allowed = ('true' == docAttr('tabsintitlebar'));
+  this.c_dump('allowed='+allowed);
+
+  var cmd = $('cmd_ToggleTabsInTitlebar');
+  cmd.setAttribute('checked', enabled);
+  cmd.setAttribute('disabled', force || enabled && !allowed);
 },
 
 isRTL: function CM_isRTL() {
@@ -1005,17 +1042,30 @@ initMainToolbar: function CM_initMainToolbar() {
 
 initToolbarContextMenu_Fx40: function CM_initToolbarContextMenu_Fx40() {
   this.initToolbarContextMenu_Fx36();
+
   this.hookFunction('updateAppButtonDisplay',
                     function CM_updateAppButtonDisplay() {
-    var visible = CompactMenu.prefs.getBoolPref(CompactMenu.PREF_APPBUTTON_VISIBLE);
+    var visible = CompactMenu.pref_appbutton_visible;
     CompactMenu.hookAttribute(
       CompactMenu.getMainToolbar(), { autohide: visible },
       [updateAppButtonDisplay_without_CompactMenu, this, arguments]);
     document.getElementById('cmd_ToggleAppButtonShowHide')
             .setAttribute('checked', visible);
   });
+
+  if (window.TabsInTitlebar) {
+    this.hookFunction([TabsInTitlebar, 'allowedBy'],
+                      function CM_TabsInTitlebar_allowedBy(condition, allow) {
+      if ('sizemode' == condition) allow = false;
+      TabsInTitlebar.allowedBy_without_CompactMenu(condition, allow);
+    });
+    this.addEventListener(window, 'resize', function() {
+      CompactMenu.updateTabsInTitlebar();
+    }, false);
+  }
+
   updateAppButtonDisplay();
-  this.initAppButtonShowHideMenu();
+  this.initAdditionalContextMenu();
 },
 
 initToolbarContextMenu_Fx36: function CM_initToolbarContextMenu_Fx36() {
@@ -1052,17 +1102,15 @@ initToolbarContextMenu_Sb: function CM_initToolbarContextMenu_Sb() {
 initToolbarContextMenu_Sm: function CM_initToolbarContextMenu_Sm() {
 },
 
-initAppButtonShowHideMenu: function CM_initAppButtonShowHideMenu() {
-  var visible = this.prefs.getBoolPref(this.PREF_APPBUTTON_VISIBLE);
-  document.getElementById('cmd_ToggleAppButtonShowHide')
-          .setAttribute('checked', visible);
-
-  var menuitem = document.getElementById('compactmenu-toggleAppButtonShowHide');
-  this.evaluateEach('//*[@command="cmd_ToggleTabsOnTop"]', function(prev, i) {
-    if ('menuitem' == prev.nodeName) {
-      let item = menuitem.cloneNode(true);
+initAdditionalContextMenu: function CM_initAdditionalContextMenu() {
+  var items = [ 'compactmenu-toggleAppButtonShowHide',
+                'compactmenu-toggleTabsInTitlebar' ];
+  this.evaluateEach('//xul:menuitem[@command="cmd_ToggleTabsOnTop"]', function(prev, i) {
+    var next = prev.nextSibling;
+    for each (let id in items) {
+      let item = document.getElementById(id).cloneNode(true);
       item.id += i;
-      prev.parentNode.insertBefore(item, prev.nextSibling);
+      prev.parentNode.insertBefore(item, next);
       if (!prev.hasAttribute('accesskey'))
         item.removeAttribute('accesskey');
     }
@@ -1143,13 +1191,15 @@ delayBundleCall: function CM_delayBundleCall(aId, aDelay, aFunc) {
     timers[aId] = Components.classes["@mozilla.org/timer;1"]
                             .createInstance(Components.interfaces.nsITimer);
   }
-  timers[aId].init({ observe: aFunc }, aDelay,
+  timers[aId].init({ observe: function() { aFunc() } }, aDelay,
                    Components.interfaces.nsITimer.TYPE_ONE_SHOT);
 },
 
 bind: function CM_bind(aFunc) {
-  var obj = this;
-  return function CM_binded() { return aFunc.apply(obj, arguments); };
+  var obj = this, args = Array.prototype.slice.call(arguments, 1);
+  return function CM_binded() {
+    return aFunc.apply(obj, Array.prototype.concat.apply(args, arguments));
+  };
 },
 
 _menuKeyPressing: false,
