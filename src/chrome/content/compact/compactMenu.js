@@ -1045,6 +1045,12 @@ initMainToolbar: function CM_initMainToolbar() {
 initToolbarContextMenu_Fx40: function CM_initToolbarContextMenu_Fx40() {
   this.initToolbarContextMenu_Fx36();
 
+  this.hookFunction('BrowserCustomizeToolbar',
+                    function CM_BrowserCustomizeToolbar() {
+    CompactMenu.showHideMenuBar();
+    BrowserCustomizeToolbar_without_CompactMenu.apply(this, arguments);
+  });
+
   this.hookFunction('updateAppButtonDisplay',
                     function CM_updateAppButtonDisplay() {
     var visible = CompactMenu.pref_appbutton_visible;
