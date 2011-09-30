@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <?xul-overlay href="chrome://compact/content/compactMenuOverlay.xul"?>
+<?xml-stylesheet href="chrome://compact/skin/personas-fix.css" type="text/css"?>
 <?xml-stylesheet href="chrome://browser/skin/places/places.css" type="text/css"?>
 <?xml-stylesheet href="chrome://browser/content/places/places.css" type="text/css"?>
 

@@ -67,33 +67,30 @@ toolbar[collapsed="true"]:first-child + toolbar[collapsed="true"] + toolbar[coll
   min-height: 1em;
 }
 
+#toolbar-menubar[collapsed="true"] ~ #nav-bar > #bookmarks-menu-button-container,
+#toolbar-menubar[collapsed="true"] ~ toolbar > #personal-bookmarks > #bookmarks-menu-button,
+#toolbar-menubar[collapsed="true"] > #personal-bookmarks > #bookmarks-menu-button {
+  display: -moz-box !important;
+}
+
 /* for tabs in titlebar */
-#toolbar-menubar[collapsed="true"][autohide="false"] {
+#toolbar-menubar[collapsed="true"][autohide="false"]:not([customizing="true"]) {
   visibility: hidden !important;
   overflow: hidden !important;
   height: 0 !important;
   min-height: 0 !important;
 }
 
-@media all and (-moz-windows-classic) {
-  #main-window[sizemode="normal"][tabsintitlebar="true"] > #titlebar {
-    min-height: 30px;
+@media all and (-moz-windows-compositor: 0) and (-moz-windows-classic) {
+  #main-window[sizemode="normal"][tabsintitlebar="true"] #toolbar-menubar:not([collapsed="true"]) {
+    padding-top: 4px !important;
+  }
+  #main-window[sizemode="normal"][tabsintitlebar="true"] #toolbar-menubar[collapsed="true"] ~ #TabsToolbar {
+    padding-top: 4px !important;
   }
 }
 
-/* fix Personas */
-@media all and (-moz-windows-classic) {
-  #main-window[sizemode="normal"] > #titlebar:-moz-lwtheme,
-  #main-window[sizemode="normal"] > #titlebar > #titlebar-content:-moz-lwtheme {
-    background-image: inherit;
-    background-position: inherit;
-    visibility: hidden !important;
-  }
-
-  #main-window[sizemode="normal"] > #titlebar > #titlebar-content:-moz-lwtheme {
-    box-shadow: 0 1px 0 0 threedlightshadow inset,
-                0 2px 0 0 threedhighlight inset,
-                0 4px 0 0 threedface inset;
-    visibility: visible !important;
-  }
+#main-window[sizemode="normal"][tabsintitlebar="true"] #toolbar-menubar,
+#main-window[sizemode="normal"][tabsintitlebar="true"] #TabsToolbar {
+  -moz-binding: url("chrome://global/content/bindings/toolbar.xml#toolbar-drag");
 }
