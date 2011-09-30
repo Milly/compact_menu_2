@@ -1,12 +1,14 @@
 <!ENTITY menu.label "Compact Menu">
 <!ENTITY bookmarks.label "Compact Bookmarks">
-<!ENTITY menuPref.caption "Vælg de menuer du ønsker at se i Compact menuen">
+<!ENTITY menuPref.caption "Vælg de menuer du ønsker at se i Compact-menuen">
 <!ENTITY compactMenu.label "Menu">
 <!ENTITY compactMenu.key "M">
 <!ENTITY menubarCmd.label "Menulinje">
 <!ENTITY menubarCmd.accesskey "M">
 <!ENTITY viewAppButton.label "Vis program-knap">
 <!ENTITY viewAppButton.key "V">
+<!ENTITY viewTabsInTitlebar.label "Faneblade i titellinjen">
+<!ENTITY viewTabsInTitlebar.key "F">
 <!ENTITY iconPref.caption "Skift Compact Menus ikon">
 <!ENTITY iconPref.accesskey "S">
 <!ENTITY iconFilePicker.label "Gennemse…">
@@ -22,4 +24,6 @@
 <!ENTITY iconNoBorder.accesskey "I">
 <!ENTITY iconFixSize.label "Fast ikonstørrelse">
 <!ENTITY iconFixSize.accesskey "a">
+<!ENTITY iconWidth.tooltip "Bredde">
+<!ENTITY iconHeight.tooltip "Højde">
 <!ENTITY compactMenuButtonAdded.message "Knappen Compact Menu er blevet tilføjet">

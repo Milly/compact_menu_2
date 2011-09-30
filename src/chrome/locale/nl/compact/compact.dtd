@@ -7,6 +7,8 @@
 <!ENTITY menubarCmd.accesskey "M">
 <!ENTITY viewAppButton.label "App-knop weergeven">
 <!ENTITY viewAppButton.key "p">
+<!ENTITY viewTabsInTitlebar.label "Tabbladen in titelbalk">
+<!ENTITY viewTabsInTitlebar.key "I">
 <!ENTITY iconPref.caption "Pictogram van Compact Menu wijzigen">
 <!ENTITY iconPref.accesskey "P">
 <!ENTITY iconFilePicker.label "Bladeren…">
@@ -22,4 +24,6 @@
 <!ENTITY iconNoBorder.accesskey "G">
 <!ENTITY iconFixSize.label "Vaste pictogramgrootte">
 <!ENTITY iconFixSize.accesskey "V">
+<!ENTITY iconWidth.tooltip "Breedte">
+<!ENTITY iconHeight.tooltip "Hoogte">
 <!ENTITY compactMenuButtonAdded.message "Knop Compact Menu is toegevoegd">

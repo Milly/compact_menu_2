@@ -7,6 +7,8 @@
 <!ENTITY menubarCmd.accesskey "M">
 <!ENTITY viewAppButton.label "显示应用程序按钮">
 <!ENTITY viewAppButton.key "P">
+<!ENTITY viewTabsInTitlebar.label "标签页在标题栏">
+<!ENTITY viewTabsInTitlebar.key "I">
 <!ENTITY iconPref.caption "更改简洁菜单图标">
 <!ENTITY iconPref.accesskey "I">
 <!ENTITY iconFilePicker.label "浏览....">
@@ -22,4 +24,6 @@
 <!ENTITY iconNoBorder.accesskey "N">
 <!ENTITY iconFixSize.label "固定图标尺寸">
 <!ENTITY iconFixSize.accesskey "F">
+<!ENTITY iconWidth.tooltip "宽度">
+<!ENTITY iconHeight.tooltip "高度">
 <!ENTITY compactMenuButtonAdded.message "简洁菜单的按钮已添加">

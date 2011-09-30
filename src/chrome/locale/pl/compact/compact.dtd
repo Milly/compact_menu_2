@@ -7,6 +7,8 @@
 <!ENTITY menubarCmd.accesskey "P">
 <!ENTITY viewAppButton.label "Wyświetlaj przycisk aplikacji">
 <!ENTITY viewAppButton.key "c">
+<!ENTITY viewTabsInTitlebar.label "Karty na pasku tytułu">
+<!ENTITY viewTabsInTitlebar.key "T">
 <!ENTITY iconPref.caption "Dodaj/zmień ikonę rozszerzenia">
 <!ENTITY iconPref.accesskey "D">
 <!ENTITY iconFilePicker.label "Przeglądaj…">
@@ -22,4 +24,6 @@
 <!ENTITY iconNoBorder.accesskey "B">
 <!ENTITY iconFixSize.label "Stały rozmiar ikon">
 <!ENTITY iconFixSize.accesskey "S">
+<!ENTITY iconWidth.tooltip "Szerokość">
+<!ENTITY iconHeight.tooltip "Wysokość">
 <!ENTITY compactMenuButtonAdded.message "Przycisk Menu kompaktowe został dodany">

@@ -7,6 +7,8 @@
 <!ENTITY menubarCmd.accesskey "M">
 <!ENTITY viewAppButton.label "Alkalmazás gomb megjelenítése">
 <!ENTITY viewAppButton.key "g">
+<!ENTITY viewTabsInTitlebar.label "Lapok a címsorban">
+<!ENTITY viewTabsInTitlebar.key "c">
 <!ENTITY iconPref.caption "A Compact Menu ikonjának testreszabása">
 <!ENTITY iconPref.accesskey "i">
 <!ENTITY iconFilePicker.label "Tallózás...">
@@ -22,4 +24,6 @@
 <!ENTITY iconNoBorder.accesskey "N">
 <!ENTITY iconFixSize.label "Rögzített ikonméret">
 <!ENTITY iconFixSize.accesskey "R">
+<!ENTITY iconWidth.tooltip "Szélesség">
+<!ENTITY iconHeight.tooltip "Magasság">
 <!ENTITY compactMenuButtonAdded.message "A Compact Menu gomb hozzáadva">

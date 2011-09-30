@@ -22,4 +22,6 @@
 <!ENTITY iconNoBorder.accesskey "Б">
 <!ENTITY iconFixSize.label "Фіксований розмір піктограми">
 <!ENTITY iconFixSize.accesskey "Ф">
+<!ENTITY iconWidth.tooltip "Ширина">
+<!ENTITY iconHeight.tooltip "Висота">
 <!ENTITY compactMenuButtonAdded.message "Кнопка Compact Menu була додана">

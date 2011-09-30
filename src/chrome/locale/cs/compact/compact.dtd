@@ -7,6 +7,8 @@
 <!ENTITY menubarCmd.accesskey "H">
 <!ENTITY viewAppButton.label "Zobrazit tlačítko aplikace">
 <!ENTITY viewAppButton.key "p">
+<!ENTITY viewTabsInTitlebar.label "Panely v záhlaví okna">
+<!ENTITY viewTabsInTitlebar.key "y">
 <!ENTITY iconPref.caption "Změnit ikonu kompaktní nabídky">
 <!ENTITY iconPref.accesskey "i">
 <!ENTITY iconFilePicker.label "Procházet...">
@@ -22,4 +24,6 @@
 <!ENTITY iconNoBorder.accesskey "B">
 <!ENTITY iconFixSize.label "Pevná velikost ikony">
 <!ENTITY iconFixSize.accesskey "P">
+<!ENTITY iconWidth.tooltip "Šířka">
+<!ENTITY iconHeight.tooltip "Výška">
 <!ENTITY compactMenuButtonAdded.message "Bylo přidáno tlačítko Kompaktní nabídky">

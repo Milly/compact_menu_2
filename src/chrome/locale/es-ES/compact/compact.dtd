@@ -7,6 +7,8 @@
 <!ENTITY menubarCmd.accesskey "B">
 <!ENTITY viewAppButton.label "Mostrar botón Aplicaciones">
 <!ENTITY viewAppButton.key "p">
+<!ENTITY viewTabsInTitlebar.label "Pestañas en barra de título">
+<!ENTITY viewTabsInTitlebar.key "b">
 <!ENTITY iconPref.caption "Reemplazar icono de Compact Menu">
 <!ENTITY iconPref.accesskey "R">
 <!ENTITY iconFilePicker.label "Examinar...">
@@ -22,4 +24,6 @@
 <!ENTITY iconNoBorder.accesskey "i">
 <!ENTITY iconFixSize.label "Tamaño fijo de icono">
 <!ENTITY iconFixSize.accesskey "ñ">
+<!ENTITY iconWidth.tooltip "Ancho">
+<!ENTITY iconHeight.tooltip "Alto">
 <!ENTITY compactMenuButtonAdded.message "Se ha añadido el botón de Compact Menu">

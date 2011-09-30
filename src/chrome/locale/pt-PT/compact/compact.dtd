@@ -7,6 +7,8 @@
 <!ENTITY menubarCmd.accesskey "m">
 <!ENTITY viewAppButton.label "Mostrar o botão de aplicação">
 <!ENTITY viewAppButton.key "p">
+<!ENTITY viewTabsInTitlebar.label "Separadores na barra de titulo">
+<!ENTITY viewTabsInTitlebar.key "l">
 <!ENTITY iconPref.caption "Mudar o ícone do Menu compacto">
 <!ENTITY iconPref.accesskey "d">
 <!ENTITY iconFilePicker.label "Navegar...">
@@ -22,4 +24,6 @@
 <!ENTITY iconNoBorder.accesskey "S">
 <!ENTITY iconFixSize.label "Tamanho fixo do ícone">
 <!ENTITY iconFixSize.accesskey "f">
+<!ENTITY iconWidth.tooltip "Largura">
+<!ENTITY iconHeight.tooltip "Altura">
 <!ENTITY compactMenuButtonAdded.message "O botão do Compact Menu foi adicionado">

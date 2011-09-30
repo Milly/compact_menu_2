@@ -7,6 +7,8 @@
 <!ENTITY menubarCmd.accesskey "Т">
 <!ENTITY viewAppButton.label "Прикажи дугме за сужавање">
 <!ENTITY viewAppButton.key "Д">
+<!ENTITY viewTabsInTitlebar.label "Језичци у насловној траци">
+<!ENTITY viewTabsInTitlebar.key "н">
 <!ENTITY iconPref.caption "Промени икону компактног менија">
 <!ENTITY iconPref.accesskey "И">
 <!ENTITY iconFilePicker.label "Прегледај...">
@@ -22,4 +24,6 @@
 <!ENTITY iconNoBorder.accesskey "О">
 <!ENTITY iconFixSize.label "Стална величина иконе">
 <!ENTITY iconFixSize.accesskey "Т">
+<!ENTITY iconWidth.tooltip "Ширина">
+<!ENTITY iconHeight.tooltip "Висина">
 <!ENTITY compactMenuButtonAdded.message "Додато је дугме за компактни мени">
