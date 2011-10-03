@@ -503,9 +503,7 @@ toggleTabsInTitlebar: function CM_toggleTabsInTitlebar() {
 updateTabsInTitlebar: function CM_updateTabsInTitlebar(reload) {
   this.c_dump('updateTabsInTitlebar');
 
-  var docElement = document.documentElement;
-  function $(id) document.getElementById(id);
-  function docAttr(name) docElement.getAttribute(name);
+  function docAttr(name) document.documentElement.getAttribute(name);
 
   var sizemode = docAttr('sizemode');
   var force = 'maximized' == sizemode || 'fullscreen' == sizemode;
@@ -516,7 +514,7 @@ updateTabsInTitlebar: function CM_updateTabsInTitlebar(reload) {
   var allowed = ('true' == docAttr('tabsintitlebar'));
   this.c_dump('allowed='+allowed);
 
-  var cmd = $('cmd_ToggleTabsInTitlebar');
+  var cmd = document.getElementById('cmd_ToggleTabsInTitlebar');
   cmd.setAttribute('checked', enabled);
   cmd.setAttribute('disabled', force || enabled && !allowed);
 },
