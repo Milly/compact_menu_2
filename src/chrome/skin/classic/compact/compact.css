@@ -81,12 +81,15 @@ toolbar[collapsed="true"]:first-child + toolbar[collapsed="true"] + toolbar[coll
   min-height: 0 !important;
 }
 
+#main-window[sizemode="normal"][tabsintitlebar="true"] #toolbar-menubar:not([collapsed="true"]),
+#main-window[sizemode="normal"][tabsintitlebar="true"] #toolbar-menubar[collapsed="true"] ~ #TabsToolbar {
+  margin-top: 5px !important;
+  padding-top: 5px !important;
+}
 @media all and (-moz-windows-compositor: 0) and (-moz-windows-classic) {
-  #main-window[sizemode="normal"][tabsintitlebar="true"] #toolbar-menubar:not([collapsed="true"]) {
-    padding-top: 4px !important;
-  }
+  #main-window[sizemode="normal"][tabsintitlebar="true"] #toolbar-menubar:not([collapsed="true"]),
   #main-window[sizemode="normal"][tabsintitlebar="true"] #toolbar-menubar[collapsed="true"] ~ #TabsToolbar {
-    padding-top: 4px !important;
+    margin-top: 0 !important;
   }
 }
 
