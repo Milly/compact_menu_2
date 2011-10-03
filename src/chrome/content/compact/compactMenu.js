@@ -731,7 +731,7 @@ setIconStyle: function CM_setIconStyle(aIconURI, aWidth, aHeight,
     code += '#menu-button{-moz-image-region:rect(0px,'+aWidth+'px,'+aHeight+'px,0px)!important;}';
   }
   if (aNoBorder)
-    code += '#menu-button{border:none!important;padding:0!important;margin:0!important;}';
+    code += '#menu-button{border:none!important;padding:0!important;margin:0!important;background:transparent none!important;box-shadow:none!important;}';
   if (aFixSize) {
     code += '#menu-button>.toolbarbutton-icon{width:'+aFixWidth+'px!important;height:'+aFixHeight+'px!important;}';
   } else {
