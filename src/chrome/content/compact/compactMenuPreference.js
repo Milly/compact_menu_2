@@ -19,7 +19,7 @@ init: function CMP_init() {
   this.prefField('icon_fixsize',  this.pref_icon_fixsize);
   this.prefField('icon_width',    this.pref_icon_width);
   this.prefField('icon_height',   this.pref_icon_height);
-  icon_enable.doCommand(); // {en,dis}able group
+  this.updateTargetGroup(icon_enable);
 
   this.addEvents();
 },
@@ -46,13 +46,16 @@ accept: function CMP_accept() {
 },
 
 userChanged: function CMP_userChanged(aTarget) {
-  var group = aTarget.getAttribute('target_group');
-  if (group)
-    this.disableGroup(group, !aTarget.checked);
-
+  this.updateTargetGroup(aTarget);
   var instantApply = this.prefField('compactmenuPrefs').instantApply;
   if (instantApply)
     this.accept();
+},
+
+updateTargetGroup: function CMP_updateTargetGroup(aCheckbox) {
+  var group = aCheckbox.getAttribute('target_group');
+  if (group && !aCheckbox.disabled)
+    this.disableGroup(group, !aCheckbox.checked);
 },
 
 disableGroup: function CMP_disableGroup(aGroup, aDisabled) {
@@ -68,7 +71,7 @@ disableGroup: function CMP_disableGroup(aGroup, aDisabled) {
 
   if (!aDisabled) {
     this.evaluateEach('.//xul:checkbox[@target_group]', aGroup,
-                      function(subgroup) { subgroup.doCommand(); });
+                      this.bind(function(subgroup) { this.updateTargetGroup(subgroup); }));
   }
 },
 
