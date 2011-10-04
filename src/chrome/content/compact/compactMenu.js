@@ -597,21 +597,24 @@ setMenuTooltip: function CM_setMenuTooltip(aTooltip, aNode) {
   return false;
 },
 
+evaluate: function CM_evaluate(aXPath, aNode, aType) {
+  aNode = aNode || document.documentElement;
+  aType = ('undefined' != typeof aType) ? aType : XPathResult.FIRST_ORDERED_NODE_TYPE;
+  var doc = aNode.ownerDocument || document;
+  var namespaces = {
+    xul: 'http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul',
+    html: 'http://www.w3.org/1999/xhtml'
+  };
+  function nsResolver(ns) namespaces[ns] || '';
+  return doc.evaluate(aXPath, aNode, nsResolver, aType, null);
+},
+
 evaluateEach: function CM_evaluateEach(aXPath, aNode, aCallback) {
   if (2 == arguments.length) {
     aCallback = aNode;
     aNode = document.documentElement;
   }
-
-  function nsResolver(ns) {
-    return ({
-      xul: 'http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul',
-      html: 'http://www.w3.org/1999/xhtml'
-    })[ns] || '';
-  }
-
-  var items = document.evaluate(aXPath, aNode, nsResolver,
-                                XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+  var items = this.evaluate(aXPath, aNode, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE);
   for (let i = 0; i < items.snapshotLength; ++i) {
     let item = items.snapshotItem(i);
     let res = aCallback.call(this, item, i);

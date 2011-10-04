@@ -36,21 +36,22 @@ initBookmarksFunctions: function CB_initBookmarksFunctions() {
   if ('FeedHandler' in window) {
     this.hookFunction([FeedHandler, 'updateFeeds'],
                       function CB_updateFeeds() {
-      CompactBookmarks.c_dump('FeedHandler.updateFeeds(): called');
-      function find(aElement, aTagName, aId) {
-        var tags = aElement.getElementsByTagName(aTagName);
-        for (var i = 0; i < tags.length; ++i)
-          if (aId == tags[i].id) return tags[i];
-      }
+      function $(id) document.getElementById(id);
+      function find(path, el) CompactBookmarks.evaluate(path, el).singleNodeValue;
+      function getmenu(el)
+        el ? { item: find('.//xul:menuitem[@id="subscribeToPageMenuitem"]', el),
+               popup: find('.//xul:menu[@id="subscribeToPageMenupopup"]', el) } : {};
       var menus = [
-        document.getElementById('compact-bk-menubar'),
-        document.getElementById('compact-bk-button'),
-        CompactBookmarks.getBookmarksMenu()
+        getmenu($('compact-bk-menubar')),
+        getmenu($('compact-bk-button')),
+        getmenu(CompactBookmarks.getBookmarksMenu()),
+        { item: this._feedMenuitem, popup: this._feedMenupopup }
       ];
-      for (var i = 0; i < menus.length; ++i) {
-        if (menus[i]) {
-          this._feedMenuitem = find(menus[i], 'menuitem', 'subscribeToPageMenuitem');
-          this._feedMenupopup = find(menus[i], 'menu', 'subscribeToPageMenupopup');
+      for each (var menu in menus) {
+        if (menu.item && menu.item != this._feedMenuitem &&
+            menu.popup && menu.popup != this._feedMenupopup) {
+          this._feedMenuitem = menu.item;
+          this._feedMenupopup = menu.popup;
           this.updateFeeds_without_CompactMenu();
         }
       }
@@ -119,45 +120,38 @@ getSupportedFlavours: function CB_getSupportedFlavours() {
 cloneBookmarksMenu: function CB_cloneBookmarksMenu(aParent) {
   if (!aParent || aParent.firstChild) return;
 
+  const OTHER_ID_CAPABLE = !!document.getElementById('bookmarks-menu-button');
+  function find(path, el) CompactBookmarks.evaluate(path, el).singleNodeValue;
+
   var menupopup = this.getBookmarksMenuPopup();
   var clone_menupopup = menupopup.cloneNode(false);
   aParent.appendChild(clone_menupopup);
 
-  // fix onpopupshowing (for Fx3.7)
-  if (clone_menupopup.hasAttribute('onpopupshowing')) {
-    var pops = clone_menupopup.getAttribute('onpopupshowing');
-    pops = pops.replace("document.getElementById('bookmarksMenu')",
-                        'this.parentNode');
-    clone_menupopup.setAttribute('onpopupshowing', pops);
-  }
-
+  var id_prefix = OTHER_ID_CAPABLE ? aParent.id + '_' : '';
+  var skip_start = find('./*[@id="bookmarksMenuItemsSeparator"]', menupopup) ||
+                   find('./*[@builder="start"]', menupopup);
+  var skip_end   = find('./*[@builder="end"]', menupopup);
   var nodes = menupopup.childNodes;
-  for (var i = 0; i < nodes.length; ++i) {
+  for (var i = 0, skip = false; i < nodes.length; ++i) {
     var node = nodes[i];
-    clone_menupopup.appendChild(node.cloneNode(true));
-    if ('menuseparator' == node.tagName) break;
+    if (node == skip_end) skip = false;
+    if (!skip) {
+      var clone = node.cloneNode(true);
+      if (clone.id) clone.id = id_prefix + clone.id;
+      clone_menupopup.appendChild(clone);
+    }
+    if (node == skip_start) skip = true;
   }
 
-  // add bookmarks-toolbar-folder-menu (for Fx3.0 or later)
-  var tbFolderMenu = document.getElementById('bookmarksToolbarFolderMenu');
-  var tbFolderPopup = document.getElementById('bookmarksToolbarFolderPopup');
-  if (tbFolderMenu && tbFolderPopup) {
-    var clone_tbFolderMenu = tbFolderMenu.cloneNode(false);
-    var clone_tbFolderPopup = tbFolderPopup.cloneNode(false);
-    var clone_separator = tbFolderMenu.nextSibling.cloneNode(false);
-
-    // set places (for Fx3.0)
-    if ('PlacesUtils' in window && 'bookmarks' in PlacesUtils) {
-      var bms = PlacesUtils.bookmarks;
-      if (!clone_tbFolderMenu.label)
-        clone_tbFolderMenu.label = bms.getItemTitle(bms.toolbarFolder);
-      if (!clone_tbFolderPopup.place && 'getQueryStringForFolder' in PlacesUtils)
-        clone_tbFolderPopup.place = PlacesUtils.getQueryStringForFolder(bms.toolbarFolder);
-    }
-
-    clone_tbFolderMenu.appendChild(clone_tbFolderPopup);
-    clone_menupopup.appendChild(clone_tbFolderMenu);
-    clone_menupopup.appendChild(clone_separator);
+  // set places (for Fx3.0)
+  if ('undefined' != typeof PlacesUtils && PlacesUtils.bookmarks && PlacesUtils.bookmarks.toolbarFolder) {
+    var bms = PlacesUtils.bookmarks, tbf = bms.toolbarFolder;
+    var clone_tbFolderMenu = find('.//xul:menu[@id="bookmarksToolbarFolderMenu"]', clone_menupopup);
+    var clone_tbFolderPopup = find('.//xul:menupopup[@id="bookmarksToolbarFolderPopup"]', clone_menupopup);
+    if (clone_tbFolderMenu && !clone_tbFolderMenu.label && 'getItemTitle' in bms)
+      clone_tbFolderMenu.label = bms.getItemTitle(tbf);
+    if (clone_tbFolderPopup && !clone_tbFolderPopup.place && 'getQueryStringForFolder' in PlacesUtils)
+      clone_tbFolderPopup.place = PlacesUtils.getQueryStringForFolder(tbf);
   }
 },
 
