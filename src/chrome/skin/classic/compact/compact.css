@@ -63,6 +63,11 @@ toolbar[collapsed="true"]:first-child + toolbar[collapsed="true"] + toolbar[coll
   min-height: 1em;
 }
 
+#appmenu-button[hidecompactmenu="true"] #compact-appmenu,
+#appmenu-button[hidecompactmenu="true"] #compact-appmenu-spacer {
+  display: none;
+}
+
 /* for tabs in titlebar */
 #toolbar-menubar[collapsed="true"][autohide="false"]:not([customizing="true"]) {
   visibility: hidden !important;

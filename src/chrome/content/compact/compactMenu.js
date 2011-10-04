@@ -468,13 +468,16 @@ showHideMenuBar: function CM_showHideMenuBar() {
   var menubar = this.getMenuBar();
   if (menubar) {
     this.menuIt(menubar);
+    var appbutton = this.getAppButton();
     var toolbar = this.getMainToolbar();
     var hide = !(toolbar && toolbar.getAttribute('customizing') == 'true')
              && (toolbar && toolbar[this.HIDE_ATTRIBUTE] || this.getMenuItem());
     if (hide) {
       menubar.setAttribute('hidden', 'true');
+      if (appbutton) appbutton.removeAttribute('hidecompactmenu');
     } else {
       menubar.removeAttribute('hidden');
+      if (appbutton) appbutton.setAttribute('hidecompactmenu', 'true');
     }
   }
 },
