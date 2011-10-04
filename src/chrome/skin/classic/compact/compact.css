@@ -1,11 +1,8 @@
+/* Compact Menu */
 @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
 
 #menu-button {
   list-style-image: url("chrome://compact/skin/blue.png");
-}
-
-#compact-bk-button {
-  list-style-image: url("chrome://compact/skin/bookmarks.png");
 }
 
 .compactbutton {
@@ -44,8 +41,7 @@ toolbar:not([mode="text"]) .compactbutton .toolbarbutton-menu-dropmarker {
   display: none;
 }
 
-#compact-menubar,
-#compact-bk-menubar {
+#compact-menubar {
   -moz-appearance: none;
   border: 0;
   padding: 0;
@@ -65,12 +61,6 @@ toolbar[collapsed="true"]:first-child + toolbar[collapsed="true"] + toolbar[coll
 
 #compact-appmenu-spacer {
   min-height: 1em;
-}
-
-#toolbar-menubar[collapsed="true"] ~ #nav-bar > #bookmarks-menu-button-container,
-#toolbar-menubar[collapsed="true"] ~ toolbar > #personal-bookmarks > #bookmarks-menu-button,
-#toolbar-menubar[collapsed="true"] > #personal-bookmarks > #bookmarks-menu-button {
-  display: -moz-box !important;
 }
 
 /* for tabs in titlebar */

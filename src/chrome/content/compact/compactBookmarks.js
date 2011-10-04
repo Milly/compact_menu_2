@@ -137,7 +137,10 @@ cloneBookmarksMenu: function CB_cloneBookmarksMenu(aParent) {
     if (node == skip_end) skip = false;
     if (!skip) {
       var clone = node.cloneNode(true);
-      if (clone.id) clone.id = id_prefix + clone.id;
+      if (clone.id) {
+        clone.setAttribute('orig_id', clone.id);
+        clone.id = id_prefix + clone.id;
+      }
       clone_menupopup.appendChild(clone);
     }
     if (node == skip_start) skip = true;

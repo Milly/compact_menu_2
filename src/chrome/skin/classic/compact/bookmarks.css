@@ -1,0 +1,42 @@
+/* Bookmarks */
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+#compact-bk-button {
+  list-style-image: url("chrome://compact/skin/bookmarks.png");
+}
+
+#compact-bk-menubar {
+  -moz-appearance: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+#toolbar-menubar[collapsed="true"] ~ #nav-bar > #bookmarks-menu-button-container,
+#toolbar-menubar[collapsed="true"] ~ toolbar > #personal-bookmarks > #bookmarks-menu-button,
+#toolbar-menubar[collapsed="true"] > #personal-bookmarks > #bookmarks-menu-button {
+  display: -moz-box !important;
+}
+
+/* icons (Fx4.0 or later) */
+:-moz-any(#compact-bk-button, #compact-bk-menubar) menuitem[orig_id="menu_bookmarkThisPage"] {
+  -moz-binding: url("chrome://global/content/bindings/menu.xml#menuitem-iconic");
+  list-style-image: url("chrome://browser/skin/places/bookmark.png");
+  -moz-image-region: rect(0 16px 16px 0);
+}
+
+:-moz-any(#compact-bk-button, #compact-bk-menubar) menuitem[orig_id="subscribeToPageMenuitem"]:not([disabled]),
+:-moz-any(#compact-bk-button, #compact-bk-menubar) menu[orig_id="subscribeToPageMenupopup"] {
+  list-style-image: url("chrome://browser/skin/feeds/feedIcon16.png");
+}
+
+:-moz-any(#compact-bk-button, #compact-bk-menubar) menu[orig_id="bookmarksToolbarFolderMenu"] {
+  list-style-image: url("chrome://browser/skin/places/bookmarksToolbar.png");
+  -moz-image-region: auto !important;
+}
+
+:-moz-any(#compact-bk-button, #compact-bk-menubar) menuitem[orig_id="menu_unsortedBookmarks"] {
+  -moz-binding: url("chrome://global/content/bindings/menu.xml#menuitem-iconic");
+  list-style-image: url("chrome://browser/skin/places/unsortedBookmarks.png");
+  -moz-image-region: auto;
+}
