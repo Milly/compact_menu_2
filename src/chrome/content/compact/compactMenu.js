@@ -726,23 +726,24 @@ setIconStyle: function CM_setIconStyle(aIconURI, aWidth, aHeight,
   const IOS = Components.classes["@mozilla.org/network/io-service;1"]
                         .getService(Components.interfaces.nsIIOService);
 
-  var code = '@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);'
-           + '#menu-button{list-style-image:url("'+aIconURI+'")!important;}';
+  var code = '#menu-button{list-style-image:url("'+aIconURI+'");}';
   if (aMultiple) {
     var h1 = Math.ceil(aHeight / 3), h2 = h1 * 2, h3 = h1 * 3;
-    code += '#menu-button{-moz-image-region:rect(0px,'+aWidth+'px,'+h1+'px,0px)!important;}'
-          + '#menu-button:hover{-moz-image-region:rect('+h1+'px,'+aWidth+'px,'+h2+'px,0px)!important;}'
-          + '#menu-button[open="true"]{-moz-image-region:rect('+h2+'px,'+aWidth+'px,'+h3+'px,0px)!important;}';
+    code += '#menu-button{-moz-image-region:rect(0px,'+aWidth+'px,'+h1+'px,0px);}'
+          + '#menu-button:hover{-moz-image-region:rect('+h1+'px,'+aWidth+'px,'+h2+'px,0px);}'
+          + '#menu-button[open="true"]{-moz-image-region:rect('+h2+'px,'+aWidth+'px,'+h3+'px,0px);}';
   } else {
-    code += '#menu-button{-moz-image-region:rect(0px,'+aWidth+'px,'+aHeight+'px,0px)!important;}';
+    code += '#menu-button{-moz-image-region:auto;}';
   }
   if (aNoBorder)
-    code += '#menu-button{border:none!important;padding:0!important;margin:0!important;background:transparent none!important;box-shadow:none!important;}';
+    code += '#menu-button{border:none;padding:0;margin:0;background:transparent none;box-shadow:none;}';
   if (aFixSize) {
-    code += '#menu-button>.toolbarbutton-icon{width:'+aFixWidth+'px!important;height:'+aFixHeight+'px!important;}';
+    code += '#menu-button>.toolbarbutton-icon{width:'+aFixWidth+'px;height:'+aFixHeight+'px;}';
   } else {
-    code += '#menu-button>.toolbarbutton-icon{width:auto!important;height:auto!important;}';
+    code += '#menu-button>.toolbarbutton-icon{width:auto;height:auto;}';
   }
+  code = '@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");'
+       + code.replace(/;/g, '!important;');
 
   this._iconStyle = IOS.newURI('data:text/css,' + encodeURIComponent(code), null, null);
   if (!SSS.sheetRegistered(this._iconStyle, SSS.AGENT_SHEET))
