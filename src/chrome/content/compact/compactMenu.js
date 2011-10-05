@@ -727,7 +727,7 @@ setIconStyle: function CM_setIconStyle(aIconURI, aWidth, aHeight,
                         .getService(Components.interfaces.nsIIOService);
 
   var code = '@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);'
-           + '#menu-button{list-style-image:url('+encodeURI(aIconURI)+')!important;}';
+           + '#menu-button{list-style-image:url("'+aIconURI+'")!important;}';
   if (aMultiple) {
     var h1 = Math.ceil(aHeight / 3), h2 = h1 * 2, h3 = h1 * 3;
     code += '#menu-button{-moz-image-region:rect(0px,'+aWidth+'px,'+h1+'px,0px)!important;}'
